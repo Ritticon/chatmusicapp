@@ -31,10 +31,10 @@ class _HomeState extends State<Home> {
           controller: _pageControlller,
           children: const <Widget>[
             StreamingPage(),
-            // ChatOnlinePage(),
+            ChatOnlinePage(),
             MyProfile(),
             searchMusic(),
-            Login(),
+            // Login(),
             // Register(),
             FavoriteSong()
         

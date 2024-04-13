@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:go_router/go_router.dart';
 // import 'package:chatmusic/pages/SearchMusic.dart';
 import 'package:provider/provider.dart';
 
@@ -336,12 +337,13 @@ class _StreamingPageState extends State<StreamingPage> {
                                     child: ElevatedButton(
                                         onPressed: () {
                                           if (user != null) {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ChatOnlinePage()),
-                                            );
+                                            context.go('/chat');
+                                            // Navigator.push(
+                                            //   context,
+                                            //   MaterialPageRoute(
+                                            //       builder: (context) =>
+                                            //           ChatOnlinePage()),
+                                            // );
                                             // Navigator.pushReplacement(
                                             //   context,
                                             //   MaterialPageRoute(
@@ -350,6 +352,7 @@ class _StreamingPageState extends State<StreamingPage> {
                                             //   ),
                                             // );
                                           } else {
+                                            print("streaming เข้า else");
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(

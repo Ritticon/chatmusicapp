@@ -53,79 +53,81 @@ Future<void> fetchUserProfileImage() async {
     if (snapshot.connectionState == ConnectionState.waiting) {
       return CircularProgressIndicator();
     }
-    if (snapshot.data == null || snapshot.data!.docs.isEmpty) {
+    if (snapshot.data == null ) {
        Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => Login()),
                       );
     }
     var messages = snapshot.data!.docs;
-     return Column(
-       children: [
-        Padding(
-                  padding: EdgeInsets.fromLTRB(30.0, 20.0, 8.0, 3.0),
-                  child: Text(
-                    'Online Chat',
-                    style: TextStyle(
-                      fontFamily: 'atma',
-                      fontSize: 35,
-                      color: Color(0xFFFF6B00),
+     return Scaffold(
+       body: Column(
+         children: [
+          Padding(
+                    padding: EdgeInsets.fromLTRB(30.0, 20.0, 8.0, 3.0),
+                    child: Text(
+                      'Online Chat',
+                      style: TextStyle(
+                        fontFamily: 'atma',
+                        fontSize: 35,
+                        color: Color(0xFFFF6B00),
+                      ),
                     ),
                   ),
-                ),
-         Expanded(
-           child: ListView.builder(
-            reverse: true,
-            shrinkWrap: true,
-            itemCount: messages.length,
-            itemBuilder: (context, index) {
-                    var alignment = (snapshot.data!.docs[index]['senderEmail'] ==
-                            _auth.currentUser!.email)
-                        ? Alignment.centerRight
-                        : Alignment.centerLeft;
-                    return Container(
-                      alignment: alignment,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: (snapshot.data!.docs[index]
-                                      ["senderId"] ==
-                                  _auth.currentUser!.uid)
-                              ? CrossAxisAlignment.end
-                              : CrossAxisAlignment.start,
-                          mainAxisAlignment: (snapshot.data!.docs[index]
-                                      ["senderId"] ==
-                                  _auth.currentUser!.uid)
-                              ? MainAxisAlignment.end
-                              : MainAxisAlignment.start,
-                          children: [
-                            CircleAvatar(
-                backgroundImage: NetworkImage(imageUrl),
-                ),
-                            Text(
-                              snapshot.data!.docs[index]["senderEmail"],
-                              style: TextStyle(
-                                  fontFamily: 'aBeeZee',
-                                  fontSize: 16,
-                                  color: Color(0xFFFF6B00)),
-                            ),
-                            Text(
-                              snapshot.data!.docs[index]["message"],
-                              style: TextStyle(
-                                  fontFamily: 'aBeeZee',
-                                  fontSize: 16,
-                                  color: Color(0xFFFF6B00)),
-                            ),
-                          ],
+           Expanded(
+             child: ListView.builder(
+              reverse: true,
+              shrinkWrap: true,
+              itemCount: messages.length,
+              itemBuilder: (context, index) {
+                      var alignment = (snapshot.data!.docs[index]['senderEmail'] ==
+                              _auth.currentUser!.email)
+                          ? Alignment.centerRight
+                          : Alignment.centerLeft;
+                      return Container(
+                        alignment: alignment,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: (snapshot.data!.docs[index]
+                                        ["senderId"] ==
+                                    _auth.currentUser!.uid)
+                                ? CrossAxisAlignment.end
+                                : CrossAxisAlignment.start,
+                            mainAxisAlignment: (snapshot.data!.docs[index]
+                                        ["senderId"] ==
+                                    _auth.currentUser!.uid)
+                                ? MainAxisAlignment.end
+                                : MainAxisAlignment.start,
+                            children: [
+                              CircleAvatar(
+                  backgroundImage: NetworkImage(imageUrl),
+                  ),
+                              Text(
+                                snapshot.data!.docs[index]["senderEmail"],
+                                style: TextStyle(
+                                    fontFamily: 'aBeeZee',
+                                    fontSize: 16,
+                                    color: Color(0xFFFF6B00)),
+                              ),
+                              Text(
+                                snapshot.data!.docs[index]["message"],
+                                style: TextStyle(
+                                    fontFamily: 'aBeeZee',
+                                    fontSize: 16,
+                                    color: Color(0xFFFF6B00)),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    );
-                    
-            },
-               ),
-         ),
-              _buildMessageInput(),
-       ],
+                      );
+                      
+              },
+                 ),
+           ),
+                _buildMessageInput(),
+         ],
+       ),
      );
     
   },
