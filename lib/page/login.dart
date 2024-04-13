@@ -1,11 +1,5 @@
 import 'dart:typed_data';
 import 'dart:io';
-// import 'package:chatmusic/models/profile.dart';
-// import 'package:chatmusic/pages/chatOnline.dart';
-// import 'package:chatmusic/pages/login.dart';
-// import 'package:chatmusic/pages/popupSongPage.dart';
-// import 'package:chatmusic/pages/profile.dart';
-// import 'package:chatmusic/pages/register.dart';
 import 'package:chatmusicapp/models/profile.dart';
 import 'package:chatmusicapp/page/chatOnline.dart';
 import 'package:chatmusicapp/page/profile.dart';
@@ -35,10 +29,10 @@ class _LoginState extends State<Login> {
     profile = Profile(email: '', password: '', image: '');
   }
 
-  Uint8List? _image;
+  // Uint8List? _image;
   // File? selectedImage;
-  String _password = '';
-  String _confirmPassword = '';
+  // String _password = '';
+  // String _confirmPassword = '';
 
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
   @override
@@ -228,16 +222,16 @@ class _LoginState extends State<Login> {
                                                               profile.password)
                                                       .then((value) {
                                                     formkey.currentState!.reset();
-                                                        // Navigator.of(context).pop();
+                                                    // Navigator.of(context).pop(context);
                                                     // Navigator.push(
                                                     //   context,
                                                     //   MaterialPageRoute(
                                                     //       builder: (context) =>
                                                     //           ChatOnlinePage()),
                                                     // );
-                                                    // Navigator.pushNamedAndRemoveUntil(context, '/chat',
-                                                    // ModalRoute.withName('/chat'));
-                                                    Navigator.push(context, MaterialPageRoute(builder: (context)=> MyProfile()));
+                                                    Navigator.pushNamedAndRemoveUntil(context, '/chat',
+                                                    ModalRoute.withName('/chat'));
+                                                    // Navigator.push(context, MaterialPageRoute(builder: (context)=> MyProfile()));
                                                   });
                               
                                                 } on FirebaseAuthException catch (e) {
