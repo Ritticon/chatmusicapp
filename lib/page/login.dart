@@ -1,4 +1,4 @@
-// import 'dart:typed_data';
+import 'dart:typed_data';
 import 'dart:io';
 // import 'package:chatmusic/models/profile.dart';
 // import 'package:chatmusic/pages/chatOnline.dart';
@@ -7,6 +7,8 @@ import 'dart:io';
 // import 'package:chatmusic/pages/profile.dart';
 // import 'package:chatmusic/pages/register.dart';
 import 'package:chatmusicapp/models/profile.dart';
+import 'package:chatmusicapp/page/chatOnline.dart';
+import 'package:chatmusicapp/page/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -225,17 +227,19 @@ class _LoginState extends State<Login> {
                                                           password:
                                                               profile.password)
                                                       .then((value) {
-                                                    formkey.currentState!
-                                                        .reset();
+                                                    formkey.currentState!.reset();
+                                                        // Navigator.of(context).pop();
                                                     // Navigator.push(
                                                     //   context,
                                                     //   MaterialPageRoute(
                                                     //       builder: (context) =>
                                                     //           ChatOnlinePage()),
                                                     // );
-                                                    Navigator.pushNamedAndRemoveUntil(context, '/profile',
-                                                    ModalRoute.withName('/profile'));
+                                                    // Navigator.pushNamedAndRemoveUntil(context, '/chat',
+                                                    // ModalRoute.withName('/chat'));
+                                                    Navigator.push(context, MaterialPageRoute(builder: (context)=> MyProfile()));
                                                   });
+                              
                                                 } on FirebaseAuthException catch (e) {
                                                   showDialog(
                                                       context: context,
@@ -264,6 +268,7 @@ class _LoginState extends State<Login> {
                                                       });
                                                 }
                                               }
+                                             
                                             },
                                             style: ElevatedButton.styleFrom(
                                               backgroundColor: Theme.of(context)

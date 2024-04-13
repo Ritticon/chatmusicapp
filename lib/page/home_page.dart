@@ -1,6 +1,11 @@
 
+import 'package:chatmusicapp/page/chatOnline.dart';
+import 'package:chatmusicapp/page/favoriteSong.dart';
 import 'package:chatmusicapp/page/login.dart';
+import 'package:chatmusicapp/page/profile.dart';
 import 'package:chatmusicapp/page/register.dart';
+import 'package:chatmusicapp/page/searchMusic.dart';
+import 'package:chatmusicapp/page/streaming.dart';
 import 'package:flutter/material.dart';
 import 'package:rolling_bottom_bar/rolling_bottom_bar.dart';
 import 'package:rolling_bottom_bar/rolling_bottom_bar_item.dart';
@@ -25,8 +30,8 @@ class _HomeState extends State<Home> {
         body: PageView(
           controller: _pageControlller,
           children: const <Widget>[
-            // StreamingPage(),
-            // ChatOnlinePage(),
+            StreamingPage(),
+            ChatOnlinePage(),
             // MyProfile(),
             // searchMusic(),
             Login(),

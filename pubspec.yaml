@@ -44,6 +44,7 @@ dependencies:
   firebase_auth: ^4.19.1
   firebase_storage: ^11.7.1
   provider: ^6.1.2
+  audioplayers: ^6.0.0
 
 dev_dependencies:
   flutter_test:
