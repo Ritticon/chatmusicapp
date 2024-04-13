@@ -29,11 +29,14 @@ class _searchMusicState extends State<searchMusic> {
   String CurrentIMage = "";
   int? CurrentIndex ; 
   String search = '';
+  String songname = '';
 
   @override
   void initState() {
     super.initState();
     playlistProvider = Provider.of<PlaylistProvider>(context, listen: false);
+    // String Song =  FirebaseFirestore.instance.collection('Playlist').get();
+    // playlistProvider.addData();
   }
 
  void goToSong(int songIndex ) {
@@ -49,6 +52,7 @@ class _searchMusicState extends State<searchMusic> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
 
@@ -72,6 +76,7 @@ class _searchMusicState extends State<searchMusic> {
               print("playlistจ้าา = ${playlist}");
               print("เพลงตอนนี้ = ${currentSong.artistName}");
               // return List view UI
+
               return 
               
               
@@ -147,9 +152,10 @@ class _searchMusicState extends State<searchMusic> {
                     itemCount: playlist.length,
                     itemBuilder: (context, index) {
                       //get individual
-                    
-                      final Song song = playlist[index];
-                      print("isFav = ${song}");
+                    final Song song = playlist[index];
+                    print("isFav = ${song}");
+                    if(songname.isEmpty){
+                                           
                                     
                       //return list tile UI
                       return ListTile(
@@ -235,6 +241,96 @@ class _searchMusicState extends State<searchMusic> {
                             
                                     
                       );
+                    }
+                    if(song.songName.toString().toLowerCase().contains(songname.toLowerCase())){
+                               print("เข้าการค้นหาเพลง")  ;         
+                     return SingleChildScrollView(
+                        child: ListTile(
+                          
+                          title: Row(
+                            children: [                          
+                              Text(
+                                '${index + 1} ',
+                                style: TextStyle(
+                                  fontFamily: 'atma',
+                                  fontSize: 25,
+                                  color: Color(0xFFFF6B00),
+                                ),
+                              ),
+                              SizedBox(width: 20),
+                              Image.asset(
+                                song.albumArtImagePath,
+                                width: 50,
+                                height: 50,
+                                fit: BoxFit.cover,
+                              ),
+                              SizedBox(width: 8.0),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    song.songName,
+                                    style: TextStyle(
+                                      fontFamily: 'atma',
+                                      color: Color(0xFFFF6B00),
+                                    ),
+                                  ),
+                                  Text(
+                                    song.artistName,
+                                    style: TextStyle(
+                                      fontFamily: 'atma',
+                                      color: Color(0xFFFF6B00),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              
+                            ],
+                          ),
+                          
+                          trailing: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                song.isFavorite = !song.isFavorite;
+                                playlistProvider.updateFavoriteStatus(
+                                  index,
+                                  song.isFavorite,
+                                );
+                              });
+                            },
+                            child: Icon(
+                              song.isFavorite
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              color:
+                                  song.isFavorite ? Colors.red : Color(0xFFFF6B00),
+                            ),
+                          ),
+                          onTap: () {
+                             playlistProvider.currentSongIndex = index;
+                            print("index!! = ${index}");
+                            setState(() {
+                              // CurrentIndex = playlistProvider.currentSongIndex;
+                              CurrentSongName = song.songName ;
+                              CurrentIMage = song.albumArtImagePath ;
+                              print("indexxx ${CurrentIndex}");
+                              print("เพลง รูป = ${CurrentSongName + CurrentIMage}");
+                              print("เพลงต่อไปยัง ${playlistProvider.playNextSong}");
+                              print("เล่นอยู่มั้ยย ${playlistProvider.isPlaying}");
+                            });
+                            
+                          } ,                          
+                          
+                                      
+                                      
+                                      // subtitle: Text(song.artist),
+                              
+                              
+                                      
+                        ),
+                      );
+                    }
+
                     },
                   ),
                 ],
@@ -281,6 +377,11 @@ class _searchMusicState extends State<searchMusic> {
                             ),
                           ),
                         ),
+                        onChanged: (val){
+                          setState(() {
+                            songname = val ;
+                          });
+                        },
                       ),
                     ),
                   ),

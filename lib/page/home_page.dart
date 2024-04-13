@@ -30,13 +30,13 @@ class _HomeState extends State<Home> {
         body: PageView(
           controller: _pageControlller,
           children: const <Widget>[
-            // StreamingPage(),
+            StreamingPage(),
             // ChatOnlinePage(),
             MyProfile(),
             searchMusic(),
-            // Login(),
+            Login(),
             // Register(),
-            // FavoriteSong()
+            FavoriteSong()
         
             // ProfilePage(),
           ],

@@ -5,6 +5,7 @@
 import 'package:chatmusicapp/page/streaming.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:flutter/material.dart';
 // import 'package:get/get.dart';
@@ -39,10 +40,34 @@ class _MyProfileState extends State<MyProfile> {
               child: Text(
                   'No documents available')); // Handle case when there are no documents
         }
-        var imageUrl =
-            documents[0]['imageProfile']; // Accessing 'docs' after null check
+        // if (!(snapshot.data is QuerySnapshot<Map<String, dynamic>>)) {
+        //   return Center(
+        //       child:
+        //           Text('เข้าแล้วจ้า'));
+        //     }
+        // User? user = FirebaseAuth.instance.currentUser;
+        Reference profileImageRef = FirebaseStorage.instance.ref().child('ProfileImage');
+        // var imageUrl = documents['userProfile']['imageProfile']; 
+        print("Imageeeee = ${profileImageRef}"); // Accessing 'docs' after null check
+        print("Profile = มาจ้าาา ${snapshot.data}");
+        
 
-        // Display image
+// สร้าง Future สำหรับการเรียก getDownloadURL()
+Future<String> imageUrlFuture = profileImageRef.getDownloadURL();
+
+return FutureBuilder<String>(
+  future: imageUrlFuture,
+  builder: (context, snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      // ในระหว่างการโหลด URL ของรูปภาพ
+      return CircularProgressIndicator();
+    } else if (snapshot.hasError) {
+      // กรณีเกิดข้อผิดพลาดในการโหลด URL ของรูปภาพ
+      return Text('Error: ${snapshot.error}');
+    } else {
+      // กรณีที่สามารถโหลด URL ของรูปภาพได้
+      String imageUrl = snapshot.data!;
+              // Display image
         return Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
           appBar: AppBar(
@@ -69,7 +94,7 @@ class _MyProfileState extends State<MyProfile> {
                 Container(
                   padding: EdgeInsets.symmetric(vertical: 20),
                   child: Text(
-                    auth.currentUser?.email ?? '',
+                    auth.currentUser != null ? auth.currentUser!.email ?? '' : 'Not logged in',
                     style: TextStyle(
                       fontFamily: 'Inter',
                       fontWeight: FontWeight.bold,
@@ -79,13 +104,19 @@ class _MyProfileState extends State<MyProfile> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    auth.signOut().then((value) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => StreamingPage()),
+                    if (auth.currentUser != null) {
+                      auth.signOut().then((value) {
+                         Navigator.of(context).pop(context);
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(builder: (context) => StreamingPage()),
+                        // );
+                      });
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('You are not logged in!')),
                       );
-                      // Navigator.pushNamedAndRemoveUntil(context, '/streaming', (route) => false);
-                    });
+                    }
                   },
                   child: Transform.rotate(
                     angle: 3.14,
@@ -111,6 +142,16 @@ class _MyProfileState extends State<MyProfile> {
             ),
           ),
         );
+      // ใช้ URL ของรูปภาพใน NetworkImage
+      return CircleAvatar(
+        backgroundImage: NetworkImage(imageUrl),
+        radius: 80,
+      );
+    }
+  },
+);
+
+
         ;
       },
     );

@@ -5,6 +5,7 @@ import 'package:chatmusicapp/models/song.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 // import 'package:chatmusic/models/song.dart';
 
 class PlaylistProvider extends ChangeNotifier {
@@ -30,21 +31,41 @@ class PlaylistProvider extends ChangeNotifier {
         songName: "เผื่อเธอจะกลับมา",
         artistName: "guncharlie ",
         albumArtImagePath: "assets/image/meee.png",
-        audioPath: "audio/song1.mp3"),
+        audioPath: "audio/song1.mp3",
+        isFavorite: false),
     //song2
     Song(
         songName: "กันตรึมสกา",
         artistName: "guncharlie2 ",
         albumArtImagePath: "assets/image/ยิ่งยง.jpg",
-        audioPath: "audio/กันตึมสกา.mp3"),
+        audioPath: "audio/กันตึมสกา.mp3",
+        isFavorite: false),
     //song3
     Song(
         songName: "SHEESH",
         artistName: "babymonster ",
         albumArtImagePath: "assets/image/babymonster.jpg",
-        audioPath: "audio/SHEESH.mp3")
+        audioPath: "audio/SHEESH.mp3",
+        isFavorite: false)
   ];
 
+    addData() async {
+    for (var element in playlist) {
+  // แปลงอ็อบเจกต์ Song เป็น Map<String, dynamic>
+  Map<String, dynamic> songData = {
+    'songName': element.songName,
+    'artistName': element.artistName,
+    'albumArtImagePath': element.albumArtImagePath,
+    'audioPath': element.audioPath,
+    'isFavorite': element.isFavorite,
+    // เพิ่มข้อมูลอื่น ๆ ตามต้องการ
+  };
+
+  // เพิ่มข้อมูลลงในคอลเล็กชันของ Firestore
+  FirebaseFirestore.instance.collection('Playlist').add(songData);
+}
+    print('all data added');
+  }
 
 
 // Future<void> initialize() async {
@@ -77,7 +98,7 @@ class PlaylistProvider extends ChangeNotifier {
 // }
 
   // initially not playing
-
+  
   bool _isPlaying = false;
   // play song
   void play() async{
@@ -178,6 +199,7 @@ class PlaylistProvider extends ChangeNotifier {
       play();
     }
   }
+
 
   // dispose
   List<Song> get playlist => _playlist;

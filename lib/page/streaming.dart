@@ -1,16 +1,9 @@
-// import 'package:chatmusic/components/neu_box.dart';
-
-// import 'package:chatmusic/models/playlist_provider.dart';
-// import 'package:chatmusic/models/song.dart';
-// import 'package:chatmusic/pages/chatOnline.dart';
-// import 'package:chatmusic/pages/login.dart';
 import 'package:chatmusicapp/models/playlist_provider.dart';
 import 'package:chatmusicapp/models/song.dart';
 import 'package:chatmusicapp/page/chatOnline.dart';
 import 'package:chatmusicapp/page/login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 // import 'package:chatmusic/pages/SearchMusic.dart';
@@ -31,6 +24,7 @@ class _StreamingPageState extends State<StreamingPage> {
 
     return formatTime;
   }
+
   late PlaylistProvider _playlistProvider;
 
   // @override
@@ -40,11 +34,8 @@ class _StreamingPageState extends State<StreamingPage> {
     _playlistProvider.shuffleAndPlay();
   }
 
-
   @override
   Widget build(BuildContext context) {
-
-
     return StreamBuilder(
         stream:
             FirebaseFirestore.instance.collection('userProfile').snapshots(),
@@ -55,18 +46,13 @@ class _StreamingPageState extends State<StreamingPage> {
           if (!snapshot.hasData || snapshot.data == null) {
             return Consumer<PlaylistProvider>(
                 builder: ((context, value, child) {
-              // final playlistProvider = Provider.of<PlaylistProvider>(context);
-              // List<Song> playlist = playlistProvider.playlist;
               final playlist = value.playlist;
               if (playlist.isEmpty) {
                 return Center(child: Text('No songs available'));
               }
               //gey playlist
-              print("value = ${snapshot}");
-              print("playlistt = ${playlist}");
-              print("playlists = ${value.playlist}");
+       
               final currentSong = playlist[value.currentSongIndex ?? 0];
-              // User? user = FirebaseAuth.instance.currentUser;
               return Scaffold(
                   backgroundColor: Theme.of(context).colorScheme.background,
                   body: SingleChildScrollView(
@@ -105,7 +91,7 @@ class _StreamingPageState extends State<StreamingPage> {
                                       ),
                                     ),
                                     SizedBox(height: 30),
-                    
+
                                     //ยังไม่ได้เพิ่มกรอบให้รูป
                                     Container(
                                       decoration: BoxDecoration(
@@ -178,8 +164,8 @@ class _StreamingPageState extends State<StreamingPage> {
                                         onChanged: (double double) {},
                                         onChangeEnd: (double double) {
                                           // slider finfish, go to position in song duration
-                                          value.seek(
-                                              Duration(seconds: double.toInt()));
+                                          value.seek(Duration(
+                                              seconds: double.toInt()));
                                         },
                                       ),
                                     )
@@ -188,19 +174,21 @@ class _StreamingPageState extends State<StreamingPage> {
                   ));
             }));
           }
+          // Accessing 'docs' after null check
           var documents = snapshot.data!.docs;
+          var imageUrl = documents[0]['imageProfile'];
+          print("Imageeeee = ${imageUrl}");
           if (documents.isEmpty) {
             return Center(child: Text('No documents available'));
           }
           return Consumer<PlaylistProvider>(builder: ((context, value, child) {
             //get playlist
-            
+
             List<Song> playlist = value.playlist;
             // List<Song> playlist = playlistProvider.playlist;
-            print("playlistt = ${playlist}");
-            print("playlist = ${value.playlist}");
             final currentSong = playlist[value.currentSongIndex ?? 0];
             User? user = FirebaseAuth.instance.currentUser;
+            print("USERR = ${user}");
 
             return Scaffold(
               backgroundColor: Theme.of(context).colorScheme.background,
@@ -221,7 +209,8 @@ class _StreamingPageState extends State<StreamingPage> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Center(
                                           child: Text(
@@ -239,7 +228,7 @@ class _StreamingPageState extends State<StreamingPage> {
                                 ),
                               ),
                               SizedBox(height: 30),
-                
+
                               //ยังไม่ได้เพิ่มกรอบให้รูป
                               Container(
                                 decoration: BoxDecoration(
@@ -304,14 +293,15 @@ class _StreamingPageState extends State<StreamingPage> {
                                 child: Slider(
                                   min: 0,
                                   max: value.totalDuration.inSeconds.toDouble(),
-                                  value:
-                                      value.currentDuration.inSeconds.toDouble(),
+                                  value: value.currentDuration.inSeconds
+                                      .toDouble(),
                                   activeColor: Color(0xFF733000),
                                   inactiveColor: Color(0xFFFF6B00), //
                                   onChanged: (double double) {},
                                   onChangeEnd: (double double) {
                                     // slider finfish, go to position in song duration
-                                    value.seek(Duration(seconds: double.toInt()));
+                                    value.seek(
+                                        Duration(seconds: double.toInt()));
                                   },
                                 ),
                               ),
@@ -346,20 +336,25 @@ class _StreamingPageState extends State<StreamingPage> {
                                     child: ElevatedButton(
                                         onPressed: () {
                                           if (user != null) {
-                                            Navigator.pushReplacement(
+                                            Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ChatOnlinePage(),
-                                              ),
+                                                  builder: (context) =>
+                                                      ChatOnlinePage()),
                                             );
+                                            // Navigator.pushReplacement(
+                                            //   context,
+                                            //   MaterialPageRoute(
+                                            //     builder: (context) =>
+                                            //         ChatOnlinePage(),
+                                            //   ),
+                                            // );
                                           } else {
-                                            Navigator.pushReplacement(
+                                            Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                builder: (context) =>
-                                                    Login(),
-                                              ),
+                                                  builder: (context) =>
+                                                      Login()),
                                             );
                                           }
                                         },
@@ -371,18 +366,20 @@ class _StreamingPageState extends State<StreamingPage> {
                                         child: Row(
                                           children: [
                                             CircleAvatar(
-                                                backgroundImage: AssetImage(""),
-                                                radius: 40),
+                                              backgroundImage:
+                                                  NetworkImage(imageUrl),
+                                              radius: 40,
+                                            ),
                                             SizedBox(width: 15),
                                             Column(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: [
                                                 Text(
-                                                  "Name",
+                                                  user != null ? user!.email ?? '' : 'Name',
                                                   style: TextStyle(
                                                     fontFamily: 'Inter',
-                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
                                                     color: Color(0xFFFF6B00),
                                                   ),
                                                 ),
