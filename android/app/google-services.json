@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "606246231273",
+    "project_id": "projectchatmusic-e4e0a",
+    "storage_bucket": "projectchatmusic-e4e0a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:606246231273:android:f13af94a8ecbf2e7722478",
+        "android_client_info": {
+          "package_name": "com.example.chatmusicapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8dMbKJJ_YLKd-3owFUMsfoON2n9DrBck"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
