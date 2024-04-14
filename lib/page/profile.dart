@@ -46,28 +46,44 @@ class _MyProfileState extends State<MyProfile> {
         //           Text('เข้าแล้วจ้า'));
         //     }
         // User? user = FirebaseAuth.instance.currentUser;
-        Reference profileImageRef = FirebaseStorage.instance.ref().child('ProfileImage');
-        // var imageUrl = documents['userProfile']['imageProfile']; 
-        print("Imageeeee = ${profileImageRef}"); // Accessing 'docs' after null check
-        print("Profile = มาจ้าาา ${snapshot.data}");
+        // Reference profileImageRef = FirebaseStorage.instance.ref().child('id');
+        // // var imageUrl = documents['userProfile']['imageProfile']; 
+        // print("Imageeeee = ${profileImageRef}"); // Accessing 'docs' after null check
+        // print("Profile = มาจ้าาา ${snapshot.data}");
         
 
 // สร้าง Future สำหรับการเรียก getDownloadURL()
-Future<String> imageUrlFuture = profileImageRef.getDownloadURL();
+// Future<String> imageUrlFuture = profileImageRef.getDownloadURL();
 
-return FutureBuilder<String>(
-  future: imageUrlFuture,
-  builder: (context, snapshot) {
-    if (snapshot.connectionState == ConnectionState.waiting) {
-      // ในระหว่างการโหลด URL ของรูปภาพ
-      return CircularProgressIndicator();
-    } else if (snapshot.hasError) {
-      // กรณีเกิดข้อผิดพลาดในการโหลด URL ของรูปภาพ
-      return Text('Error: ${snapshot.error}');
-    } else {
-      // กรณีที่สามารถโหลด URL ของรูปภาพได้
-      String imageUrl = snapshot.data!;
-              // Display image
+      Map<String, String> emailImageMap = {};
+      for (var document in snapshot.data!.docs) {
+        var email = document['username'];
+        var imageUrl = document['imageProfile'];
+        emailImageMap[email] = imageUrl;
+      }
+      print("emailรูปภาพ ${emailImageMap}");
+      var email = auth.currentUser?.email; 
+      var imageUrl = emailImageMap[email]; 
+      print("imagee ${imageUrl}");
+//       return ListView.builder(
+//       itemCount: emailImageMap.length,
+//       itemBuilder: (context, index) {
+//     var email = emailImageMap.keys.toList()[index];
+//     print("emailจ้า = ${email}");
+//     var imageUrl = emailImageMap[email];
+//     if(imageUrl != null){
+//           return ListTile(
+//       leading: CircleAvatar(
+//         backgroundImage: NetworkImage(imageUrl),
+//         radius: 20,
+//       ),
+//       title: Text(email),
+//     );
+//     }
+
+//   },
+// );
+
         return Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
           appBar: AppBar(
@@ -87,14 +103,15 @@ return FutureBuilder<String>(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                
                 CircleAvatar(
-                  backgroundImage: NetworkImage(imageUrl),
+                  backgroundImage: imageUrl != null ? NetworkImage(imageUrl) : null,
                   radius: 80,
                 ),
                 Container(
                   padding: EdgeInsets.symmetric(vertical: 20),
                   child: Text(
-                    auth.currentUser != null ? auth.currentUser!.email ?? '' : 'Not logged in',
+                    auth.currentUser?.email ?? '',
                     style: TextStyle(
                       fontFamily: 'Inter',
                       fontWeight: FontWeight.bold,
@@ -104,19 +121,13 @@ return FutureBuilder<String>(
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    if (auth.currentUser != null) {
-                      auth.signOut().then((value) {
-                         Navigator.of(context).pop(context);
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(builder: (context) => StreamingPage()),
-                        // );
-                      });
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('You are not logged in!')),
+                    auth.signOut().then((value) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => StreamingPage()),
                       );
-                    }
+                      // Navigator.pushNamedAndRemoveUntil(context, '/streaming', (route) => false);
+                    });
                   },
                   child: Transform.rotate(
                     angle: 3.14,
@@ -142,17 +153,9 @@ return FutureBuilder<String>(
             ),
           ),
         );
-      // ใช้ URL ของรูปภาพใน NetworkImage
-      return CircleAvatar(
-        backgroundImage: NetworkImage(imageUrl),
-        radius: 80,
-      );
-    }
-  },
-);
 
 
-        ;
+        
       },
     );
   }

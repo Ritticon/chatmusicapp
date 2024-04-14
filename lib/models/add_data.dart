@@ -26,7 +26,7 @@ class StoreData{
       try{
         print("เข้า tryyyy");
         if(username.isNotEmpty || password.isNotEmpty){
-                  String imageUrl = await uploadImageToStorage("ProfileImage", file);
+        String imageUrl = await uploadImageToStorage("ProfileImage", file);
         await _firestore.collection('userProfile').add({
           'username' : username,
           'password' : password,
