@@ -2,6 +2,7 @@
 // import 'package:chatmusic/pages/searchMusic.dart';
 // import 'package:chatmusic/pages/setting.dart';
 // import 'package:chatmusic/pages/streaming.dart';
+import 'package:chatmusicapp/page/home_page.dart';
 import 'package:chatmusicapp/page/streaming.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -10,6 +11,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 // import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:go_router/go_router.dart';
 
 class MyProfile extends StatefulWidget {
   const MyProfile({super.key});
@@ -65,24 +67,6 @@ class _MyProfileState extends State<MyProfile> {
       var email = auth.currentUser?.email; 
       var imageUrl = emailImageMap[email]; 
       print("imagee ${imageUrl}");
-//       return ListView.builder(
-//       itemCount: emailImageMap.length,
-//       itemBuilder: (context, index) {
-//     var email = emailImageMap.keys.toList()[index];
-//     print("emailจ้า = ${email}");
-//     var imageUrl = emailImageMap[email];
-//     if(imageUrl != null){
-//           return ListTile(
-//       leading: CircleAvatar(
-//         backgroundImage: NetworkImage(imageUrl),
-//         radius: 20,
-//       ),
-//       title: Text(email),
-//     );
-//     }
-
-//   },
-// );
 
         return Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
@@ -104,10 +88,10 @@ class _MyProfileState extends State<MyProfile> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 
-                CircleAvatar(
-                  backgroundImage: imageUrl != null ? NetworkImage(imageUrl) : null,
-                  radius: 80,
-                ),
+              CircleAvatar(
+                backgroundImage: imageUrl != null ? NetworkImage(imageUrl) : AssetImage('assets/image/profile.jpg') as ImageProvider<Object>?,
+                radius: 80,
+              ),
                 Container(
                   padding: EdgeInsets.symmetric(vertical: 20),
                   child: Text(
@@ -122,10 +106,10 @@ class _MyProfileState extends State<MyProfile> {
                 ElevatedButton(
                   onPressed: () {
                     auth.signOut().then((value) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => StreamingPage()),
-                      );
+                      //  StreamingPage();
+                      // Home();
+                      GoRouter.of(context).push('/streaming');
+                    //  Navigator.pushNamed(context, '/streaming'); 
                       // Navigator.pushNamedAndRemoveUntil(context, '/streaming', (route) => false);
                     });
                   },

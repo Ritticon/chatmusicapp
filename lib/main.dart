@@ -1,21 +1,5 @@
 
 import 'dart:io';
-
-// import 'package:chatmusic/firebase_options.dart';
-// import 'package:chatmusic/models/playlist_provider.dart';
-// import 'package:chatmusic/page/chatOnline.dart';
-// import 'package:chatmusic/page/favoriteSong.dart';
-// import 'package:chatmusic/page/home_page.dart';
-// import 'package:chatmusic/page/login.dart';
-// import 'package:chatmusic/page/popupSongPage.dart';
-// import 'package:chatmusic/page/profile.dart';
-// import 'package:chatmusic/page/register.dart';
-// import 'package:chatmusic/page/searchMusic.dart';
-// import 'package:chatmusic/page/setting.dart';
-
-// import 'package:chatmusic/page/streaming.dart';
-
-// import 'package:chatmusic/themes/theme_provider.dart';
 import 'package:chatmusicapp/firebase_options.dart';
 import 'package:chatmusicapp/models/playlist_provider.dart';
 import 'package:chatmusicapp/page/chatOnline.dart';
@@ -180,6 +164,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       routerConfig: _router,
+
 
       // routes: {
       //   '/streaming':(context) => const StreamingPage(),

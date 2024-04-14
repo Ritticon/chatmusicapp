@@ -240,8 +240,6 @@ class _StreamingPageState extends State<StreamingPage> {
                                   borderRadius: BorderRadius.circular(10),
                                   child: Image.asset(
                                     currentSong.albumArtImagePath,
-                                    // width: 300,
-                                    // height: 200,
                                   ),
                                 ),
                               ),
@@ -333,11 +331,14 @@ class _StreamingPageState extends State<StreamingPage> {
                                       ),
                                     ],
                                   ),
+                                  
                                   child: SizedBox(
                                     child: ElevatedButton(
                                         onPressed: () {
                                           if (user != null) {
-                                            context.go('/chat');
+                                            ChatOnlinePage();
+                                            // GoRouter.of(context).pushReplacement('/chat');
+                                            //  Navigator.pushNamed(context, '/chat');
                                             // Navigator.push(
                                             //   context,
                                             //   MaterialPageRoute(
@@ -366,6 +367,7 @@ class _StreamingPageState extends State<StreamingPage> {
                                               .colorScheme
                                               .secondary,
                                         ),
+                                        
                                         child: Row(
                                           children: [
                                             CircleAvatar(
@@ -397,7 +399,9 @@ class _StreamingPageState extends State<StreamingPage> {
                                               ],
                                             ),
                                           ],
-                                        )),
+                                        )
+                                        ),
+                                        
                                   )),
                             ],
                           ),

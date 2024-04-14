@@ -3,10 +3,13 @@ import 'dart:io';
 import 'package:chatmusicapp/models/profile.dart';
 import 'package:chatmusicapp/page/chatOnline.dart';
 import 'package:chatmusicapp/page/profile.dart';
+import 'package:chatmusicapp/page/register.dart';
+import 'package:chatmusicapp/page/streaming.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -27,17 +30,18 @@ class _LoginState extends State<Login> {
   void initState() {
     super.initState();
     profile = Profile(email: '', password: '', image: '');
+    // notifyListeners();
   }
 
   // Uint8List? _image;
   // File? selectedImage;
   // String _password = '';
   // String _confirmPassword = '';
-
-  final Future<FirebaseApp> firebase = Firebase.initializeApp();
+  
+  final  firebase = Firebase.initializeApp();
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
+    return FutureBuilder<FirebaseApp>(
         future: firebase,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
@@ -222,16 +226,23 @@ class _LoginState extends State<Login> {
                                                               profile.password)
                                                       .then((value) {
                                                     formkey.currentState!.reset();
+                                                    // return StreamingPage();
                                                     // Navigator.of(context).pop(context);
+                                                    // notifyListeners();
                                                     // Navigator.push(
                                                     //   context,
                                                     //   MaterialPageRoute(
                                                     //       builder: (context) =>
                                                     //           ChatOnlinePage()),
                                                     // );
-                                                    Navigator.pushNamedAndRemoveUntil(context, '/chat',
-                                                    ModalRoute.withName('/chat'));
-                                                    // Navigator.push(context, MaterialPageRoute(builder: (context)=> MyProfile()));
+                                                        // Navigator.pushReplacement(
+                                                        //   context,
+                                                        //   MaterialPageRoute(builder: (context) => StreamingPage()),
+                                                        // );
+                                                    //  context.go('/chat');                                             // Navigator.pushNamedAndRemoveUntil(context, '/chat',
+                                                    // ModalRoute.withName('/chat'));
+                                                    Navigator.push(context, 
+                                                      MaterialPageRoute(builder: (context)=> StreamingPage()));
                                                   });
                               
                                                 } on FirebaseAuthException catch (e) {
@@ -297,11 +308,12 @@ class _LoginState extends State<Login> {
                                       child: SizedBox(
                                         child: ElevatedButton(
                                             onPressed: () {
-                                              Navigator.pushNamedAndRemoveUntil(
-                                                  context,
-                                                  '/register',
-                                                  ModalRoute.withName(
-                                                      '/register'));
+                                               Navigator.push(context, MaterialPageRoute(builder: (context)=> Register()));
+                                              // Navigator.pushNamedAndRemoveUntil(
+                                              //     context,
+                                              //     '/register',
+                                              //     ModalRoute.withName(
+                                              //         '/register'));
                                             },
                                             style: ElevatedButton.styleFrom(
                                               backgroundColor: Theme.of(context)

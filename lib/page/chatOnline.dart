@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:go_router/go_router.dart';
 
 class ChatOnlinePage extends StatefulWidget {
   const ChatOnlinePage({super.key});
@@ -32,11 +33,21 @@ class _ChatOnlinePageState extends State<ChatOnlinePage> {
 
 String imageUrl = '';
 
-Future<void> fetchUserProfileImage() async {
+void fetchUserProfileImage() async {
   QuerySnapshot querySnapshot = await _firestore.collection('userProfile').where('email').get();
   
   if (querySnapshot.docs.isNotEmpty) {
-    imageUrl = querySnapshot.docs[0]['imageProfile']; 
+        Map<String, String> emailImageMap = {};
+      for (var document in querySnapshot.docs) {
+        var email = document['username'];
+        var imageUrl = document['imageProfile'];
+        emailImageMap[email] = imageUrl;
+      }
+      print("emailรูปภาพ ${emailImageMap}");
+      var email = _auth.currentUser?.email; 
+      var imageUrl = emailImageMap[email]; 
+      print("imagee ${imageUrl}");
+
     print("imagee = ${imageUrl}");
   } else {
     print('No user profile found for this email');
@@ -47,18 +58,29 @@ Future<void> fetchUserProfileImage() async {
     return StreamBuilder<QuerySnapshot>(
   stream: FirebaseFirestore.instance.collection('Message').orderBy('timestamp', descending: true).snapshots(),
   builder: (context, snapshot) {
-    // if (snapshot.hasError) {
-    //   return Text("Error: ${snapshot.error}");
-    // }
+    if (snapshot.hasError) {
+        print("เข้าhaserror ");
+        // context.go('/login');
+    }
+    print("snapdata = ${snapshot.data}");
     if (snapshot.connectionState == ConnectionState.waiting) {
       return CircularProgressIndicator();
     }
-    if (snapshot.data == null ) {
-       Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Login()),
-                      );
+    if (!snapshot.hasData ) {
+      print("เข้าhasdata ");
+      //  context.go('/login');
     }
+    if (_auth.currentUser == null) {
+      print("เข้าาจ้า ");
+      return Login();
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //       builder: (context) =>
+      //           Login()),
+      // );
+      // context.go('/login');
+  }
     var messages = snapshot.data!.docs;
      return Scaffold(
        body: Column(

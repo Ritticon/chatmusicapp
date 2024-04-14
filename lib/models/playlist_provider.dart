@@ -46,7 +46,50 @@ class PlaylistProvider extends ChangeNotifier {
         artistName: "babymonster ",
         albumArtImagePath: "assets/image/babymonster.jpg",
         audioPath: "audio/SHEESH.mp3",
-        isFavorite: false)
+        isFavorite: false),
+        //song4
+    Song(
+        songName: "TwoGhosts",
+        artistName: "Harry Styles ",
+        albumArtImagePath: "assets/image/twoghosts.jpg",
+        audioPath: "audio/TwoGhosts.mp3",
+        isFavorite: false),
+        //song5
+    // Song(
+    //     songName: " Nothing's Gonna Change My Love For You",
+    //     artistName: "Music Travel Love ft.Bugoy Drilon",
+    //     albumArtImagePath: "assets/image/MusicTravelLove.jpg",
+    //     audioPath: "audio/Nothing'sGonnaChange.mp3",
+    //     isFavorite: false),
+        //song6
+    Song(
+        songName: "Don't Look Back In Anger",
+        artistName: "oasis",
+        albumArtImagePath: "assets/image/oasis.jpg",
+        audioPath: "audio/Don'tLookBackInAnger.mp3",
+        isFavorite: false),
+        //song7
+    Song(
+        songName: "Until Then ถ้าเราเจอกันอีก",
+        artistName: "tilly birds",
+        albumArtImagePath: "assets/image/tillybirds.jpg",
+        audioPath: "audio/UntilThen.mp3",
+        isFavorite: false),
+         //song8
+    Song(
+        songName: "Wish",
+        artistName: "Blackbeans",
+        albumArtImagePath: "assets/image/blackbeans.jpg",
+        audioPath: "audio/Wish.mp3",
+        isFavorite: false),
+        //song3
+    Song(
+        songName: "Dance With Me ",
+        artistName: "Blackbeans",
+        albumArtImagePath: "assets/image/danceWithme.jpg",
+        audioPath: "audio/DanceWithMe.mp3",
+        isFavorite: false),
+      
   ];
 
     addData() async {

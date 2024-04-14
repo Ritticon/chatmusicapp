@@ -92,7 +92,7 @@ class _RegisterState extends State<Register> {
                                 : const CircleAvatar(
                                     radius: 80,
                                     backgroundImage:
-                                        AssetImage("assets/image/meee.png"),
+                                        AssetImage("assets/image/profile.png"),
                                   ),
                             Positioned(
                               bottom: 20,
