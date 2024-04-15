@@ -80,11 +80,12 @@ class _HomeState extends State<Home> {
           children: const <Widget>[
             StreamingPage(),
             ChatOnlinePage(),
-            MyProfile(),
+            
             searchMusic(),
             // Login(),
             // Register(),
-            FavoriteSong()
+            FavoriteSong(),
+            MyProfile()
         
             // ProfilePage(),
           ],

@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:marquee_widget/marquee_widget.dart';
 
 class searchMusic extends StatefulWidget {
-  const searchMusic({super.key});
+  const searchMusic({Key? key}) : super(key: key);
   @override
   State<searchMusic> createState() => _searchMusicState();
 }
@@ -45,307 +45,230 @@ class _searchMusicState extends State<searchMusic> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Consumer<PlaylistProvider>(builder: (context, value, child) {
-                final List<Song> playlist = value.playlist;
-                final currentSong = playlist[value.currentSongIndex ?? 0];
-                return GestureDetector(
-                  onTap: (){
-                    goToSong(playlist.indexOf(currentSong));
-                  },
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 80,
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.secondary,
-                          borderRadius: BorderRadius.only(
-                            // topLeft: Radius.circular(20),
-                            bottomLeft: Radius.circular(20),
-                            bottomRight: Radius.circular(20),
-                          ),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.only(bottom: 8, left: 10, right: 8),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Container(
-                                  height: 50,
-                                  width: 50,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(16.0),
-                                      image: DecorationImage(
-                                        image: AssetImage(
-                                          currentSong.albumArtImagePath,
-                                        ),
-                                        fit: BoxFit.cover,
-                                      )),
-                                ),
-                                SizedBox(width: 13),
-                                Text(
-                                  currentSong.songName,
-                                  style: TextStyle(
-                                    fontFamily: 'atma',
-                                    fontSize: 20,
-                                    color: Color(0xFFFF6B00),
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: value.pauseOrResume,
-                                  child: Container(
-                                      child: Icon(
-                                    playlistProvider.isPlaying
-                                        ? Icons.pause
-                                        : Icons.play_arrow,
-                                    color: Color(0xFFFF6B00),
-                                    size: 40,
-                                  )),
-                                ),
-                                GestureDetector(
-                                  onTap: value.playNextSong,
-                                  child: Container(
-                                      child: Icon(
-                                    Icons.skip_next,
-                                    color: Color(0xFFFF6B00),
-                                    size: 40,
-                                  )),
-                                ),
-                              ]),
-                        ),
-                      ),
-                      Text(
-                        'Search List',
-                        style: TextStyle(
-                          fontFamily: 'atma',
-                          fontSize: 32,
-                          color: Color(0xFFFF6B00),
-                        ),
-                      ),
-                      SingleChildScrollView(
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: playlist.length,
-                          itemBuilder: (context, index) {
-                            //get individual
-                            final Song song = playlist[index];
-                            // print("isFav = ${song}");
-                            if (songname.isEmpty) {
-                              //return list tile UI
-                              return SingleChildScrollView(
-                                child: ListTile(
-                                  title: Row(
-                                    children: [
-                                      Text(
-                                        '${index + 1} ',
-                                        style: TextStyle(
-                                          fontFamily: 'atma',
-                                          fontSize: 25,
-                                          color: Color(0xFFFF6B00),
-                                        ),
-                                      ),
-                                      SizedBox(width: 20),
-                                      Image.asset(
-                                        song.albumArtImagePath,
-                                        width: 50,
-                                        height: 50,
-                                        fit: BoxFit.cover,
-                                      ),
-                                      SizedBox(width: 8.0),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            song.songName,
-                                            style: TextStyle(
-                                              fontFamily: 'atma',
-                                              color: Color(0xFFFF6B00),
-                                            ),
-                                          ),
-                                          Text(
-                                            song.artistName,
-                                            style: TextStyle(
-                                              fontFamily: 'atma',
-                                              color: Color(0xFFFF6B00),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                  trailing: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        song.isFavorite = !song.isFavorite;
-                                        playlistProvider.updateFavoriteStatus(
-                                          index,
-                                          song.isFavorite,
-                                        );
-                                      });
-                                    },
-                                    child: Icon(
-                                      song.isFavorite
-                                          ? Icons.favorite
-                                          : Icons.favorite_border,
-                                      color: song.isFavorite
-                                          ? Colors.red
-                                          : Color(0xFFFF6B00),
-                                    ),
-                                  ),
-                                  onTap: () {
-                                    playlistProvider.currentSongIndex = index;
-                                    print("index!! = ${index}");
-                                    setState(() {
-                                      CurrentSongName = song.songName;
-                                      CurrentIMage = song.albumArtImagePath;
-                                    });
-                                  },
-                                ),
-                              );
-                            }
-                            if (song.songName
-                                .toString()
-                                .toLowerCase()
-                                .contains(songname.toLowerCase())) {
-                              print("เข้าการค้นหาเพลง");
-                              return SingleChildScrollView(
-                                child: ListTile(
-                                  title: Row(
-                                    children: [
-                                      SizedBox(width: 20),
-                                      Image.asset(
-                                        song.albumArtImagePath,
-                                        width: 50,
-                                        height: 50,
-                                        fit: BoxFit.cover,
-                                      ),
-                                      SizedBox(width: 8.0),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            song.songName,
-                                            style: TextStyle(
-                                              fontFamily: 'atma',
-                                              color: Color(0xFFFF6B00),
-                                            ),
-                                          ),
-                                          Text(
-                                            song.artistName,
-                                            style: TextStyle(
-                                              fontFamily: 'atma',
-                                              color: Color(0xFFFF6B00),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                  trailing: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        song.isFavorite = !song.isFavorite;
-                                        playlistProvider.updateFavoriteStatus(
-                                          index,
-                                          song.isFavorite,
-                                        );
-                                      });
-                                    },
-                                    child: Icon(
-                                      song.isFavorite
-                                          ? Icons.favorite
-                                          : Icons.favorite_border,
-                                      color: song.isFavorite
-                                          ? Colors.red
-                                          : Color(0xFFFF6B00),
-                                    ),
-                                  ),
-                                  onTap: () {
-                                    playlistProvider.currentSongIndex = index;
-                                    print("index!! = ${index}");
-                                    setState(() {
-                                      CurrentSongName = song.songName;
-                                      CurrentIMage = song.albumArtImagePath;
-                                    });
-                                  },
-                                ),
-                              );
-                            }
-                            return Container();
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              }),
-              Row(
-                children: [
-                  Expanded(
-                    child: Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Consumer<PlaylistProvider>(builder: (context, value, child) {
+              final List<Song> playlist = value.playlist;
+              final currentSong = playlist[value.currentSongIndex ?? 0];
+              return GestureDetector(
+                onTap: (){
+                  goToSong(playlist.indexOf(currentSong));
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: 80,
+                      width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black,
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: Offset(0, 5),
-                          ),
-                        ],
+                        color: Theme.of(context).colorScheme.secondary,
+                        borderRadius: BorderRadius.only(
+                          // topLeft: Radius.circular(20),
+                          bottomLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
+                        ),
                       ),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide: BorderSide.none,
-                          ),
-                          filled: true,
-                          fillColor: Theme.of(context).colorScheme.secondary,
-                          contentPadding: const EdgeInsets.all(6),
-                          hintText: 'Search',
-                          hintStyle: const TextStyle(
-                            fontFamily: 'Inter',
-                            color: Color(0xFFFF6B00),
-                            fontSize: 14,
-                          ),
-                          prefixIcon: IconButton(
-                            onPressed: () {},
-                            icon: Icon(
-                              Icons.search,
-                              size: 20,
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: 8, left: 10, right: 8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16.0),
+                                image: DecorationImage(
+                                  image: AssetImage(
+                                    currentSong.albumArtImagePath,
+                                  ),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 13),
+                            Text(
+                              currentSong.songName,
+                              style: TextStyle(
+                                fontFamily: 'atma',
+                                fontSize: 20,
+                                color: Color(0xFFFF6B00),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: value.pauseOrResume,
+                              child: Container(
+                                child: Icon(
+                                  playlistProvider.isPlaying
+                                      ? Icons.pause
+                                      : Icons.play_arrow,
+                                  color: Color(0xFFFF6B00),
+                                  size: 40,
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: value.playNextSong,
+                              child: Container(
+                                child: Icon(
+                                  Icons.skip_next,
+                                  color: Color(0xFFFF6B00),
+                                  size: 40,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Text(
+                      'Search List',
+                      style: TextStyle(
+                        fontFamily: 'atma',
+                        fontSize: 32,
+                        color: Color(0xFFFF6B00),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }),
+            Expanded(
+              child: ListView.builder(
+                itemCount: playlistProvider.playlist.length, // แก้ไขตรงนี้
+                itemBuilder: (context, index) {
+                  final Song song = playlistProvider.playlist[index]; // แก้ไขตรงนี้
+                  if (songname.isEmpty || song.songName.toLowerCase().contains(songname.toLowerCase())) {
+                    return ListTile(
+                      title: Row(
+                        children: [
+                          Text(
+                            '${index + 1} ',
+                            style: TextStyle(
+                              fontFamily: 'atma',
+                              fontSize: 25,
                               color: Color(0xFFFF6B00),
                             ),
                           ),
-                        ),
-                        onChanged: (val) {
+                          SizedBox(width: 20),
+                          Image.asset(
+                            song.albumArtImagePath,
+                            width: 50,
+                            height: 50,
+                            fit: BoxFit.cover,
+                          ),
+                          SizedBox(width: 8.0),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                song.songName,
+                                style: TextStyle(
+                                  fontFamily: 'atma',
+                                  color: Color(0xFFFF6B00),
+                                ),
+                              ),
+                              Text(
+                                song.artistName,
+                                style: TextStyle(
+                                  fontFamily: 'atma',
+                                  color: Color(0xFFFF6B00),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      trailing: GestureDetector(
+                        onTap: () {
                           setState(() {
-                            songname = val;
+                            song.isFavorite = !song.isFavorite;
+                            playlistProvider.updateFavoriteStatus(
+                              index,
+                              song.isFavorite,
+                            );
                           });
                         },
+                        child: Icon(
+                          song.isFavorite
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                          color: song.isFavorite
+                              ? Colors.red
+                              : Color(0xFFFF6B00),
+                        ),
                       ),
+                      onTap: () {
+                        playlistProvider.currentSongIndex = index;
+                        print("index!! = ${index}");
+                        setState(() {
+                          CurrentSongName = song.songName;
+                          CurrentIMage = song.albumArtImagePath;
+                        });
+                      },
+                    );
+                  }
+                  return Container();
+                },
+              ),
+            ),
+            // Row ที่มีช่องค้นหาและปุ่มส่ง
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black,
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 5),
+                        ),
+                      ],
+                    ),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide.none,
+                        ),
+                        filled: true,
+                        fillColor: Theme.of(context).colorScheme.secondary,
+                        contentPadding: const EdgeInsets.all(6),
+                        hintText: 'Search',
+                        hintStyle: const TextStyle(
+                          fontFamily: 'Inter',
+                          color: Color(0xFFFF6B00),
+                          fontSize: 14,
+                        ),
+                        prefixIcon: IconButton(
+                          onPressed: () {},
+                          icon: Icon(
+                            Icons.search,
+                            size: 20,
+                            color: Color(0xFFFF6B00),
+                          ),
+                        ),
+                      ),
+                      onChanged: (val) {
+                        setState(() {
+                          songname = val;
+                        });
+                      },
                     ),
                   ),
-                  SizedBox(width: 8),
-                  Icon(
-                    Icons.send,
-                    color: Color(0xFFFF6B00),
-                  ),
-                ],
-              ),
-              // SizedBox(height: 20),
-              // SizedBox(
-              //   height: 20,
-              // )
-            ],
-          ),
+                ),
+                SizedBox(width: 8),
+                Icon(
+                  Icons.send,
+                  color: Color(0xFFFF6B00),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

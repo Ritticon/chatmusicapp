@@ -36,7 +36,8 @@ class _MyProfileState extends State<MyProfile> {
               child:
                   Text('No data available')); // Handle case when data is null
         }
-        var documents = snapshot.data!.docs; // Null check before accessing 'docs'
+        var documents =
+            snapshot.data!.docs; // Null check before accessing 'docs'
         if (documents.isEmpty) {
           return Center(
               child: Text(
@@ -49,24 +50,23 @@ class _MyProfileState extends State<MyProfile> {
         //     }
         // User? user = FirebaseAuth.instance.currentUser;
         // Reference profileImageRef = FirebaseStorage.instance.ref().child('id');
-        // // var imageUrl = documents['userProfile']['imageProfile']; 
+        // // var imageUrl = documents['userProfile']['imageProfile'];
         // print("Imageeeee = ${profileImageRef}"); // Accessing 'docs' after null check
         // print("Profile = มาจ้าาา ${snapshot.data}");
-        
 
 // สร้าง Future สำหรับการเรียก getDownloadURL()
 // Future<String> imageUrlFuture = profileImageRef.getDownloadURL();
 
-      Map<String, String> emailImageMap = {};
-      for (var document in snapshot.data!.docs) {
-        var email = document['username'];
-        var imageUrl = document['imageProfile'];
-        emailImageMap[email] = imageUrl;
-      }
-      print("emailรูปภาพ ${emailImageMap}");
-      var email = auth.currentUser?.email; 
-      var imageUrl = emailImageMap[email]; 
-      print("imagee ${imageUrl}");
+        Map<String, String> emailImageMap = {};
+        for (var document in snapshot.data!.docs) {
+          var email = document['username'];
+          var imageUrl = document['imageProfile'];
+          emailImageMap[email] = imageUrl;
+        }
+        print("emailรูปภาพ ${emailImageMap}");
+        var email = auth.currentUser?.email;
+        var imageUrl = emailImageMap[email];
+        print("imagee ${imageUrl}");
 
         return Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
@@ -87,11 +87,13 @@ class _MyProfileState extends State<MyProfile> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                
-              CircleAvatar(
-                backgroundImage: imageUrl != null ? NetworkImage(imageUrl) : AssetImage('assets/image/profile.jpg') as ImageProvider<Object>?,
-                radius: 80,
-              ),
+                CircleAvatar(
+                  backgroundImage: imageUrl != null
+                      ? NetworkImage(imageUrl)
+                      : AssetImage('assets/image/profile.jpg')
+                          as ImageProvider<Object>?,
+                  radius: 80,
+                ),
                 Container(
                   padding: EdgeInsets.symmetric(vertical: 20),
                   child: Text(
@@ -109,7 +111,7 @@ class _MyProfileState extends State<MyProfile> {
                       //  StreamingPage();
                       // Home();
                       GoRouter.of(context).push('/streaming');
-                    //  Navigator.pushNamed(context, '/streaming'); 
+                      //  Navigator.pushNamed(context, '/streaming');
                       // Navigator.pushNamedAndRemoveUntil(context, '/streaming', (route) => false);
                     });
                   },
@@ -123,7 +125,7 @@ class _MyProfileState extends State<MyProfile> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pushNamed('/setting');
+                    GoRouter.of(context).pushReplacement('/setting');
                   },
                   child: Row(
                     children: [
@@ -137,9 +139,6 @@ class _MyProfileState extends State<MyProfile> {
             ),
           ),
         );
-
-
-        
       },
     );
   }

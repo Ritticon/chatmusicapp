@@ -4,6 +4,7 @@
 import 'package:chatmusicapp/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:go_router/go_router.dart';
 // import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
@@ -27,14 +28,13 @@ class settingPage extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+            GoRouter.of(context).pushReplacement('/');
           },
         ),
       ),
-      
       body: Container(
         // decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary),
-        
+
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
