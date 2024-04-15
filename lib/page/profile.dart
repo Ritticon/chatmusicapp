@@ -1,7 +1,4 @@
-// import 'package:chatmusic/models/profile.dart';
-// import 'package:chatmusic/pages/searchMusic.dart';
-// import 'package:chatmusic/pages/setting.dart';
-// import 'package:chatmusic/pages/streaming.dart';
+import 'package:chatmusicapp/models/imageProfile.dart';
 import 'package:chatmusicapp/page/home_page.dart';
 import 'package:chatmusicapp/page/streaming.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -26,7 +23,7 @@ class _MyProfileState extends State<MyProfile> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection('userProfile').snapshots(),
+      stream: getEmailImageMap(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator();
@@ -36,33 +33,21 @@ class _MyProfileState extends State<MyProfile> {
               child:
                   Text('No data available')); // Handle case when data is null
         }
-        var documents =
-            snapshot.data!.docs; // Null check before accessing 'docs'
-        if (documents.isEmpty) {
-          return Center(
-              child: Text(
-                  'No documents available')); // Handle case when there are no documents
-        }
-        // if (!(snapshot.data is QuerySnapshot<Map<String, dynamic>>)) {
+        // var documents =
+        //     snapshot.data!.docs; // Null check before accessing 'docs'
+        // if (documents.isEmpty) {
         //   return Center(
-        //       child:
-        //           Text('เข้าแล้วจ้า'));
-        //     }
-        // User? user = FirebaseAuth.instance.currentUser;
-        // Reference profileImageRef = FirebaseStorage.instance.ref().child('id');
-        // // var imageUrl = documents['userProfile']['imageProfile'];
-        // print("Imageeeee = ${profileImageRef}"); // Accessing 'docs' after null check
-        // print("Profile = มาจ้าาา ${snapshot.data}");
+        //       child: Text(
+        //           'No documents available')); // Handle case when there are no documents
+        // }
 
-// สร้าง Future สำหรับการเรียก getDownloadURL()
-// Future<String> imageUrlFuture = profileImageRef.getDownloadURL();
-
-        Map<String, String> emailImageMap = {};
-        for (var document in snapshot.data!.docs) {
-          var email = document['username'];
-          var imageUrl = document['imageProfile'];
-          emailImageMap[email] = imageUrl;
-        }
+        // Map<String, String> emailImageMap = {};
+        // for (var document in snapshot.data!.docs) {
+        //   var email = document['username'];
+        //   var imageUrl = document['imageProfile'];
+        //   emailImageMap[email] = imageUrl;
+        // }
+        var emailImageMap = snapshot.data as Map<String, String>;
         print("emailรูปภาพ ${emailImageMap}");
         var email = auth.currentUser?.email;
         var imageUrl = emailImageMap[email];

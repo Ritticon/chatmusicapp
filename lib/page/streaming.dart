@@ -38,150 +38,21 @@ class _StreamingPageState extends State<StreamingPage> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream:
-            FirebaseFirestore.instance.collection('userProfile').snapshots(),
+        stream: FirebaseFirestore.instance.collection('Message').orderBy('timestamp', descending: true).snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return CircularProgressIndicator();
           }
-          if (!snapshot.hasData || snapshot.data == null) {
-            return Consumer<PlaylistProvider>(
-                builder: ((context, value, child) {
-              final playlist = value.playlist;
-              if (playlist.isEmpty) {
-                return Center(child: Text('No songs available'));
-              }
-              //gey playlist
-       
-              final currentSong = playlist[value.currentSongIndex ?? 0];
-              return Scaffold(
-                  backgroundColor: Theme.of(context).colorScheme.background,
-                  body: SingleChildScrollView(
-                    child: SafeArea(
-                        child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 25, right: 25, bottom: 25),
-                            child: Column(
-                                // mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Center(
-                                      child: Column(children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Center(
-                                                child: Text(
-                                                  currentSong.songName,
-                                                  style: const TextStyle(
-                                                    fontFamily: 'atma',
-                                                    color: Color(0xFFFF6B00),
-                                                    fontSize: 30,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(height: 30),
-
-                                    //ยังไม่ได้เพิ่มกรอบให้รูป
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: Color(0xFF773200),
-                                      ),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: Image.asset(
-                                          currentSong.albumArtImagePath,
-                                          // width: 300,
-                                          // height: 200,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(height: 25),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          flex: 2,
-                                          child: GestureDetector(
-                                            onTap: value.pauseOrResume,
-                                            child: Container(
-                                                child: Icon(
-                                              value.isPlaying
-                                                  ? Icons.pause
-                                                  : Icons.play_arrow,
-                                              color: Color(0xFFFF6B00),
-                                              size: 40,
-                                            )),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            currentSong.songName,
-                                            style: TextStyle(
-                                              fontFamily: 'atma',
-                                              fontSize: 13,
-                                              color: Color(0xFFFF6B00),
-                                            ),
-                                          ),
-                                          Text(
-                                            formatTime(value.currentDuration),
-                                            style: TextStyle(
-                                              fontFamily: 'atma',
-                                              fontSize: 13,
-                                              color: Color(0xFFFF6B00),
-                                            ),
-                                          ),
-                                        ]),
-                                    SliderTheme(
-                                      // ทำให้เส้นที่เล่นเพลงไม่มีวงกลม
-                                      data: SliderTheme.of(context).copyWith(
-                                        thumbShape: const RoundSliderThumbShape(
-                                            enabledThumbRadius: 0),
-                                      ),
-                                      child: Slider(
-                                        min: 0,
-                                        max: value.totalDuration.inSeconds
-                                            .toDouble(),
-                                        value: value.currentDuration.inSeconds
-                                            .toDouble(),
-                                        activeColor: Color(0xFF733000),
-                                        inactiveColor: Color(0xFFFF6B00), //
-                                        onChanged: (double double) {},
-                                        onChangeEnd: (double double) {
-                                          // slider finfish, go to position in song duration
-                                          value.seek(Duration(
-                                              seconds: double.toInt()));
-                                        },
-                                      ),
-                                    )
-                                  ]))
-                                ]))),
-                  ));
-            }));
-          }
+          
           // Accessing 'docs' after null check
-          var documents = snapshot.data!.docs;
-          var imageUrl = documents[0]['imageProfile'];
-          print("Imageeeee = ${imageUrl}");
-          if (documents.isEmpty) {
-            return Center(child: Text('No documents available'));
-          }
+          // var documents = snapshot.data!.docs;
+          // var imageUrl = documents[0]['imageProfile'];
+          // print("Imageeeee = ${imageUrl}");
+          // if (documents.isEmpty) {
+          //   return Center(child: Text('No documents available'));
+          // }
+
+
           return Consumer<PlaylistProvider>(builder: ((context, value, child) {
             //get playlist
 
@@ -320,6 +191,7 @@ class _StreamingPageState extends State<StreamingPage> {
                               Container(
                                   width: 300,
                                   height: 100,
+                                  
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(50),
                                     boxShadow: [
@@ -370,26 +242,29 @@ class _StreamingPageState extends State<StreamingPage> {
                                         
                                         child: Row(
                                           children: [
-                                            CircleAvatar(
-                                              backgroundImage:
-                                                  NetworkImage(imageUrl),
-                                              radius: 40,
-                                            ),
+
+                                              // CircleAvatar(
+                                              //   backgroundImage: imageUrl != null
+                                              //       ? NetworkImage(imageUrl)
+                                              //       : AssetImage('assets/image/profile.jpg')
+                                              //           as ImageProvider<Object>?,
+                                              //   radius: 40,
+                                              // ),
                                             SizedBox(width: 15),
                                             Column(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: [
                                                 Text(
-                                                  user != null ? user!.email ?? '' : 'Name',
+                                                  snapshot.data!.docs.first["senderEmail"],
                                                   style: TextStyle(
                                                     fontFamily: 'Inter',
-                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 13,
                                                     color: Color(0xFFFF6B00),
                                                   ),
                                                 ),
                                                 Text(
-                                                  "Chat",
+                                                  snapshot.data!.docs.first["message"],
                                                   style: TextStyle(
                                                     fontFamily: 'Inter',
                                                     fontSize: 13,

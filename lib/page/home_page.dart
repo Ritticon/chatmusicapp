@@ -13,51 +13,6 @@ import 'package:rolling_bottom_bar/rolling_bottom_bar.dart';
 import 'package:rolling_bottom_bar/rolling_bottom_bar_item.dart';
 import 'package:go_router/go_router.dart';
 
-final GoRouter _router = GoRouter(
-      routes: <GoRoute>[
-      GoRoute(
-        path: '/',
-        builder: (BuildContext context, GoRouterState state) =>  Home(),
-      ),
-      GoRoute(
-        path: '/streaming',
-        builder: (BuildContext context, GoRouterState state) => const StreamingPage(),
-      ),
-      GoRoute(
-        path: '/chat',
-        builder: (BuildContext context, GoRouterState state) => const ChatOnlinePage(),
-      ),
-      GoRoute(
-        path: '/search',
-        builder: (BuildContext context, GoRouterState state) => const searchMusic(),
-      ),
-      GoRoute(
-        path: '/favsong',
-        builder: (BuildContext context, GoRouterState state) => const FavoriteSong(),
-      ),
-      GoRoute(
-        path: '/profile',
-        builder: (BuildContext context, GoRouterState state) => const MyProfile(),
-      ),
-      GoRoute(
-        path: '/popupsong',
-        builder: (BuildContext context, GoRouterState state) => const PopupSong(),
-      ),
-      GoRoute(
-        path: '/login',
-        builder: (BuildContext context, GoRouterState state) => const Login(),
-      ),
-      GoRoute(
-        path: '/register',
-        builder: (BuildContext context, GoRouterState state) => const Register(),
-      ),
-      GoRoute(
-        path: '/setting',
-        builder: (BuildContext context, GoRouterState state) => const settingPage(),
-      ),
-    ],
-
-);
 class Home extends StatefulWidget {
   Home({super.key});
 
@@ -80,13 +35,11 @@ class _HomeState extends State<Home> {
           children: const <Widget>[
             StreamingPage(),
             ChatOnlinePage(),
-            
             searchMusic(),
             // Login(),
             // Register(),
             FavoriteSong(),
-            MyProfile()
-        
+            MyProfile(),
             // ProfilePage(),
           ],
         ),
@@ -99,15 +52,15 @@ class _HomeState extends State<Home> {
           useActiveColorByDefault: false,
           items: const [
             RollingBottomBarItem(Icons.home,
-                label: '', activeColor: Colors.redAccent),
-            RollingBottomBarItem(Icons.camera,
-                label: '', activeColor: Colors.blueAccent),
+                label: '', activeColor: Color(0xFFFF6B00)),
+            RollingBottomBarItem(Icons.chat_outlined,
+                label: '', activeColor: Color(0xFFFF6B00)),
+            RollingBottomBarItem(Icons.saved_search_outlined,
+                label: '', activeColor: Color(0xFFFF6B00)),
+            RollingBottomBarItem(Icons.favorite_border_outlined,
+                label: '', activeColor: Color(0xFFFF6B00)),
             RollingBottomBarItem(Icons.person,
-                label: '', activeColor: Colors.green),
-            RollingBottomBarItem(Icons.home,
-                label: '', activeColor: Colors.redAccent),
-            RollingBottomBarItem(Icons.home,
-                label: '', activeColor: Colors.redAccent)
+                label: '', activeColor: Color(0xFFFF6B00))
           ],
           // enableIconRotation: true,
           onTap: (index) {
