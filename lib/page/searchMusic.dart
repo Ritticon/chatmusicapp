@@ -136,9 +136,9 @@ class _searchMusicState extends State<searchMusic> {
             }),
             Expanded(
               child: ListView.builder(
-                itemCount: playlistProvider.playlist.length, // แก้ไขตรงนี้
+                itemCount: playlistProvider.playlist.length,
                 itemBuilder: (context, index) {
-                  final Song song = playlistProvider.playlist[index]; // แก้ไขตรงนี้
+                  final Song song = playlistProvider.playlist[index]; 
                   if (songname.isEmpty || song.songName.toLowerCase().contains(songname.toLowerCase())) {
                     return ListTile(
                       title: Row(

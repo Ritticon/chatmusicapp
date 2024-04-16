@@ -206,10 +206,6 @@ class _StreamingPageState extends State<StreamingPage> {
         child: ElevatedButton(
           onPressed: () {
             if (user != null) {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => const ChatOnlinePage()),
-              // );
             } else {
               Navigator.push(
                 context,
