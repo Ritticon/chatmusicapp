@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'dart:io';
 import 'package:chatmusicapp/models/profile.dart';
 import 'package:chatmusicapp/page/chatOnline.dart';
+import 'package:chatmusicapp/page/home_page.dart';
 import 'package:chatmusicapp/page/profile.dart';
 import 'package:chatmusicapp/page/register.dart';
 import 'package:chatmusicapp/page/streaming.dart';
@@ -242,7 +243,7 @@ class _LoginState extends State<Login> {
                                                     //  context.go('/chat');                                             // Navigator.pushNamedAndRemoveUntil(context, '/chat',
                                                     // ModalRoute.withName('/chat'));
                                                     Navigator.push(context, 
-                                                      MaterialPageRoute(builder: (context)=> StreamingPage()));
+                                                      MaterialPageRoute(builder: (context)=> Home()));
                                                   });
                               
                                                 } on FirebaseAuthException catch (e) {

@@ -95,7 +95,7 @@ class _MyProfileState extends State<MyProfile> {
                     auth.signOut().then((value) {
                       //  StreamingPage();
                       // Home();
-                      GoRouter.of(context).push('/streaming');
+                      GoRouter.of(context).push('/');
                       //  Navigator.pushNamed(context, '/streaming');
                       // Navigator.pushNamedAndRemoveUntil(context, '/streaming', (route) => false);
                     });
