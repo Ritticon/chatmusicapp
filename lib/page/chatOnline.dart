@@ -37,27 +37,27 @@ class _ChatOnlinePageState extends State<ChatOnlinePage> {
 
   String imageUrl = '';
 
-  void fetchUserProfileImage() async {
-    QuerySnapshot querySnapshot =
-        await _firestore.collection('userProfile').where('email').get();
+  // void fetchUserProfileImage() async {
+  //   QuerySnapshot querySnapshot =
+  //       await _firestore.collection('userProfile').where('email').get();
 
-    if (querySnapshot.docs.isNotEmpty) {
-      Map<String, String> emailImageMap = {};
-      for (var document in querySnapshot.docs) {
-        var email = document['username'];
-        var imageUrl = document['imageProfile'];
-        emailImageMap[email] = imageUrl;
-      }
-      print("emailรูปภาพ ${emailImageMap}");
-      var email = _auth.currentUser?.email;
-      var imageUrl = emailImageMap[email];
-      print("imagee ${imageUrl}");
+  //   if (querySnapshot.docs.isNotEmpty) {
+  //     Map<String, String> emailImageMap = {};
+  //     for (var document in querySnapshot.docs) {
+  //       var email = document['username'];
+  //       var imageUrl = document['imageProfile'];
+  //       emailImageMap[email] = imageUrl;
+  //     }
+  //     print("emailรูปภาพ ${emailImageMap}");
+  //     var email = _auth.currentUser?.email;
+  //     var imageUrl = emailImageMap[email];
+  //     print("imagee ${imageUrl}");
 
-      print("imagee = ${imageUrl}");
-    } else {
-      print('No user profile found for this email');
-    }
-  }
+  //     print("imagee = ${imageUrl}");
+  //   } else {
+  //     print('No user profile found for this email');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

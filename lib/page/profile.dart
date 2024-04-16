@@ -23,7 +23,7 @@ class _MyProfileState extends State<MyProfile> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: getEmailImageMap(),
+      stream: FirebaseFirestore.instance.collection('userProfile').snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator();
@@ -41,13 +41,13 @@ class _MyProfileState extends State<MyProfile> {
         //           'No documents available')); // Handle case when there are no documents
         // }
 
-        // Map<String, String> emailImageMap = {};
-        // for (var document in snapshot.data!.docs) {
-        //   var email = document['username'];
-        //   var imageUrl = document['imageProfile'];
-        //   emailImageMap[email] = imageUrl;
-        // }
-        var emailImageMap = snapshot.data as Map<String, String>;
+        Map<String, String> emailImageMap = {};
+        for (var document in snapshot.data!.docs) {
+          var email = document['username'];
+          var imageUrl = document['imageProfile'];
+          emailImageMap[email] = imageUrl;
+        }
+        // var emailImageMap = snapshot.data as Map<String, String>;
         print("emailรูปภาพ ${emailImageMap}");
         var email = auth.currentUser?.email;
         var imageUrl = emailImageMap[email];

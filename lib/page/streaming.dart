@@ -48,9 +48,9 @@ class _StreamingPageState extends State<StreamingPage> {
           // var documents = snapshot.data!.docs;
           // var imageUrl = documents[0]['imageProfile'];
           // print("Imageeeee = ${imageUrl}");
-          // if (documents.isEmpty) {
-          //   return Center(child: Text('No documents available'));
-          // }
+          if (!snapshot.hasData) {
+            return Center(child: Text('No documents available'));
+          }
 
 
           return Consumer<PlaylistProvider>(builder: ((context, value, child) {
@@ -243,13 +243,10 @@ class _StreamingPageState extends State<StreamingPage> {
                                         child: Row(
                                           children: [
 
-                                              // CircleAvatar(
-                                              //   backgroundImage: imageUrl != null
-                                              //       ? NetworkImage(imageUrl)
-                                              //       : AssetImage('assets/image/profile.jpg')
-                                              //           as ImageProvider<Object>?,
-                                              //   radius: 40,
-                                              // ),
+                                              CircleAvatar(
+                                                backgroundImage: NetworkImage(snapshot.data!.docs.first["currentUserImage"] as String),
+                                                radius: 40,
+                                              ),
                                             SizedBox(width: 15),
                                             Column(
                                               mainAxisAlignment:
