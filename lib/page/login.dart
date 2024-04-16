@@ -241,8 +241,7 @@ class _LoginState extends State<Login> {
                                                         // );
                                                     //  context.go('/chat');                                             // Navigator.pushNamedAndRemoveUntil(context, '/chat',
                                                     // ModalRoute.withName('/chat'));
-                                                    Navigator.push(context, 
-                                                      MaterialPageRoute(builder: (context)=> StreamingPage()));
+                                                    GoRouter.of(context).push('/');
                                                   });
                               
                                                 } on FirebaseAuthException catch (e) {

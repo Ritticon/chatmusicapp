@@ -26,7 +26,7 @@ class _ChatOnlinePageState extends State<ChatOnlinePage> {
     super.initState();
     _scrollController = ScrollController(); // Initialize ScrollController
   }
-
+  
   void sendMessage() async {
     if (_messageController.text.isNotEmpty) {
       await _chatServer.sendMessage(
@@ -35,29 +35,42 @@ class _ChatOnlinePageState extends State<ChatOnlinePage> {
     }
   }
 
+    Future<void> _dialogBuilder(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('You did not Log in'),
+          content: const Text(
+            'Please Log in',
+          ),
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Disable'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Login'),
+              onPressed: () {
+                GoRouter.of(context).push('/login');
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   String imageUrl = '';
 
-  // void fetchUserProfileImage() async {
-  //   QuerySnapshot querySnapshot =
-  //       await _firestore.collection('userProfile').where('email').get();
-
-  //   if (querySnapshot.docs.isNotEmpty) {
-  //     Map<String, String> emailImageMap = {};
-  //     for (var document in querySnapshot.docs) {
-  //       var email = document['username'];
-  //       var imageUrl = document['imageProfile'];
-  //       emailImageMap[email] = imageUrl;
-  //     }
-  //     print("emailรูปภาพ ${emailImageMap}");
-  //     var email = _auth.currentUser?.email;
-  //     var imageUrl = emailImageMap[email];
-  //     print("imagee ${imageUrl}");
-
-  //     print("imagee = ${imageUrl}");
-  //   } else {
-  //     print('No user profile found for this email');
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -67,23 +80,86 @@ class _ChatOnlinePageState extends State<ChatOnlinePage> {
           .orderBy('timestamp', descending: true)
           .snapshots(),
       builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          print("เข้าhaserror ");
-          // context.go('/login');
-        }
-        print("snapdata = ${snapshot.data}");
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
-        }
-        if (!snapshot.hasData) {
-          print("เข้าhasdata ");
-          //  context.go('/login');
-        }
+        var messages = snapshot.data!.docs;
         if (_auth.currentUser == null) {
           print("เข้าาจ้า ");
-          return Login();
+          // return Login();
+          
+          return Scaffold(
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(30.0, 20.0, 8.0, 3.0),
+                  child: Text(
+                    'Online Chat',
+                    style: TextStyle(
+                      fontFamily: 'atma',
+                      fontSize: 35,
+                      color: Color(0xFFFF6B00),
+                    ),
+                  ),
+                ),
+              ),
+       
+              Padding(
+                padding: const EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 100.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black,
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                              offset: Offset(0, 5),
+                            ),
+                          ],
+                        ),
+                        child: TextField(
+                          controller: _messageController,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide.none,
+                            ),
+                            filled: true,
+                            fillColor: Theme.of(context).colorScheme.secondary,
+                            contentPadding: const EdgeInsets.all(6),
+                            hintText: 'chat',
+                            hintStyle: const TextStyle(
+                              fontFamily: 'Inter',
+                              color: Color(0xFFFF6B00),
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                    IconButton(
+                      onPressed: () => _dialogBuilder(context),
+                      icon: Icon(
+                        Icons.send,
+                        color: Color(0xFFFF6B00),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          
+        );
+        
+                    
+                  
         }
-        var messages = snapshot.data!.docs;
+        
         return Scaffold(
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

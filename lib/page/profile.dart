@@ -1,9 +1,9 @@
-import 'package:chatmusicapp/models/imageProfile.dart';
-import 'package:chatmusicapp/page/home_page.dart';
-import 'package:chatmusicapp/page/streaming.dart';
+
+import 'package:chatmusicapp/page/login.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+
+
 
 import 'package:flutter/material.dart';
 // import 'package:get/get.dart';
@@ -33,14 +33,11 @@ class _MyProfileState extends State<MyProfile> {
               child:
                   Text('No data available')); // Handle case when data is null
         }
-        // var documents =
-        //     snapshot.data!.docs; // Null check before accessing 'docs'
-        // if (documents.isEmpty) {
-        //   return Center(
-        //       child: Text(
-        //           'No documents available')); // Handle case when there are no documents
-        // }
 
+        if (auth.currentUser == null) {
+          print("เข้าาจ้า ");
+          return Login();
+        }
         Map<String, String> emailImageMap = {};
         for (var document in snapshot.data!.docs) {
           var email = document['username'];
@@ -94,8 +91,9 @@ class _MyProfileState extends State<MyProfile> {
                   onPressed: () {
                     auth.signOut().then((value) {
                       //  StreamingPage();
+
                       // Home();
-                      GoRouter.of(context).push('/streaming');
+                      GoRouter.of(context).push('/');
                       //  Navigator.pushNamed(context, '/streaming');
                       // Navigator.pushNamedAndRemoveUntil(context, '/streaming', (route) => false);
                     });
