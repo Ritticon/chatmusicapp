@@ -81,6 +81,18 @@ class _ChatOnlinePageState extends State<ChatOnlinePage> {
           .snapshots(),
       builder: (context, snapshot) {
         var messages = snapshot.data!.docs;
+            if (snapshot.hasError) {
+        print("เข้าhaserror ");
+        // context.go('/login');
+        }
+        print("snapdata = ${snapshot.data}");
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator();
+        }
+        if (!snapshot.hasData ) {
+          print("เข้าhasdata ");
+          //  context.go('/login');
+        }
         if (_auth.currentUser == null) {
           print("เข้าาจ้า ");
           // return Login();
@@ -206,7 +218,7 @@ class _ChatOnlinePageState extends State<ChatOnlinePage> {
                               : MainAxisAlignment.start,
                           children: [
                             CircleAvatar(
-                              backgroundImage: NetworkImage(imageUrl),
+                              backgroundImage: NetworkImage(snapshot.data!.docs[index]["currentUserImage"] as String),
                             ),
                             Text(
                               snapshot.data!.docs[index]["senderEmail"],
