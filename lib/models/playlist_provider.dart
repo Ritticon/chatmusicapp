@@ -55,10 +55,10 @@ class PlaylistProvider extends ChangeNotifier {
         isFavorite: false),
     //song5
     // Song(
-    //     songName: " Nothing's Gonna Change My Love For You",
-    //     artistName: "Music Travel Love ft.Bugoy Drilon",
-    //     albumArtImagePath: "assets/image/MusicTravelLove.jpg",
-    //     audioPath: "audio/Nothing'sGonnaChange.mp3",
+    //     songName: "Run it Up",
+    //     artistName: "LiL Hustle HFML",
+    //     albumArtImagePath: "assets/image/runitup.png",
+    //     audioPath: "audio/runitup",
     //     isFavorite: false),
     //song6
     Song(
@@ -87,6 +87,13 @@ class PlaylistProvider extends ChangeNotifier {
         artistName: "Blackbeans",
         albumArtImagePath: "assets/image/danceWithme.jpg",
         audioPath: "audio/DanceWithMe.mp3",
+        isFavorite: false),
+
+    Song(
+        songName: "Run it Up",
+        artistName: "LiL Hustle HFML",
+        albumArtImagePath: "assets/image/runitup.png",
+        audioPath: "audio/runitup.mp3",
         isFavorite: false),
   ];
 
