@@ -1,9 +1,6 @@
-
 import 'package:chatmusicapp/page/login.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
-
-
 
 import 'package:flutter/material.dart';
 // import 'package:get/get.dart';
@@ -102,7 +99,7 @@ class _MyProfileState extends State<MyProfile> {
                     angle: 3.14,
                     child: Icon(
                       Icons.logout_sharp,
-                      color: Color(0xFFFF6B00),
+                      color: Color.fromARGB(255, 255, 100, 0),
                     ),
                   ),
                 ),
@@ -110,11 +107,25 @@ class _MyProfileState extends State<MyProfile> {
                   onPressed: () {
                     GoRouter.of(context).pushReplacement('/setting');
                   },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Color.fromARGB(255, 255, 255, 255)), // เปลี่ยนสีเป็นสีที่คุณต้องการ
+                  ),
                   child: Row(
                     children: [
-                      Icon(Icons.settings),
+                      Icon(
+                        Icons.settings,
+                        color: Color.fromARGB(255, 255, 100,
+                            0), // เปลี่ยนสีของฟันเฟืองเป็นสีที่คุณต้องการ
+                      ),
                       SizedBox(width: 8),
-                      const Text("S E T T I N G"),
+                      Text(
+                        "S E T T I N G",
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 255, 100,
+                              0), // เปลี่ยนสีข้อความเป็นสีที่คุณต้องการ
+                        ),
+                      ),
                     ],
                   ),
                 ),
