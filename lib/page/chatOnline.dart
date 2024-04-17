@@ -110,7 +110,7 @@ class _ChatOnlinePageState extends State<ChatOnlinePage> {
         if (_auth.currentUser == null) {
           print("เข้าาจ้า ");
           // return Login();
-                     
+           var messages = snapshot.data!.docs;          
           return SafeArea(
             child: Scaffold(
             body: Column(
@@ -186,30 +186,67 @@ class _ChatOnlinePageState extends State<ChatOnlinePage> {
                                   ),
                                 ),
                               ),
+                              
                             ],
                           ),
                         ),
                       ),
+                                Text(
+                                  'Online Chat',
+                                  style: TextStyle(
+                                    fontFamily: 'atma',
+                                    fontSize: 35,
+                                    color: Color(0xFFFF6B00),
+                                  ),
+                                ),
                     ],
                   ),
                 );
               }),
+      
                 Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(30.0, 20.0, 8.0, 3.0),
-                    child: Text(
-                      'Online Chat',
-                      style: TextStyle(
-                        fontFamily: 'atma',
-                        fontSize: 35,
-                        color: Color(0xFFFF6B00),
-                      ),
-                    ),
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    reverse: true,
+                    shrinkWrap: true, // Add this line
+                    padding:
+                        EdgeInsets.only(bottom: 20), // Add padding to the bottom
+                    itemCount: messages.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment:  CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              CircleAvatar(
+                                backgroundImage: NetworkImage(snapshot.data!.docs[index]["currentUserImage"] as String),
+                              ),
+                              Text(
+                                snapshot.data!.docs[index]["senderEmail"],
+                                style: TextStyle(
+                                    fontFamily: 'aBeeZee',
+                                    fontSize: 16,
+                                    color: Color(0xFFFF6B00)),
+                              ),
+                              Text(
+                                snapshot.data!.docs[index]["message"],
+                                style: TextStyle(
+                                    fontFamily: 'aBeeZee',
+                                    fontSize: 16,
+                                    color: Color(0xFFFF6B00)),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ),
-                   
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 100.0),
+                  padding: const EdgeInsets.fromLTRB(30.0, 5.0, 30.0, 10.0),
                   child: Row(
                     children: [
                       Expanded(
