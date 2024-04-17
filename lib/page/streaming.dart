@@ -9,7 +9,6 @@ import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-
 class StreamingPage extends StatefulWidget {
   const StreamingPage({super.key});
 
@@ -24,7 +23,23 @@ class _StreamingPageState extends State<StreamingPage> {
   void initState() {
     super.initState();
     _playlistProvider = Provider.of<PlaylistProvider>(context, listen: false);
-    _playlistProvider.shuffleAndPlay();
+    if (_playlistProvider.currentSongIndex != null) {
+      _playlistProvider.play(); // เล่นเพลงต่อจากจุดที่ค้างอยู่
+    } else {
+      _playlistProvider
+          .shuffleAndPlay(); // เล่นเพลงแบบสุ่มเมื่อเข้าหน้านี้ครั้งแรก
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_playlistProvider.currentSongIndex != null &&
+        _playlistProvider.isPlaying) {
+      _playlistProvider.resume(); // นำกลับมาเล่นต่อเมื่อกลับมาที่หน้านี้
+    } else {
+      _playlistProvider.pause(); // หยุดเล่นเมื่อออกจากหน้านี้
+    }
   }
 
   // Helper function to format the duration of the current song

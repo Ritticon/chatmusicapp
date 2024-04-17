@@ -9,28 +9,27 @@ import 'package:get/get_connect/http/src/utils/utils.dart';
 // import 'package:chatmusic/models/song.dart';
 
 class PlaylistProvider extends ChangeNotifier {
-  
   //playlist
   // late final CollectionReference _songsCollection;
   // late List<Song> _playlist = [];
-    int? _currentSongIndex;
+  int? _currentSongIndex;
   // audio player
   final AudioPlayer _audioPlayer = AudioPlayer();
   // duration
   Duration _currentDuration = Duration.zero;
   Duration _totalDuration = Duration.zero;
-  
+
   PlaylistProvider() {
     listenToDuration();
     // fetchMusic();
   }
-  
+
   final List<Song> _playlist = [
     // song 1
     Song(
         songName: "เผื่อเธอจะกลับมา",
         artistName: "guncharlie ",
-        albumArtImagePath: "assets/image/meee.png",
+        albumArtImagePath: "assets/image/guncharlie.jpg",
         audioPath: "audio/song1.mp3",
         isFavorite: false),
     //song2
@@ -47,69 +46,67 @@ class PlaylistProvider extends ChangeNotifier {
         albumArtImagePath: "assets/image/babymonster.jpg",
         audioPath: "audio/SHEESH.mp3",
         isFavorite: false),
-        //song4
+    //song4
     Song(
         songName: "TwoGhosts",
         artistName: "Harry Styles ",
         albumArtImagePath: "assets/image/twoghosts.jpg",
         audioPath: "audio/TwoGhosts.mp3",
         isFavorite: false),
-        //song5
+    //song5
     // Song(
     //     songName: " Nothing's Gonna Change My Love For You",
     //     artistName: "Music Travel Love ft.Bugoy Drilon",
     //     albumArtImagePath: "assets/image/MusicTravelLove.jpg",
     //     audioPath: "audio/Nothing'sGonnaChange.mp3",
     //     isFavorite: false),
-        //song6
+    //song6
     Song(
         songName: "Don't Look Back In Anger",
         artistName: "oasis",
         albumArtImagePath: "assets/image/oasis.jpg",
         audioPath: "audio/Don'tLookBackInAnger.mp3",
         isFavorite: false),
-        //song7
+    //song7
     Song(
-        songName: "Until Then ถ้าเราเจอกันอีก",
+        songName: "ถ้าเราเจอกันอีก",
         artistName: "tilly birds",
         albumArtImagePath: "assets/image/tillybirds.jpg",
         audioPath: "audio/UntilThen.mp3",
         isFavorite: false),
-         //song8
+    //song8
     Song(
         songName: "Wish",
         artistName: "Blackbeans",
         albumArtImagePath: "assets/image/blackbeans.jpg",
         audioPath: "audio/Wish.mp3",
         isFavorite: false),
-        //song3
+    //song3
     Song(
         songName: "Dance With Me ",
         artistName: "Blackbeans",
         albumArtImagePath: "assets/image/danceWithme.jpg",
         audioPath: "audio/DanceWithMe.mp3",
         isFavorite: false),
-      
   ];
 
-    addData() async {
+  addData() async {
     for (var element in playlist) {
-  // แปลงอ็อบเจกต์ Song เป็น Map<String, dynamic>
-  Map<String, dynamic> songData = {
-    'songName': element.songName,
-    'artistName': element.artistName,
-    'albumArtImagePath': element.albumArtImagePath,
-    'audioPath': element.audioPath,
-    'isFavorite': element.isFavorite,
-    // เพิ่มข้อมูลอื่น ๆ ตามต้องการ
-  };
+      // แปลงอ็อบเจกต์ Song เป็น Map<String, dynamic>
+      Map<String, dynamic> songData = {
+        'songName': element.songName,
+        'artistName': element.artistName,
+        'albumArtImagePath': element.albumArtImagePath,
+        'audioPath': element.audioPath,
+        'isFavorite': element.isFavorite,
+        // เพิ่มข้อมูลอื่น ๆ ตามต้องการ
+      };
 
-  // เพิ่มข้อมูลลงในคอลเล็กชันของ Firestore
-  FirebaseFirestore.instance.collection('Playlist').add(songData);
-}
+      // เพิ่มข้อมูลลงในคอลเล็กชันของ Firestore
+      FirebaseFirestore.instance.collection('Playlist').add(songData);
+    }
     print('all data added');
   }
-
 
 // Future<void> initialize() async {
 //   await fetchMusic();
@@ -141,10 +138,10 @@ class PlaylistProvider extends ChangeNotifier {
 // }
 
   // initially not playing
-  
+
   bool _isPlaying = false;
   // play song
-  void play() async{
+  void play() async {
     final String path = _playlist[_currentSongIndex!].audioPath;
     await _audioPlayer.stop();
     await _audioPlayer.play(AssetSource(path));
@@ -152,52 +149,57 @@ class PlaylistProvider extends ChangeNotifier {
     // เพื่อบอกว่าข้อมูลได้มีการเปลี่ยนแปลงแล้ว
     notifyListeners();
   }
+
   // pause current song
-  void pause() async{
+  void pause() async {
     await _audioPlayer.pause();
     _isPlaying = false;
     notifyListeners();
   }
+
   // resume playing
-  void resume() async{
+  void resume() async {
     await _audioPlayer.resume();
     _isPlaying = true;
     notifyListeners();
   }
 
   // pause or resume
-  void pauseOrResume() async{
-    if(_isPlaying){
+  void pauseOrResume() async {
+    if (_isPlaying) {
       pause();
-    }else {
+    } else {
       resume();
     }
     notifyListeners();
   }
+
   // seek to specific position in current song
-  void seek(Duration position) async{
+  void seek(Duration position) async {
     await _audioPlayer.seek(position);
   }
+
   // play next song
-  void playNextSong(){
-    if(_currentSongIndex != null){
+  void playNextSong() {
+    if (_currentSongIndex != null) {
       // ถึงเพลงสุดท้ายหรือยัง
-      if(_currentSongIndex! < _playlist.length-1){
+      if (_currentSongIndex! < _playlist.length - 1) {
         // go to next song if its not the last song
         currentSongIndex = _currentSongIndex! + 1;
-      }else {
+      } else {
         // if last song, back to first song
         currentSongIndex = 0;
       }
     }
   }
+
   // prevoius song
-  void playPreviousSong() async{
+  void playPreviousSong() async {
     // if more 2 seconds pass , if not restart current song
-    if(_currentDuration.inSeconds > 2){
+    if (_currentDuration.inSeconds > 2) {
       seek(Duration.zero);
-    }else {
-      if(_currentSongIndex! > 0 ){
+    } else {
+      if (_currentSongIndex! > 0) {
         currentSongIndex = _currentSongIndex! - 1;
       } else {
         // if first song back to last song
@@ -205,6 +207,7 @@ class PlaylistProvider extends ChangeNotifier {
       }
     }
   }
+
   // listen to duration
   void listenToDuration() {
     // listen duration
@@ -212,7 +215,7 @@ class PlaylistProvider extends ChangeNotifier {
       _totalDuration = newDuration;
       notifyListeners();
     });
-      // listen for current duration
+    // listen for current duration
     _audioPlayer.onPositionChanged.listen((newPosition) {
       _currentDuration = newPosition;
       notifyListeners();
@@ -223,10 +226,11 @@ class PlaylistProvider extends ChangeNotifier {
       playNextSong();
     });
   }
-    // Method เพื่ออัปเดตสถานะของเพลง
+
+  // Method เพื่ออัปเดตสถานะของเพลง
   void updateFavoriteStatus(int index, bool isFavorite) {
     _playlist[index].isFavorite = isFavorite;
-    notifyListeners(); 
+    notifyListeners();
   }
 //   void updatePlaylist(List<Song> newPlaylist) {
 //   _playlist.addAll(newPlaylist);
@@ -243,21 +247,18 @@ class PlaylistProvider extends ChangeNotifier {
     }
   }
 
-
   // dispose
   List<Song> get playlist => _playlist;
   int? get currentSongIndex => _currentSongIndex;
-  bool get isPlaying => _isPlaying ;
+  bool get isPlaying => _isPlaying;
   Duration get currentDuration => _currentDuration;
   Duration get totalDuration => _totalDuration;
   //setting
   set currentSongIndex(int? newIndex) {
     _currentSongIndex = newIndex;
-    if(newIndex != null){
+    if (newIndex != null) {
       play();
       debugPrint('${currentDuration.toString()} mmmm');
-
-
     }
     notifyListeners();
   }
