@@ -52,7 +52,7 @@ class _searchMusicState extends State<searchMusic> {
               final List<Song> playlist = value.playlist;
               final currentSong = playlist[value.currentSongIndex ?? 0];
               return GestureDetector(
-                onTap: (){
+                onTap: () {
                   goToSong(playlist.indexOf(currentSong));
                 },
                 child: Column(
@@ -138,8 +138,11 @@ class _searchMusicState extends State<searchMusic> {
               child: ListView.builder(
                 itemCount: playlistProvider.playlist.length,
                 itemBuilder: (context, index) {
-                  final Song song = playlistProvider.playlist[index]; 
-                  if (songname.isEmpty || song.songName.toLowerCase().contains(songname.toLowerCase())) {
+                  final Song song = playlistProvider.playlist[index];
+                  if (songname.isEmpty ||
+                      song.songName
+                          .toLowerCase()
+                          .contains(songname.toLowerCase())) {
                     return ListTile(
                       title: Row(
                         children: [
@@ -194,9 +197,8 @@ class _searchMusicState extends State<searchMusic> {
                           song.isFavorite
                               ? Icons.favorite
                               : Icons.favorite_border,
-                          color: song.isFavorite
-                              ? Colors.red
-                              : Color(0xFFFF6B00),
+                          color:
+                              song.isFavorite ? Colors.red : Color(0xFFFF6B00),
                         ),
                       ),
                       onTap: () {
@@ -214,59 +216,62 @@ class _searchMusicState extends State<searchMusic> {
               ),
             ),
             // Row ที่มีช่องค้นหาและปุ่มส่ง
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black,
-                          spreadRadius: 2,
-                          blurRadius: 5,
-                          offset: Offset(0, 5),
-                        ),
-                      ],
-                    ),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide.none,
-                        ),
-                        filled: true,
-                        fillColor: Theme.of(context).colorScheme.secondary,
-                        contentPadding: const EdgeInsets.all(6),
-                        hintText: 'Search',
-                        hintStyle: const TextStyle(
-                          fontFamily: 'Inter',
-                          color: Color(0xFFFF6B00),
-                          fontSize: 14,
-                        ),
-                        prefixIcon: IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.search,
-                            size: 20,
+            Container(
+              height: 70, // เพิ่มความสูงให้ Row
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black,
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: Offset(0, 5),
+                          ),
+                        ],
+                      ),
+                      child: TextField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide.none,
+                          ),
+                          filled: true,
+                          fillColor: Theme.of(context).colorScheme.secondary,
+                          contentPadding: const EdgeInsets.all(6),
+                          hintText: 'Search',
+                          hintStyle: const TextStyle(
+                            fontFamily: 'Inter',
                             color: Color(0xFFFF6B00),
+                            fontSize: 14,
+                          ),
+                          prefixIcon: IconButton(
+                            onPressed: () {},
+                            icon: Icon(
+                              Icons.search,
+                              size: 20,
+                              color: Color(0xFFFF6B00),
+                            ),
                           ),
                         ),
+                        onChanged: (val) {
+                          setState(() {
+                            songname = val;
+                          });
+                        },
                       ),
-                      onChanged: (val) {
-                        setState(() {
-                          songname = val;
-                        });
-                      },
                     ),
                   ),
-                ),
-                SizedBox(width: 8),
-                Icon(
-                  Icons.send,
-                  color: Color(0xFFFF6B00),
-                ),
-              ],
+                  SizedBox(width: 8),
+                  Icon(
+                    Icons.send,
+                    color: Color(0xFFFF6B00),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
