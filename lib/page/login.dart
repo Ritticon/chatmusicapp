@@ -15,7 +15,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -34,11 +33,6 @@ class _LoginState extends State<Login> {
     // notifyListeners();
   }
 
-  // Uint8List? _image;
-  // File? selectedImage;
-  // String _password = '';
-  // String _confirmPassword = '';
-  
   final  firebase = Firebase.initializeApp();
   @override
   Widget build(BuildContext context) {
@@ -79,7 +73,7 @@ class _LoginState extends State<Login> {
                         children: <Widget>[
                           SizedBox(height: 20),
                           CircleAvatar(
-                            // backgroundImage: AssetImage(""),
+                            backgroundImage: AssetImage("assets/image/logo.png"),
                             radius: 80,
                           ),
                           Padding(
@@ -227,24 +221,7 @@ class _LoginState extends State<Login> {
                                                               profile.password)
                                                       .then((value) {
                                                     formkey.currentState!.reset();
-                                                    // return StreamingPage();
-                                                    // Navigator.of(context).pop(context);
-                                                    // notifyListeners();
-                                                    // Navigator.push(
-                                                    //   context,
-                                                    //   MaterialPageRoute(
-                                                    //       builder: (context) =>
-                                                    //           ChatOnlinePage()),
-                                                    // );
-                                                        // Navigator.pushReplacement(
-                                                        //   context,
-                                                        //   MaterialPageRoute(builder: (context) => StreamingPage()),
-                                                        // );
-                                                    //  context.go('/chat');                                             // Navigator.pushNamedAndRemoveUntil(context, '/chat',
-                                                    // ModalRoute.withName('/chat'));
-
                                                     GoRouter.of(context).push('/');
-
                                                   });
                               
                                                 } on FirebaseAuthException catch (e) {
@@ -311,11 +288,6 @@ class _LoginState extends State<Login> {
                                         child: ElevatedButton(
                                             onPressed: () {
                                                Navigator.push(context, MaterialPageRoute(builder: (context)=> Register()));
-                                              // Navigator.pushNamedAndRemoveUntil(
-                                              //     context,
-                                              //     '/register',
-                                              //     ModalRoute.withName(
-                                              //         '/register'));
                                             },
                                             style: ElevatedButton.styleFrom(
                                               backgroundColor: Theme.of(context)
