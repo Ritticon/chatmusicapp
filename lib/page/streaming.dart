@@ -156,9 +156,6 @@ Widget _buildPlayerControls(PlaylistProvider value) {
     ],
   );
 }
-
-
-
   Widget _buildCurrentTimeAndDuration(
       PlaylistProvider value, Song currentSong) {
     return Row(
@@ -197,7 +194,6 @@ Widget _buildPlayerControls(PlaylistProvider value) {
         inactiveColor: const Color(0xFFFF6B00),
         onChanged: (_) {},
         onChangeEnd: (double position) {
-          value.seek(Duration(seconds: position.toInt()));
         },
       ),
     );

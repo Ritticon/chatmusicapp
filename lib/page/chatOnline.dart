@@ -25,14 +25,14 @@ class _ChatOnlinePageState extends State<ChatOnlinePage> {
   final ChatServer _chatServer = ChatServer();
   late ScrollController _scrollController; // Declare ScrollController
   late final PlaylistProvider playlistProvider;
-  
+
   @override
   void initState() {
     super.initState();
     _scrollController = ScrollController(); // Initialize ScrollController
     playlistProvider = Provider.of<PlaylistProvider>(context, listen: false);
   }
-  
+
   void sendMessage() async {
     if (_messageController.text.isNotEmpty) {
       await _chatServer.sendMessage(
@@ -40,7 +40,8 @@ class _ChatOnlinePageState extends State<ChatOnlinePage> {
       _messageController.clear();
     }
   }
-    void goToSong(int songIndex) {
+
+  void goToSong(int songIndex) {
     playlistProvider.currentSongIndex = songIndex;
     showDialog(
       context: context,
@@ -50,7 +51,7 @@ class _ChatOnlinePageState extends State<ChatOnlinePage> {
     );
   }
 
-    Future<void> _dialogBuilder(BuildContext context) {
+  Future<void> _dialogBuilder(BuildContext context) {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -86,7 +87,6 @@ class _ChatOnlinePageState extends State<ChatOnlinePage> {
 
   String imageUrl = '';
 
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -95,311 +95,293 @@ class _ChatOnlinePageState extends State<ChatOnlinePage> {
           .orderBy('timestamp', descending: true)
           .snapshots(),
       builder: (context, snapshot) {
-            if (snapshot.hasError) {
-        print("เข้าhaserror ");
-        // context.go('/login');
+        if (snapshot.hasError) {
+          print("เข้าhaserror ");
+          // context.go('/login');
         }
         print("snapdata = ${snapshot.data}");
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator();
         }
-        if (!snapshot.hasData ) {
+        if (!snapshot.hasData) {
           print("เข้าhasdata ");
           //  context.go('/login');
         }
         if (_auth.currentUser == null) {
           print("เข้าาจ้า ");
           // return Login();
-           var messages = snapshot.data!.docs;          
+          var messages = snapshot.data!.docs;
           return SafeArea(
             child: Scaffold(
-            body: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                 Consumer<PlaylistProvider>(builder: (context, value, child) {
-                final List<Song> playlist = value.playlist;
-                final currentSong = playlist[value.currentSongIndex ?? 0];
-                return GestureDetector(
-                  onTap: (){
-                    goToSong(playlist.indexOf(currentSong));
-                  },
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 80,
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.secondary,
-                          borderRadius: BorderRadius.only(
-                            // topLeft: Radius.circular(20),
-                            bottomLeft: Radius.circular(20),
-                            bottomRight: Radius.circular(20),
-                          ),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.only(bottom: 8, left: 10, right: 8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Container(
-                                height: 50,
-                                width: 50,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16.0),
-                                  image: DecorationImage(
-                                    image: AssetImage(
-                                      currentSong.albumArtImagePath,
+              body: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Consumer<PlaylistProvider>(builder: (context, value, child) {
+                    final List<Song> playlist = value.playlist;
+                    final currentSong = playlist[value.currentSongIndex ?? 0];
+                    return GestureDetector(
+                      onTap: () {
+                        goToSong(playlist.indexOf(currentSong));
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: 80,
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.secondary,
+                              borderRadius: BorderRadius.only(
+                                // topLeft: Radius.circular(20),
+                                bottomLeft: Radius.circular(20),
+                                bottomRight: Radius.circular(20),
+                              ),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  bottom: 8, left: 10, right: 8),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Container(
+                                    height: 50,
+                                    width: 50,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(16.0),
+                                      image: DecorationImage(
+                                        image: AssetImage(
+                                          currentSong.albumArtImagePath,
+                                        ),
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
-                                    fit: BoxFit.cover,
                                   ),
-                                ),
-                              ),
-                              SizedBox(width: 13),
-                              Text(
-                                currentSong.songName,
-                                style: TextStyle(
-                                  fontFamily: 'atma',
-                                  fontSize: 20,
-                                  color: Color(0xFFFF6B00),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: value.pauseOrResume,
-                                child: Container(
-                                  child: Icon(
-                                    playlistProvider.isPlaying
-                                        ? Icons.pause
-                                        : Icons.play_arrow,
-                                    color: Color(0xFFFF6B00),
-                                    size: 40,
+                                  SizedBox(width: 13),
+                                  Text(
+                                    currentSong.songName,
+                                    style: TextStyle(
+                                      fontFamily: 'atma',
+                                      fontSize: 20,
+                                      color: Color(0xFFFF6B00),
+                                    ),
                                   ),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: value.playNextSong,
-                                child: Container(
-                                  child: Icon(
-                                    Icons.skip_next,
-                                    color: Color(0xFFFF6B00),
-                                    size: 40,
+                                  IconButton(
+                                    onPressed: () {
+                                      // Toggle mute/unmute functionality
+                                      playlistProvider.toggleMute();
+                                    },
+                                    icon: Icon(
+                                      playlistProvider.isMuted
+                                          ? Icons.volume_off
+                                          : Icons.volume_up,
+                                      color: Color(0xFFFF6B00),
+                                    ),
                                   ),
-                                ),
+                                ],
                               ),
-                              
-                            ],
+                            ),
                           ),
-                        ),
+                          Text(
+                            'Online Chat',
+                            style: TextStyle(
+                              fontFamily: 'atma',
+                              fontSize: 35,
+                              color: Color(0xFFFF6B00),
+                            ),
+                          ),
+                        ],
                       ),
-                                Text(
-                                  'Online Chat',
-                                  style: TextStyle(
-                                    fontFamily: 'atma',
-                                    fontSize: 35,
-                                    color: Color(0xFFFF6B00),
-                                  ),
+                    );
+                  }),
+                  Expanded(
+                    child: ListView.builder(
+                      controller: _scrollController,
+                      reverse: true,
+                      shrinkWrap: true, // Add this line
+                      padding: EdgeInsets.only(
+                          bottom: 20), // Add padding to the bottom
+                      itemCount: messages.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                      snapshot.data!.docs[index]
+                                          ["currentUserImage"] as String),
                                 ),
-                    ],
-                  ),
-                );
-              }),
-      
-                Expanded(
-                  child: ListView.builder(
-                    controller: _scrollController,
-                    reverse: true,
-                    shrinkWrap: true, // Add this line
-                    padding:
-                        EdgeInsets.only(bottom: 20), // Add padding to the bottom
-                    itemCount: messages.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment:  CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              CircleAvatar(
-                                backgroundImage: NetworkImage(snapshot.data!.docs[index]["currentUserImage"] as String),
-                              ),
-                              Text(
-                                snapshot.data!.docs[index]["senderEmail"],
-                                style: TextStyle(
-                                    fontFamily: 'aBeeZee',
-                                    fontSize: 16,
-                                    color: Color(0xFFFF6B00)),
-                              ),
-                              Text(
-                                snapshot.data!.docs[index]["message"],
-                                style: TextStyle(
-                                    fontFamily: 'aBeeZee',
-                                    fontSize: 16,
-                                    color: Color(0xFFFF6B00)),
-                              ),
-                            ],
+                                Text(
+                                  snapshot.data!.docs[index]["senderEmail"],
+                                  style: TextStyle(
+                                      fontFamily: 'aBeeZee',
+                                      fontSize: 16,
+                                      color: Color(0xFFFF6B00)),
+                                ),
+                                Text(
+                                  snapshot.data!.docs[index]["message"],
+                                  style: TextStyle(
+                                      fontFamily: 'aBeeZee',
+                                      fontSize: 16,
+                                      color: Color(0xFFFF6B00)),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(30.0, 5.0, 30.0, 10.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black,
-                                spreadRadius: 2,
-                                blurRadius: 5,
-                                offset: Offset(0, 5),
-                              ),
-                            ],
-                          ),
-                          child: TextField(
-                            controller: _messageController,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide: BorderSide.none,
-                              ),
-                              filled: true,
-                              fillColor: Theme.of(context).colorScheme.secondary,
-                              contentPadding: const EdgeInsets.all(6),
-                              hintText: 'chat',
-                              hintStyle: const TextStyle(
-                                fontFamily: 'Inter',
-                                color: Color(0xFFFF6B00),
-                                fontSize: 14,
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(30.0, 5.0, 30.0, 10.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black,
+                                  spreadRadius: 2,
+                                  blurRadius: 5,
+                                  offset: Offset(0, 5),
+                                ),
+                              ],
+                            ),
+                            child: TextField(
+                              controller: _messageController,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                  borderSide: BorderSide.none,
+                                ),
+                                filled: true,
+                                fillColor:
+                                    Theme.of(context).colorScheme.secondary,
+                                contentPadding: const EdgeInsets.all(6),
+                                hintText: 'chat',
+                                hintStyle: const TextStyle(
+                                  fontFamily: 'Inter',
+                                  color: Color(0xFFFF6B00),
+                                  fontSize: 14,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                      SizedBox(width: 8),
-                      IconButton(
-                        onPressed: () => _dialogBuilder(context),
-                        icon: Icon(
-                          Icons.send,
-                          color: Color(0xFFFF6B00),
+                        SizedBox(width: 8),
+                        IconButton(
+                          onPressed: () => _dialogBuilder(context),
+                          icon: Icon(
+                            Icons.send,
+                            color: Color(0xFFFF6B00),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            
+                      ],
                     ),
-          );         
+                  ),
+                ],
+              ),
+            ),
+          );
         }
         var messages = snapshot.data!.docs;
-          
-         return SafeArea(
-           child: Scaffold(
+
+        return SafeArea(
+          child: Scaffold(
             body: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Consumer<PlaylistProvider>(builder: (context, value, child) {
-                final List<Song> playlist = value.playlist;
-                final currentSong = playlist[value.currentSongIndex ?? 0];
-                return GestureDetector(
-                  onTap: (){
-                    goToSong(playlist.indexOf(currentSong));
-                  },
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 80,
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.secondary,
-                          borderRadius: BorderRadius.only(
-                            // topLeft: Radius.circular(20),
-                            bottomLeft: Radius.circular(20),
-                            bottomRight: Radius.circular(20),
+                  final List<Song> playlist = value.playlist;
+                  final currentSong = playlist[value.currentSongIndex ?? 0];
+                  return GestureDetector(
+                    onTap: () {
+                      goToSong(playlist.indexOf(currentSong));
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          height: 80,
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.secondary,
+                            borderRadius: BorderRadius.only(
+                              // topLeft: Radius.circular(20),
+                              bottomLeft: Radius.circular(20),
+                              bottomRight: Radius.circular(20),
+                            ),
                           ),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.only(bottom: 8, left: 10, right: 8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Container(
-                                height: 50,
-                                width: 50,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16.0),
-                                  image: DecorationImage(
-                                    image: AssetImage(
-                                      currentSong.albumArtImagePath,
+                          child: Padding(
+                            padding:
+                                EdgeInsets.only(bottom: 8, left: 10, right: 8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Container(
+                                  height: 50,
+                                  width: 50,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(16.0),
+                                    image: DecorationImage(
+                                      image: AssetImage(
+                                        currentSong.albumArtImagePath,
+                                      ),
+                                      fit: BoxFit.cover,
                                     ),
-                                    fit: BoxFit.cover,
                                   ),
                                 ),
-                              ),
-                              SizedBox(width: 13),
-                              Text(
-                                currentSong.songName,
-                                style: TextStyle(
-                                  fontFamily: 'atma',
-                                  fontSize: 20,
-                                  color: Color(0xFFFF6B00),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: value.pauseOrResume,
-                                child: Container(
-                                  child: Icon(
-                                    playlistProvider.isPlaying
-                                        ? Icons.pause
-                                        : Icons.play_arrow,
-                                    color: Color(0xFFFF6B00),
-                                    size: 40,
-                                  ),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: value.playNextSong,
-                                child: Container(
-                                  child: Icon(
-                                    Icons.skip_next,
-                                    color: Color(0xFFFF6B00),
-                                    size: 40,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                                            Text(
-                                  'Online Chat',
+                                SizedBox(width: 13),
+                                Text(
+                                  currentSong.songName,
                                   style: TextStyle(
                                     fontFamily: 'atma',
-                                    fontSize: 35,
+                                    fontSize: 20,
                                     color: Color(0xFFFF6B00),
                                   ),
                                 ),
-                    ],
-                  ),
-                );
-              }),
-
+                                IconButton(
+                                  onPressed: () {
+                                    // Toggle mute/unmute functionality
+                                    playlistProvider.toggleMute();
+                                  },
+                                  icon: Icon(
+                                    playlistProvider.isMuted
+                                        ? Icons.volume_off
+                                        : Icons.volume_up,
+                                    color: Color(0xFFFF6B00),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Text(
+                          'Online Chat',
+                          style: TextStyle(
+                            fontFamily: 'atma',
+                            fontSize: 35,
+                            color: Color(0xFFFF6B00),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }),
                 Expanded(
                   child: ListView.builder(
                     controller: _scrollController,
                     reverse: true,
                     shrinkWrap: true, // Add this line
-                    padding:
-                        EdgeInsets.only(bottom: 20), // Add padding to the bottom
+                    padding: EdgeInsets.only(
+                        bottom: 20), // Add padding to the bottom
                     itemCount: messages.length,
                     itemBuilder: (context, index) {
                       var alignment = (snapshot.data!.docs[index]
@@ -424,7 +406,8 @@ class _ChatOnlinePageState extends State<ChatOnlinePage> {
                                 : MainAxisAlignment.start,
                             children: [
                               CircleAvatar(
-                                backgroundImage: NetworkImage(snapshot.data!.docs[index]["currentUserImage"] as String),
+                                backgroundImage: NetworkImage(snapshot.data!
+                                    .docs[index]["currentUserImage"] as String),
                               ),
                               Text(
                                 snapshot.data!.docs[index]["senderEmail"],
@@ -472,7 +455,8 @@ class _ChatOnlinePageState extends State<ChatOnlinePage> {
                                 borderSide: BorderSide.none,
                               ),
                               filled: true,
-                              fillColor: Theme.of(context).colorScheme.secondary,
+                              fillColor:
+                                  Theme.of(context).colorScheme.secondary,
                               contentPadding: const EdgeInsets.all(6),
                               hintText: 'chat',
                               hintStyle: const TextStyle(
@@ -497,8 +481,8 @@ class _ChatOnlinePageState extends State<ChatOnlinePage> {
                 ),
               ],
             ),
-                   ),
-         );
+          ),
+        );
       },
     );
   }
