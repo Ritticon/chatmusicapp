@@ -380,21 +380,19 @@ class _ChatOnlinePageState extends State<ChatOnlinePage> {
                           ),
                         ),
                       ),
+                                            Text(
+                                  'Online Chat',
+                                  style: TextStyle(
+                                    fontFamily: 'atma',
+                                    fontSize: 35,
+                                    color: Color(0xFFFF6B00),
+                                  ),
+                                ),
                     ],
                   ),
                 );
               }),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(30.0, 20.0, 8.0, 3.0),
-                  child: Text(
-                    'Online Chat',
-                    style: TextStyle(
-                      fontFamily: 'atma',
-                      fontSize: 35,
-                      color: Color(0xFFFF6B00),
-                    ),
-                  ),
-                ),
+
                 Expanded(
                   child: ListView.builder(
                     controller: _scrollController,
@@ -450,7 +448,7 @@ class _ChatOnlinePageState extends State<ChatOnlinePage> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 100.0),
+                  padding: const EdgeInsets.fromLTRB(30.0, 5.0, 30.0, 10.0),
                   child: Row(
                     children: [
                       Expanded(
