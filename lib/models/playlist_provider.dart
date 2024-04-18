@@ -24,6 +24,7 @@ class PlaylistProvider extends ChangeNotifier {
     // fetchMusic();
   }
 
+
   final List<Song> _playlist = [
     // song 1
     Song(
@@ -265,6 +266,23 @@ class PlaylistProvider extends ChangeNotifier {
       int randomIndex = random.nextInt(_playlist.length);
       currentSongIndex = randomIndex;
       play();
+    }
+  }
+
+  bool _isMuted = false; // Define _isMuted
+  bool get isMuted => _isMuted;
+  set isMuted(bool value) {
+    _isMuted = value;
+    notifyListeners();
+  }
+  void toggleMute() {
+    isMuted = !isMuted; // Toggle the value of isMuted
+    if (_audioPlayer != null) {
+      if (isMuted) {
+        _audioPlayer.setVolume(0);
+      } else {
+        _audioPlayer.setVolume(1);
+      }
     }
   }
 

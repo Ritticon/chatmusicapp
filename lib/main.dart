@@ -76,137 +76,15 @@ final GoRouter _router = GoRouter(
         builder: (BuildContext context, GoRouterState state) => const settingPage(),
       ),
     ],
-  // routes: <RouteBase>[
-  //   GoRoute(
-  //     path: '/',
-  //     builder: (BuildContext context, GoRouterState state) {
-  //       return Home();
-  //     },
-  //     routes: <RouteBase>[
-  //       GoRoute(
-  //         path: 'streaming',
-  //         builder: (BuildContext context, GoRouterState state) {
-  //           return const StreamingPage();
-  //         },
-  //         routes: <RouteBase>[
-  //       GoRoute(
-  //         path: 'chat',
-  //         builder: (BuildContext context, GoRouterState state) {
-  //           return const ChatOnlinePage();
-  //         },
-  //         routes: <RouteBase>[
-  //       GoRoute(
-  //         path: 'search',
-  //         builder: (BuildContext context, GoRouterState state) {
-  //           return const searchMusic();
-  //         },
-  //         routes: <RouteBase>[
-  //       GoRoute(
-  //         path: 'favsong',
-  //         builder: (BuildContext context, GoRouterState state) {
-  //           return const FavoriteSong();
-  //         },
-  //         routes: <RouteBase>[
-  //       GoRoute(
-  //         path: 'profile',
-  //         builder: (BuildContext context, GoRouterState state) {
-  //           return const MyProfile();
-  //         },
-  //         routes: <RouteBase>[
-  //       GoRoute(
-  //         path: 'popupsong',
-  //         builder: (BuildContext context, GoRouterState state) {
-  //           return const PopupSong();
-  //         },
-  //         routes: <RouteBase>[
-  //       GoRoute(
-  //         path: 'login',
-  //         builder: (BuildContext context, GoRouterState state) {
-  //           return const Login();
-  //         },
-  //         routes: <RouteBase>[
-  //       GoRoute(
-  //         path: 'register',
-  //         builder: (BuildContext context, GoRouterState state) {
-  //           return const Register();
-  //         },
-  //         routes: <RouteBase>[
-  //       GoRoute(
-  //         path: 'setting',
-  //         builder: (BuildContext context, GoRouterState state) {
-  //           return const settingPage();
-  //         },
-  //       ),
-  //     ],
-  //       ),
-  //     ],
-  //       ),
-  //     ],
-  //       ),
-  //     ],
-  //       ),
-  //     ],
-  //       ),
-  //     ],
-  //       ),
-  //     ],
-  //       ),
-  //     ],
-  //       ),
-  //     ],
-  //   ),
-  // ],
 );
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-  
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       routerConfig: _router,
-
-
-      // routes: {
-      //   '/streaming':(context) => const StreamingPage(),
-      //   '/chat':(context) => const ChatOnlinePage(),
-      //   'search':(context) => const searchMusic(),
-      //   'favsong':(context) => const FavoriteSong(),
-      //   '/profile':(context) => const MyProfile(),
-      //   'popupsong':(context) => const PopupSong(),
-      //   '/login':(context) => const Login(),
-      //   '/register':(context) => const Register(),
-      //   '/setting':(context) => const settingPage(),
-      // },
-      theme: Provider.of<ThemeProvider>(context).themeData,
-      
+      theme: Provider.of<ThemeProvider>(context).themeData,  
     );
   }
 }
-
-    // late final GoRouter _router = GoRouter(
-    // routes: <GoRoute>[
-    //   GoRoute(
-    //     path: '/',
-    //     builder: (BuildContext context, GoRouterState state) => const StreamingPage(),
-    //   ),
-    //   GoRoute(
-    //     path: '/login',
-    //     builder: (BuildContext context, GoRouterState state) => const Login(),
-    //   ),
-    // ],
-    //     // redirect to the login page if the user is not logged in
-    // redirect: (BuildContext context, GoRouterState state) {
-    //   // final bool loggedIn = _loginInfo.loggedIn;
-    //   final bool loggingIn = state.matchedLocation == '/login';
-    //   if (!loggingIn) {
-    //     return '/login';
-    //   }
-    //   if (loggingIn) {
-    //     return '/';
-    //   }
-    //   return null;
-    // },
-    // // changes on the listenable will cause the router to refresh its route
-    // refreshListenable: _loginInfo,
-    // ),

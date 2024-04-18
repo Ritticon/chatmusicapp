@@ -137,25 +137,27 @@ class _StreamingPageState extends State<StreamingPage> {
     );
   }
 
-  Widget _buildPlayerControls(PlaylistProvider value) {
-    return Row(
-      children: [
-        Expanded(
-          flex: 2,
-          child: GestureDetector(
-            onTap: value.pauseOrResume,
-            child: Container(
-              child: Icon(
-                value.isPlaying ? Icons.pause : Icons.play_arrow,
-                color: const Color(0xFFFF6B00),
-                size: 40,
-              ),
+Widget _buildPlayerControls(PlaylistProvider value) {
+  return Row(
+    children: [
+      Expanded(
+        flex: 2,
+        child: GestureDetector(
+          onTap: value.toggleMute,
+          child: Container(
+            child: Icon(
+              value.isMuted ? Icons.volume_off : Icons.volume_up, // Update to use isMuted
+              color: const Color(0xFFFF6B00),
+              size: 40,
             ),
           ),
         ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
+}
+
+
 
   Widget _buildCurrentTimeAndDuration(
       PlaylistProvider value, Song currentSong) {
