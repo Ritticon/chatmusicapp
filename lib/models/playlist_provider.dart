@@ -90,10 +90,24 @@ class PlaylistProvider extends ChangeNotifier {
         isFavorite: false),
 
     Song(
-        songName: "Run it Up",
+        songName: "StayAroundMe",
         artistName: "LiL Hustle HFML",
         albumArtImagePath: "assets/image/runitup.png",
         audioPath: "audio/runitup.mp3",
+        isFavorite: false),
+
+    Song(
+        songName: "Run it Up",
+        artistName: "mind",
+        albumArtImagePath: "assets/image/StayAroundMe.png",
+        audioPath: "audio/StayAroundMe.mp3",
+        isFavorite: false),
+
+    Song(
+        songName: "Rain",
+        artistName: "PiXXiE",
+        albumArtImagePath: "assets/image/rain.png",
+        audioPath: "audio/rain.mp3",
         isFavorite: false),
   ];
 
