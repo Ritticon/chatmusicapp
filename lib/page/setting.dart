@@ -48,11 +48,12 @@ class settingPage extends StatelessWidget {
               ),
             ),
             CupertinoSwitch(
-              value:
-                  Provider.of<ThemeProvider>(context, listen: false).isDarkMode,
-              onChanged: (value) =>
-                  Provider.of<ThemeProvider>(context, listen: false)
-                      .toggleTheme(),
+              value: Provider.of<ThemeProvider>(context)
+                  .isDarkMode, // ไม่ต้องใส่ listen: false ที่นี่
+              onChanged: (value) => Provider.of<ThemeProvider>(context,
+                      listen:
+                          false) // ใส่ listen: false ที่นี่เพื่อป้องกันการวนซ้ำ
+                  .toggleTheme(),
             )
           ],
         ),
