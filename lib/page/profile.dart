@@ -87,43 +87,40 @@ class _MyProfileState extends State<MyProfile> {
                 ElevatedButton(
                   onPressed: () {
                     auth.signOut().then((value) {
-                      //  StreamingPage();
-
-                      // Home();
                       GoRouter.of(context).push('/');
-                      //  Navigator.pushNamed(context, '/streaming');
-                      // Navigator.pushNamedAndRemoveUntil(context, '/streaming', (route) => false);
                     });
                   },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        const Color.fromARGB(255, 103, 38, 0)),
+                    foregroundColor: MaterialStateProperty.all<Color>(
+                        Color.fromARGB(255, 255, 100, 0)),
+                  ),
                   child: Transform.rotate(
                     angle: 3.14,
-                    child: Icon(
-                      Icons.logout_sharp,
-                      color: Color.fromARGB(255, 255, 100, 0),
-                    ),
+                    child: Icon(Icons.logout_sharp),
                   ),
                 ),
+                SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
                     GoRouter.of(context).pushReplacement('/setting');
                   },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(
-                        Color.fromARGB(255, 255, 255, 255)), // เปลี่ยนสีเป็นสีที่คุณต้องการ
+                        Color.fromARGB(255, 103, 38, 0)),
                   ),
                   child: Row(
                     children: [
                       Icon(
                         Icons.settings,
-                        color: Color.fromARGB(255, 255, 100,
-                            0), // เปลี่ยนสีของฟันเฟืองเป็นสีที่คุณต้องการ
+                        color: Color.fromARGB(255, 255, 100, 0),
                       ),
                       SizedBox(width: 8),
                       Text(
                         "S E T T I N G",
                         style: TextStyle(
-                          color: Color.fromARGB(255, 255, 100,
-                              0), // เปลี่ยนสีข้อความเป็นสีที่คุณต้องการ
+                          color: Color.fromARGB(255, 255, 100, 0),
                         ),
                       ),
                     ],

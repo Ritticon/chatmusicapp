@@ -25,7 +25,6 @@ class PlaylistProvider extends ChangeNotifier {
     // fetchMusic();
   }
 
-
   final List<Song> _playlist = [
     // song 1
     Song(
@@ -92,14 +91,14 @@ class PlaylistProvider extends ChangeNotifier {
         isFavorite: false),
 
     Song(
-        songName: "StayAroundMe",
+        songName: "Run it Up",
         artistName: "LiL Hustle HFML",
         albumArtImagePath: "assets/image/runitup.png",
         audioPath: "audio/runitup.mp3",
         isFavorite: false),
 
     Song(
-        songName: "Run it Up",
+        songName: "StayAroundMe",
         artistName: "mind",
         albumArtImagePath: "assets/image/StayAroundMe.png",
         audioPath: "audio/StayAroundMe.mp3",
@@ -172,8 +171,9 @@ class PlaylistProvider extends ChangeNotifier {
     // เพื่อบอกว่าข้อมูลได้มีการเปลี่ยนแปลงแล้ว
     notifyListeners();
   }
+
   bool _isPlayings = false;
-    void plays() async {
+  void plays() async {
     final String path = _playlist[_currentSongStream!].audioPath;
     await _audioPlayer.stop();
     await _audioPlayer.play(AssetSource(path));
@@ -181,6 +181,7 @@ class PlaylistProvider extends ChangeNotifier {
     // เพื่อบอกว่าข้อมูลได้มีการเปลี่ยนแปลงแล้ว
     notifyListeners();
   }
+
   // void switchs() {
   //   _isPlaying = !_isPlaying ;
   // }
@@ -198,7 +199,7 @@ class PlaylistProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-    // pause current song
+  // pause current song
   void pauses() async {
     await _audioPlayer.pause();
     _isPlayings = false;
@@ -209,11 +210,12 @@ class PlaylistProvider extends ChangeNotifier {
   void resumes() async {
     await _audioPlayer.resume();
     _isPlayings = true;
-  
+
     notifyListeners();
   }
- void pausesOrResumes() async {
-    if ( _isPlayings) {
+
+  void pausesOrResumes() async {
+    if (_isPlayings) {
       pauses();
     } else {
       resumes();
@@ -311,6 +313,7 @@ class PlaylistProvider extends ChangeNotifier {
     _isMuted = value;
     notifyListeners();
   }
+
   void toggleMute() {
     isMuted = !isMuted; // Toggle the value of isMuted
     if (_audioPlayer != null) {
@@ -340,7 +343,7 @@ class PlaylistProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-    set currentSongStream(int? newindex) {
+  set currentSongStream(int? newindex) {
     _currentSongStream = newindex;
     if (newindex != null) {
       plays();
