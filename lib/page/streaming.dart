@@ -23,22 +23,26 @@ class _StreamingPageState extends State<StreamingPage> {
   void initState() {
     super.initState();
     _playlistProvider = Provider.of<PlaylistProvider>(context, listen: false);
-    if (_playlistProvider.currentSongIndex != null) {
-      _playlistProvider.play(); // เล่นเพลงต่อจากจุดที่ค้างอยู่
+    if (_playlistProvider.currentSongStream != null) {
+      print("เข้า");
+      _playlistProvider.plays(); // เล่นเพลงต่อจากจุดที่ค้างอยู่
     } else {
-      _playlistProvider
-          .shuffleAndPlay(); // เล่นเพลงแบบสุ่มเมื่อเข้าหน้านี้ครั้งแรก
+      print("ไม่เข้า");
+      _playlistProvider.shuffleAndPlay(); // เล่นเพลงแบบสุ่มเมื่อเข้าหน้านี้ครั้งแรก
     }
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (_playlistProvider.currentSongIndex != null &&
-        _playlistProvider.isPlaying) {
-      _playlistProvider.resume(); // นำกลับมาเล่นต่อเมื่อกลับมาที่หน้านี้
+    if (_playlistProvider.currentSongStream != null ) {
+          print(_playlistProvider.isPlayings);
+          print("เข้า");
+      _playlistProvider.resumes(); // นำกลับมาเล่นต่อเมื่อกลับมาที่หน้านี้
     } else {
-      _playlistProvider.pause(); // หยุดเล่นเมื่อออกจากหน้านี้
+      print("ไม่");
+      print(_playlistProvider.isPlayings);
+      _playlistProvider.pauses(); // หยุดเล่นเมื่อออกจากหน้านี้
     }
   }
 
@@ -57,6 +61,7 @@ class _StreamingPageState extends State<StreamingPage> {
           .orderBy('timestamp', descending: true)
           .snapshots(),
       builder: (context, snapshot) {
+        
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
         }
@@ -68,7 +73,7 @@ class _StreamingPageState extends State<StreamingPage> {
         return Consumer<PlaylistProvider>(
           builder: (context, value, child) {
             List<Song> playlist = value.playlist;
-            Song currentSong = playlist[value.currentSongIndex ?? 0];
+            Song currentSong = playlist[value.currentSongStream ?? 0];
             User? user = FirebaseAuth.instance.currentUser;
 
             return Scaffold(

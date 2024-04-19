@@ -13,6 +13,7 @@ class PlaylistProvider extends ChangeNotifier {
   // late final CollectionReference _songsCollection;
   // late List<Song> _playlist = [];
   int? _currentSongIndex;
+  int? _currentSongStream;
   // audio player
   final AudioPlayer _audioPlayer = AudioPlayer();
   // duration
@@ -171,7 +172,18 @@ class PlaylistProvider extends ChangeNotifier {
     // เพื่อบอกว่าข้อมูลได้มีการเปลี่ยนแปลงแล้ว
     notifyListeners();
   }
-
+  bool _isPlayings = false;
+    void plays() async {
+    final String path = _playlist[_currentSongStream!].audioPath;
+    await _audioPlayer.stop();
+    await _audioPlayer.play(AssetSource(path));
+    _isPlayings = true;
+    // เพื่อบอกว่าข้อมูลได้มีการเปลี่ยนแปลงแล้ว
+    notifyListeners();
+  }
+  // void switchs() {
+  //   _isPlaying = !_isPlaying ;
+  // }
   // pause current song
   void pause() async {
     await _audioPlayer.pause();
@@ -183,6 +195,29 @@ class PlaylistProvider extends ChangeNotifier {
   void resume() async {
     await _audioPlayer.resume();
     _isPlaying = true;
+    notifyListeners();
+  }
+
+    // pause current song
+  void pauses() async {
+    await _audioPlayer.pause();
+    _isPlayings = false;
+    notifyListeners();
+  }
+
+  // resume playing
+  void resumes() async {
+    await _audioPlayer.resume();
+    _isPlayings = true;
+  
+    notifyListeners();
+  }
+ void pausesOrResumes() async {
+    if ( _isPlayings) {
+      pauses();
+    } else {
+      resumes();
+    }
     notifyListeners();
   }
 
@@ -264,8 +299,9 @@ class PlaylistProvider extends ChangeNotifier {
     if (_playlist.isNotEmpty) {
       Random random = Random();
       int randomIndex = random.nextInt(_playlist.length);
-      currentSongIndex = randomIndex;
-      play();
+      _currentSongStream = randomIndex;
+      print("SongStream = ${_currentSongStream}");
+      plays();
     }
   }
 
@@ -289,7 +325,9 @@ class PlaylistProvider extends ChangeNotifier {
   // dispose
   List<Song> get playlist => _playlist;
   int? get currentSongIndex => _currentSongIndex;
+  int? get currentSongStream => _currentSongStream;
   bool get isPlaying => _isPlaying;
+  bool get isPlayings => _isPlayings;
   Duration get currentDuration => _currentDuration;
   Duration get totalDuration => _totalDuration;
   //setting
@@ -298,6 +336,15 @@ class PlaylistProvider extends ChangeNotifier {
     if (newIndex != null) {
       play();
       debugPrint('${currentDuration.toString()} mmmm');
+    }
+    notifyListeners();
+  }
+
+    set currentSongStream(int? newindex) {
+    _currentSongStream = newindex;
+    if (newindex != null) {
+      plays();
+      print('มาแล้วสูๆๆๆ mmmm');
     }
     notifyListeners();
   }

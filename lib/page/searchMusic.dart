@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:marquee_widget/marquee_widget.dart';
+
 
 class searchMusic extends StatefulWidget {
   const searchMusic({Key? key}) : super(key: key);
@@ -29,7 +29,7 @@ class _searchMusicState extends State<searchMusic> {
     // String Song =  FirebaseFirestore.instance.collection('Playlist').get();
     // playlistProvider.addData();
   }
-
+  
   void goToSong(int songIndex) {
     playlistProvider.currentSongIndex = songIndex;
     showDialog(
@@ -50,88 +50,96 @@ class _searchMusicState extends State<searchMusic> {
           children: [
             Consumer<PlaylistProvider>(builder: (context, value, child) {
               final List<Song> playlist = value.playlist;
-              final currentSong = playlist[value.currentSongIndex ?? 0];
+              // final currentSong = playlist[value.currentSongIndex!];
+              final currentSong = value.currentSongIndex != null ? playlist[value.currentSongIndex!] : null;
               return GestureDetector(
-                onTap: () {
-                  goToSong(playlist.indexOf(currentSong));
-                },
+                  onTap: () {
+                    if (currentSong != null) {
+                      goToSong(playlist.indexOf(currentSong));
+                    }
+                  },
+                
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Container(
-                      height: 80,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.secondary,
-                        borderRadius: BorderRadius.only(
-                          // topLeft: Radius.circular(20),
-                          bottomLeft: Radius.circular(20),
-                          bottomRight: Radius.circular(20),
-                        ),
+
+      if(currentSong != null) ...[
+        Container(
+          height: 80,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.secondary,
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(20),
+              bottomRight: Radius.circular(20),
+            ),
+          ),
+          child: Padding(
+            padding: EdgeInsets.only(bottom: 8, left: 10, right: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Container(
+                  height: 50,
+                  width: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16.0),
+                    image: DecorationImage(
+                      image: AssetImage(
+                        currentSong.albumArtImagePath,
                       ),
-                      child: Padding(
-                        padding: EdgeInsets.only(bottom: 8, left: 10, right: 8),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Container(
-                              height: 50,
-                              width: 50,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16.0),
-                                image: DecorationImage(
-                                  image: AssetImage(
-                                    currentSong.albumArtImagePath,
-                                  ),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 13),
-                            Text(
-                              currentSong.songName,
-                              style: TextStyle(
-                                fontFamily: 'atma',
-                                fontSize: 20,
-                                color: Color(0xFFFF6B00),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: value.pauseOrResume,
-                              child: Container(
-                                child: Icon(
-                                  playlistProvider.isPlaying
-                                      ? Icons.pause
-                                      : Icons.play_arrow,
-                                  color: Color(0xFFFF6B00),
-                                  size: 40,
-                                ),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: value.playNextSong,
-                              child: Container(
-                                child: Icon(
-                                  Icons.skip_next,
-                                  color: Color(0xFFFF6B00),
-                                  size: 40,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      fit: BoxFit.cover,
                     ),
-                    Text(
-                      'Search List',
-                      style: TextStyle(
-                        fontFamily: 'atma',
-                        fontSize: 32,
-                        color: Color(0xFFFF6B00),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
+                SizedBox(width: 13),
+                Text(
+                  currentSong.songName,
+                  style: TextStyle(
+                    fontFamily: 'atma',
+                    fontSize: 20,
+                    color: Color(0xFFFF6B00),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: value.pauseOrResume,
+                  child: Container(
+                    child: Icon(
+                      playlistProvider.isPlaying
+                          ? Icons.pause
+                          : Icons.play_arrow,
+                      color: Color(0xFFFF6B00),
+                      size: 40,
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: value.playNextSong,
+                  child: Container(
+                    child: Icon(
+                      Icons.skip_next,
+                      color: Color(0xFFFF6B00),
+                      size: 40,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+      if(currentSong == null) ...[
+        Container()
+      ],
+      Text(
+        'Search List',
+        style: TextStyle(
+          fontFamily: 'atma',
+          fontSize: 32,
+          color: Color(0xFFFF6B00),
+        ),
+      ),
+    ]                ),
               );
             }),
             Expanded(
@@ -202,6 +210,7 @@ class _searchMusicState extends State<searchMusic> {
                         ),
                       ),
                       onTap: () {
+                        goToSong((index));
                         playlistProvider.currentSongIndex = index;
                         print("index!! = ${index}");
                         setState(() {

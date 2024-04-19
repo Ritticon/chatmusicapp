@@ -3,6 +3,7 @@ import 'package:chatmusicapp/models/playlist_provider.dart';
 import 'package:chatmusicapp/models/song.dart';
 import 'package:chatmusicapp/page/login.dart';
 import 'package:chatmusicapp/page/popupSongPage.dart';
+import 'package:chatmusicapp/page/streaming.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,7 +20,7 @@ class ChatOnlinePage extends StatefulWidget {
 }
 
 class _ChatOnlinePageState extends State<ChatOnlinePage> {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  
   final TextEditingController _messageController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final ChatServer _chatServer = ChatServer();
@@ -41,15 +42,16 @@ class _ChatOnlinePageState extends State<ChatOnlinePage> {
     }
   }
 
-  void goToSong(int songIndex) {
-    playlistProvider.currentSongIndex = songIndex;
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return PopupSong();
-      },
-    );
-  }
+  // void goToSong(int songIndex) {
+  //   playlistProvider.currentSongStream = songIndex;
+  //   print("Index Stream =${songIndex}");
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //      return GoRouter.of(context).push('/');
+  //     },
+  //   );
+  // }
 
   Future<void> _dialogBuilder(BuildContext context) {
     return showDialog<void>(
@@ -118,10 +120,11 @@ class _ChatOnlinePageState extends State<ChatOnlinePage> {
                 children: [
                   Consumer<PlaylistProvider>(builder: (context, value, child) {
                     final List<Song> playlist = value.playlist;
-                    final currentSong = playlist[value.currentSongIndex ?? 0];
+                    final currentSong = playlist[value.currentSongStream ?? 0];
+                    print("เพลงงง = ${currentSong}");
                     return GestureDetector(
                       onTap: () {
-                        goToSong(playlist.indexOf(currentSong));
+                        GoRouter.of(context).push('/');
                       },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -300,10 +303,10 @@ class _ChatOnlinePageState extends State<ChatOnlinePage> {
               children: [
                 Consumer<PlaylistProvider>(builder: (context, value, child) {
                   final List<Song> playlist = value.playlist;
-                  final currentSong = playlist[value.currentSongIndex ?? 0];
+                  final currentSong = playlist[value.currentSongStream ?? 0];
                   return GestureDetector(
                     onTap: () {
-                      goToSong(playlist.indexOf(currentSong));
+                      GoRouter.of(context).push('/');
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
