@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:chatmusicapp/models/playlist_provider.dart';
 import 'package:chatmusicapp/models/song.dart';
@@ -19,6 +20,11 @@ class _FavoriteSongState extends State<FavoriteSong> {
   void initState() {
     super.initState();
     playlistProvider = Provider.of<PlaylistProvider>(context, listen: false);
+    //    if (playlistProvider.isPlaying == true ) {
+    //   playlistProvider.play(); 
+    //  }
+    print("isplays = ${playlistProvider.isPlayings}");
+    print("isplay = ${playlistProvider.isPlaying}");
   }
 
   void goToSong(int songIndex) {
@@ -50,66 +56,73 @@ class _FavoriteSongState extends State<FavoriteSong> {
                   child: Column(
                     children: [
                       if (currentSong != null) ...[
-                        Container(
-                          height: 80,
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.secondary,
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(20),
-                              bottomRight: Radius.circular(20),
+                        GestureDetector(
+                                       onTap: () {
+                    if (currentSong != null) {
+                      goToSong(playlist.indexOf(currentSong));
+                    }
+                  },
+                          child: Container(
+                            height: 80,
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.secondary,
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(20),
+                                bottomRight: Radius.circular(20),
+                              ),
                             ),
-                          ),
-                          child: Padding(
-                            padding:
-                                EdgeInsets.only(bottom: 8, left: 10, right: 8),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Container(
-                                  height: 50,
-                                  width: 50,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(16.0),
-                                    image: DecorationImage(
-                                      image: AssetImage(
-                                          currentSong.albumArtImagePath),
-                                      fit: BoxFit.cover,
+                            child: Padding(
+                              padding:
+                                  EdgeInsets.only(bottom: 8, left: 10, right: 8),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  Container(
+                                    height: 50,
+                                    width: 50,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(16.0),
+                                      image: DecorationImage(
+                                        image: AssetImage(
+                                            currentSong.albumArtImagePath),
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                SizedBox(width: 13),
-                                Text(
-                                  currentSong.songName,
-                                  style: TextStyle(
-                                    fontFamily: 'atma',
-                                    fontSize: 20,
-                                    color: Color(0xFFFF6B00),
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: value.pauseOrResume,
-                                  child: Container(
-                                    child: Icon(
-                                      playlistProvider.isPlaying
-                                          ? Icons.pause
-                                          : Icons.play_arrow,
+                                  SizedBox(width: 13),
+                                  Text(
+                                    currentSong.songName,
+                                    style: TextStyle(
+                                      fontFamily: 'atma',
+                                      fontSize: 20,
                                       color: Color(0xFFFF6B00),
-                                      size: 40,
                                     ),
                                   ),
-                                ),
-                                GestureDetector(
-                                  onTap: value.playNextSong,
-                                  child: Container(
-                                    child: Icon(
-                                      Icons.skip_next,
-                                      color: Color(0xFFFF6B00),
-                                      size: 40,
+                                  GestureDetector(
+                                    onTap: value.pauseOrResume,
+                                    child: Container(
+                                      child: Icon(
+                                        playlistProvider.isPlaying
+                                            ? Icons.pause
+                                            : Icons.play_arrow,
+                                        color: Color(0xFFFF6B00),
+                                        size: 40,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                  GestureDetector(
+                                    onTap: value.playNextSong,
+                                    child: Container(
+                                      child: Icon(
+                                        Icons.skip_next,
+                                        color: Color(0xFFFF6B00),
+                                        size: 40,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         )

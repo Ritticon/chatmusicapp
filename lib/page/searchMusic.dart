@@ -28,8 +28,30 @@ class _searchMusicState extends State<searchMusic> {
     playlistProvider = Provider.of<PlaylistProvider>(context, listen: false);
     // String Song =  FirebaseFirestore.instance.collection('Playlist').get();
     // playlistProvider.addData();
+    //  if (playlistProvider.isPlaying == true ) {
+    //   playlistProvider.play(); 
+    //  }
+    //  playlistProvider.resumes(); 
+    print("isplays = ${playlistProvider.isPlayings}");
+    print("isplay = ${playlistProvider.isPlaying}");
   }
-  
+
+  //  @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   if (playlistProvider.isPlaying == true) {
+  //         print(playlistProvider.isPlayings);
+  //         print("เข้าสตีรมไม่นัน");
+  //     // playlistProvider.pause();
+  //     playlistProvider.resumes();   // นำกลับมาเล่นต่อเมื่อกลับมาที่หน้านี้
+  //   } else {
+  //     print("ไม่");
+  //     print(playlistProvider.isPlayings);
+  //     print(playlistProvider.isPlaying);
+  //     // playlistProvider.resume(); // หยุดเล่นเมื่อออกจากหน้านี้
+  //   }
+  // }
+
   void goToSong(int songIndex) {
     playlistProvider.currentSongIndex = songIndex;
     showDialog(

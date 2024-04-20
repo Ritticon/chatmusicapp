@@ -1,12 +1,10 @@
 import 'package:chatmusicapp/models/playlist_provider.dart';
 import 'package:chatmusicapp/models/song.dart';
-import 'package:chatmusicapp/page/chatOnline.dart';
 import 'package:chatmusicapp/page/login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class StreamingPage extends StatefulWidget {
@@ -25,27 +23,56 @@ class _StreamingPageState extends State<StreamingPage> {
     _playlistProvider = Provider.of<PlaylistProvider>(context, listen: false);
     if (_playlistProvider.currentSongStream != null) {
       print("เข้า");
-      _playlistProvider.plays(); // เล่นเพลงต่อจากจุดที่ค้างอยู่
+      _playlistProvider.plays();
+      // _playlistProvider.resumes();
+     
+     // เล่นเพลงต่อจากจุดที่ค้างอยู่
     } else {
       print("ไม่เข้า");
+      print("สถานะ =${_playlistProvider.isPlayings}");
       _playlistProvider.shuffleAndPlay(); // เล่นเพลงแบบสุ่มเมื่อเข้าหน้านี้ครั้งแรก
     }
-  }
+    // _playlistProvider.resumes();
+       
+      print("isplays = ${_playlistProvider.isPlayings}");
+      print("isplay = ${_playlistProvider.isPlaying}");
+    
 
+  }
+  
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (_playlistProvider.currentSongStream != null ) {
           print(_playlistProvider.isPlayings);
           print("เข้า");
-      _playlistProvider.resumes(); // นำกลับมาเล่นต่อเมื่อกลับมาที่หน้านี้
-    } else {
-      print("ไม่");
-      print(_playlistProvider.isPlayings);
-      _playlistProvider.pauses(); // หยุดเล่นเมื่อออกจากหน้านี้
+      // _playlistProvider.resumes(); // นำกลับมาเล่นต่อเมื่อกลับมาที่หน้านี้
+      if(_playlistProvider.isPlaying == false){
+        print("มายัง");
+        _playlistProvider.pause();
+          print("isplays = ${_playlistProvider.isPlayings}");
+          print("isplay = ${_playlistProvider.isPlaying}");
+          // _playlistProvider.plays();
+      }
+          print("ยังไม่มา");
+      _playlistProvider.resumes();
+      _playlistProvider.resumes();
+      
+    
     }
+    // else {
+    //   print("ไม่");
+    //   print(_playlistProvider.isPlayings);
+    //   _playlistProvider.pause(); // หยุดเล่นเมื่อออกจากหน้านี้
+    // }
+    // if(_playlistProvider.isPlayings == false){
+    //   _playlistProvider.plays();
+    // }
   }
-
+  //   void dispose() {
+  //       _playlistProvider.release();
+  //       super.dispose();
+  // }
   // Helper function to format the duration of the current song
   String formatTime(Duration duration) {
     String twoDigitSecond =
@@ -200,7 +227,9 @@ Widget _buildPlayerControls(PlaylistProvider value) {
         onChanged: (_) {},
         onChangeEnd: (double position) {
         },
+        
       ),
+      
     );
   }
 

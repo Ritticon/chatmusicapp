@@ -175,7 +175,7 @@ class PlaylistProvider extends ChangeNotifier {
   bool _isPlayings = false;
   void plays() async {
     final String path = _playlist[_currentSongStream!].audioPath;
-    await _audioPlayer.stop();
+    // await _audioPlayer.stop();
     await _audioPlayer.play(AssetSource(path));
     _isPlayings = true;
     // เพื่อบอกว่าข้อมูลได้มีการเปลี่ยนแปลงแล้ว
@@ -210,7 +210,7 @@ class PlaylistProvider extends ChangeNotifier {
   void resumes() async {
     await _audioPlayer.resume();
     _isPlayings = true;
-
+   
     notifyListeners();
   }
 
@@ -252,6 +252,21 @@ class PlaylistProvider extends ChangeNotifier {
     }
   }
 
+    // play next song
+  void playNextSongs() {
+    if (_currentSongStream != null) {
+      // ถึงเพลงสุดท้ายหรือยัง
+      if (_currentSongStream! < _playlist.length - 1) {
+        // go to next song if its not the last song
+        _currentSongStream = _currentSongStream! + 1;
+        plays();
+      } else {
+        // if last song, back to first song
+        _currentSongStream = 0;
+        plays();
+      }
+    }
+  }
   // prevoius song
   void playPreviousSong() async {
     // if more 2 seconds pass , if not restart current song
@@ -282,7 +297,11 @@ class PlaylistProvider extends ChangeNotifier {
 
     // listen for song complete
     _audioPlayer.onPlayerComplete.listen((event) {
-      playNextSong();
+      if(_isPlaying == true){
+        playNextSong();
+      }
+      
+      playNextSongs();
     });
   }
 
@@ -324,6 +343,7 @@ class PlaylistProvider extends ChangeNotifier {
       }
     }
   }
+
 
   // dispose
   List<Song> get playlist => _playlist;
