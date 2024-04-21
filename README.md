@@ -1,16 +1,5 @@
-# chatmusicapp
+เมื่อผู้ใช้ทำการดาวน์โหลด source code มาแล้ว ให้ทำการ unzip file จากนั้นพิมพ์ flutter pub get ใน terminal
 
-A new Flutter project.
+ให้ผู้ใช้ไปที่หน้า lib/main.dart แล้วให้ผู้ใช้ทำการ run แอปพลิเคชันจากหน้านี้
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+และถ้าหากผู้ใช้ต้องการดาวน์โหลดแอปพลิเคชันลงโทรศัพท์ให้ทำการพิมพ์ flutter build apk  ใน terminal แล้วไปที่ build/app/outputs/flutter-apk/ เพื่อ ใช้ไฟล์ app-release.apk ในการดาวน์โหลด
