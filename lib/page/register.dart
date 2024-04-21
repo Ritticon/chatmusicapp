@@ -10,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -41,8 +42,8 @@ class _RegisterState extends State<Register> {
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
-  final CollectionReference _usernameCollection = FirebaseFirestore.instance.collection("userProfile");
-
+  final CollectionReference _usernameCollection =
+      FirebaseFirestore.instance.collection("userProfile");
 
   @override
   Widget build(BuildContext context) {
@@ -92,11 +93,11 @@ class _RegisterState extends State<Register> {
                                 : const CircleAvatar(
                                     radius: 80,
                                     backgroundImage:
-                                        AssetImage("assets/image/profile.png"),
+                                        AssetImage("assets/image/logo.png"),
                                   ),
                             Positioned(
-                              bottom: 20,
-                              right: 20,
+                              bottom: 0,
+                              right: 0,
                               child: InkWell(
                                 onTap: () {
                                   showModalBottomSheet(
@@ -104,10 +105,26 @@ class _RegisterState extends State<Register> {
                                     builder: ((builder) => bottomSheet()),
                                   );
                                 },
-                                child: Icon(
-                                  Icons.camera_alt,
-                                  color: Colors.teal,
-                                  size: 28,
+                                child: Container(
+                                  width: 40,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    color: Color.fromARGB(255, 60, 25, 0),
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.5),
+                                        spreadRadius: 1,
+                                        blurRadius: 5,
+                                        offset: Offset(0, 2),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Icon(
+                                    Icons.camera_alt,
+                                    color: Color(0xFFFF6B00),
+                                    size: 24,
+                                  ),
                                 ),
                               ),
                             ),
@@ -150,7 +167,8 @@ class _RegisterState extends State<Register> {
                                       child: TextFormField(
                                         validator: RequiredValidator(
                                             errorText: "Please assign Email"),
-                                        keyboardType: TextInputType.emailAddress,
+                                        keyboardType:
+                                            TextInputType.emailAddress,
                                         onSaved: (String? email) {
                                           if (email != null) {
                                             setState(() {
@@ -197,7 +215,8 @@ class _RegisterState extends State<Register> {
                                       ),
                                       child: TextFormField(
                                         validator: RequiredValidator(
-                                            errorText: "Please assign Password"),
+                                            errorText:
+                                                "Please assign Password"),
                                         obscureText: true,
                                         onChanged: (value) {
                                           _password = value;
@@ -291,44 +310,12 @@ class _RegisterState extends State<Register> {
                                       onPressed: () async {
                                         if (formkey.currentState!.validate()) {
                                           formkey.currentState!.save();
-                            
-                                          String resp = await StoreData().saveData(username: profile.email, password: profile.password, file: _image!);
-                                          
-                                          print('imaggg = ${resp}');
-                                          try {
-                                            await FirebaseAuth.instance
-                                                .createUserWithEmailAndPassword(
-                                                    email: profile.email ?? '',
-                                                    password:
-                                                        profile.password ?? '')
-                                            .then((value) => 
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  title: Text("S U C C E S S"),
-                                                  content: Text(
-                                                      "your account has been successfully created."),
-                                                  actions: <Widget>[
-                                                    TextButton(
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                      child: Text('OK'),
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            ),
-                                           
-                                            );
-                                            formkey.currentState!.reset();
-                                            Navigator.pushNamedAndRemoveUntil(context, '/login',
-                                             ModalRoute.withName('/login'));
-                          
-                                          } on FirebaseAuthException catch (e) {
-                                            print("erorrr = ${e.message}");
+
+                                          // ตรวจสอบรูปแบบอีเมล
+                                          final emailRegExp = RegExp(
+                                              r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                                          if (!emailRegExp
+                                              .hasMatch(profile.email!)) {
                                             showDialog(
                                               context: context,
                                               builder: (BuildContext context) {
@@ -337,9 +324,9 @@ class _RegisterState extends State<Register> {
                                                       Theme.of(context)
                                                           .colorScheme
                                                           .secondary,
-                                                  title: Text("Error"),
-                                                  content: Text(e.message ??
-                                                      "An error occurred"),
+                                                  title: Text("Warning"),
+                                                  content: Text(
+                                                      "Please enter a valid email address with @gmail.com"),
                                                   actions: <Widget>[
                                                     TextButton(
                                                       onPressed: () {
@@ -352,6 +339,103 @@ class _RegisterState extends State<Register> {
                                                 );
                                               },
                                             );
+                                            return; // หยุดการทำงานของฟังก์ชันเมื่อไม่ผ่านการตรวจสอบอีเมล
+                                          }
+
+                                          if (_image == null) {
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  backgroundColor:
+                                                      Theme.of(context)
+                                                          .colorScheme
+                                                          .secondary,
+                                                  title: Text("Warning"),
+                                                  content: Text(
+                                                      "Please select an image"),
+                                                  actions: <Widget>[
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      child: Text('OK'),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          } else {
+                                            String resp =
+                                                await StoreData().saveData(
+                                              username: profile.email,
+                                              password: profile.password,
+                                              file: _image!,
+                                            );
+
+                                            print('imaggg = ${resp}');
+                                            try {
+                                              await FirebaseAuth.instance
+                                                  .createUserWithEmailAndPassword(
+                                                    email: profile.email ?? '',
+                                                    password:
+                                                        profile.password ?? '',
+                                                  )
+                                                  .then(
+                                                    (value) => showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return AlertDialog(
+                                                          title:
+                                                              Text("Success"),
+                                                          content: Text(
+                                                              "Your account has been successfully created."),
+                                                          actions: <Widget>[
+                                                            TextButton(
+                                                              onPressed: () {
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop();
+                                                              },
+                                                              child: Text('OK'),
+                                                            ),
+                                                          ],
+                                                        );
+                                                      },
+                                                    ),
+                                                  );
+
+                                              formkey.currentState!.reset();
+                                              GoRouter.of(context).push('/');
+                                            } on FirebaseAuthException catch (e) {
+                                              print("error = ${e.message}");
+                                              showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertDialog(
+                                                    backgroundColor:
+                                                        Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary,
+                                                    title: Text("Error"),
+                                                    content: Text(e.message ??
+                                                        "An error occurred"),
+                                                    actions: <Widget>[
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                        child: Text('OK'),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            }
                                           }
                                         }
                                       },
@@ -395,7 +479,7 @@ class _RegisterState extends State<Register> {
 
   Widget bottomSheet() {
     return Container(
-      height: 100,
+      height: 130,
       width: MediaQuery.of(context).size.width,
       margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       child: Column(
@@ -416,26 +500,82 @@ class _RegisterState extends State<Register> {
                 onTap: () {
                   _pickImage(ImageSource.camera);
                 },
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.camera,
+                child: Container(
+                  width: 100,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: Theme.of(context).colorScheme.secondary,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.5),
+                        spreadRadius: 1,
+                        blurRadius: 5,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.camera,
+                          color: Color(0xFFFF6B00),
+                        ),
+                        SizedBox(width: 5),
+                        Text(
+                          "Camera",
+                          style: TextStyle(
+                            color: Color(0xFFFF6B00),
+                            fontFamily: 'Inter',
+                            fontSize: 15,
+                          ),
+                        ),
+                      ],
                     ),
-                    Text("Camera")
-                  ],
+                  ),
                 ),
               ),
               InkWell(
                 onTap: () {
                   _pickImage(ImageSource.gallery);
                 },
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.image,
+                child: Container(
+                  width: 100,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: Theme.of(context).colorScheme.secondary,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.5),
+                        spreadRadius: 1,
+                        blurRadius: 5,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.image,
+                          color: Color(0xFFFF6B00),
+                        ),
+                        SizedBox(width: 5),
+                        Text(
+                          "Gallery",
+                          style: TextStyle(
+                            color: Color(0xFFFF6B00),
+                            fontFamily: 'Inter',
+                            fontSize: 15,
+                          ),
+                        ),
+                      ],
                     ),
-                    Text("Gallery")
-                  ],
+                  ),
                 ),
               ),
             ],
