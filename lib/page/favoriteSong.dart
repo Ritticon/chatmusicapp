@@ -28,6 +28,7 @@ class _FavoriteSongState extends State<FavoriteSong> {
   }
 
   void goToSong(int songIndex) {
+    playlistProvider.pauses();
     playlistProvider.currentSongIndex = songIndex;
     Navigator.push(
       context,
@@ -253,7 +254,7 @@ class _FavoriteSongState extends State<FavoriteSong> {
                                   ),
                                 ),
                                 onTap: () {
-                                  playlistProvider.pauses();
+                                  
                                   goToSong(
                                       playlistProvider.playlist.indexOf(song));
                                 },
