@@ -66,13 +66,11 @@ class _MyProfileState extends State<MyProfile> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                CircleAvatar(
-                  backgroundImage: imageUrl != null
-                      ? NetworkImage(imageUrl)
-                      : AssetImage('assets/image/profile.jpg')
-                          as ImageProvider<Object>?,
-                  radius: 80,
-                ),
+         CircleAvatar(
+              backgroundImage: NetworkImage(imageUrl!),
+              radius: 80,
+            ),
+
                 Container(
                   padding: EdgeInsets.symmetric(vertical: 20),
                   child: Text(

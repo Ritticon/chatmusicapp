@@ -10,8 +10,11 @@ final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 class StoreData{
   Future<String> uploadImageToStorage(String childName , Uint8List file) async {
-    
-   Reference ref = _storage.ref().child(childName).child('id');
+    var imageName = DateTime.now()
+                                      .millisecondsSinceEpoch
+                                      .toString();
+
+   Reference ref = _storage.ref().child('profile_image/$imageName.jpg');
    UploadTask uploadTask = ref.putData(file);
    TaskSnapshot snapshot = await uploadTask;
    String downloadUrl = await snapshot.ref.getDownloadURL();
@@ -26,7 +29,7 @@ class StoreData{
       try{
         print("เข้า tryyyy");
         if(username.isNotEmpty || password.isNotEmpty){
-        String imageUrl = await uploadImageToStorage("ProfileImage", file);
+        String imageUrl = await uploadImageToStorage("profile_image", file);
         await _firestore.collection('userProfile').add({
           'username' : username,
           'password' : password,
