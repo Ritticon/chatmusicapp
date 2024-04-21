@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'package:chatmusicapp/models/playlist_provider.dart';
 import 'package:chatmusicapp/models/song.dart';
 import 'package:chatmusicapp/page/popupSongPage.dart';
@@ -25,8 +24,6 @@ class _searchMusicState extends State<searchMusic> {
   void initState() {
     super.initState();
     playlistProvider = Provider.of<PlaylistProvider>(context, listen: false);
-    print("isplays = ${playlistProvider.isPlayings}");
-    print("isplay = ${playlistProvider.isPlaying}");
 
     if (playlistProvider.isPlaying == true) {
       playlistProvider.pauses();
@@ -37,17 +34,9 @@ class _searchMusicState extends State<searchMusic> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (playlistProvider.isPlaying == true) {
-      print(playlistProvider.isPlayings);
-      print("เข้าสตีรมไม่นัน");
       playlistProvider.pauses();
       playlistProvider.resume();
-      // playlistProvider.resumes();   // นำกลับมาเล่นต่อเมื่อกลับมาที่หน้านี้
-    } else {
-      print("ไม่");
-      print(playlistProvider.isPlayings);
-      print(playlistProvider.isPlaying);
-      // playlistProvider.resume(); // หยุดเล่นเมื่อออกจากหน้านี้
-    }
+    } else {}
   }
 
   void goToSong(int songIndex) {
@@ -71,14 +60,12 @@ class _searchMusicState extends State<searchMusic> {
           children: [
             Consumer<PlaylistProvider>(builder: (context, value, child) {
               final List<Song> playlist = value.playlist;
-              // final currentSong = playlist[value.currentSongIndex!];
               final currentSong = value.currentSongIndex != null
                   ? playlist[value.currentSongIndex!]
                   : null;
               return GestureDetector(
                 onTap: () {
                   if (currentSong != null) {
-                    
                     goToSong(playlist.indexOf(currentSong));
                   }
                 },
@@ -233,9 +220,7 @@ class _searchMusicState extends State<searchMusic> {
                         ),
                       ),
                       onTap: () {
-                        
                         goToSong((index));
-
                         playlistProvider.currentSongIndex = index;
                         print("index!! = ${index}");
                         setState(() {
@@ -249,9 +234,8 @@ class _searchMusicState extends State<searchMusic> {
                 },
               ),
             ),
-            // Row ที่มีช่องค้นหาและปุ่มส่ง
             Container(
-              height: 70, // เพิ่มความสูงให้ Row
+              height: 70,
               child: Row(
                 children: [
                   Expanded(

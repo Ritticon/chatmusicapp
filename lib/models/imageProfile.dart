@@ -16,8 +16,4 @@ Stream<Map<String, String>> getEmailImageMap() async* {
     var imageUrl = document['imageProfile'];
     emailImageMap[email] = imageUrl;
   }
-
-  // แสดงผล email และรูปภาพใน Map
-  print("email และรูปภาพ: $emailImageMap");
-
 }

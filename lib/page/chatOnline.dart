@@ -1,9 +1,6 @@
 import 'package:chatmusicapp/models/chat_server.dart';
 import 'package:chatmusicapp/models/playlist_provider.dart';
 import 'package:chatmusicapp/models/song.dart';
-import 'package:chatmusicapp/page/login.dart';
-import 'package:chatmusicapp/page/popupSongPage.dart';
-import 'package:chatmusicapp/page/streaming.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,17 +17,16 @@ class ChatOnlinePage extends StatefulWidget {
 }
 
 class _ChatOnlinePageState extends State<ChatOnlinePage> {
-  
   final TextEditingController _messageController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final ChatServer _chatServer = ChatServer();
-  late ScrollController _scrollController; // Declare ScrollController
+  late ScrollController _scrollController;
   late final PlaylistProvider playlistProvider;
 
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController(); // Initialize ScrollController
+    _scrollController = ScrollController();
     playlistProvider = Provider.of<PlaylistProvider>(context, listen: false);
   }
 
@@ -41,17 +37,6 @@ class _ChatOnlinePageState extends State<ChatOnlinePage> {
       _messageController.clear();
     }
   }
-
-  // void goToSong(int songIndex) {
-  //   playlistProvider.currentSongStream = songIndex;
-  //   print("Index Stream =${songIndex}");
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //      return GoRouter.of(context).push('/');
-  //     },
-  //   );
-  // }
 
   Future<void> _dialogBuilder(BuildContext context) {
     return showDialog<void>(
@@ -97,21 +82,13 @@ class _ChatOnlinePageState extends State<ChatOnlinePage> {
           .orderBy('timestamp', descending: true)
           .snapshots(),
       builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          print("เข้าhaserror ");
-          // context.go('/login');
-        }
+        if (snapshot.hasError) {}
         print("snapdata = ${snapshot.data}");
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator();
         }
-        if (!snapshot.hasData) {
-          print("เข้าhasdata ");
-          //  context.go('/login');
-        }
+        if (!snapshot.hasData) {}
         if (_auth.currentUser == null) {
-          print("เข้าาจ้า ");
-          // return Login();
           var messages = snapshot.data!.docs;
           return SafeArea(
             child: Scaffold(
@@ -121,7 +98,6 @@ class _ChatOnlinePageState extends State<ChatOnlinePage> {
                   Consumer<PlaylistProvider>(builder: (context, value, child) {
                     final List<Song> playlist = value.playlist;
                     final currentSong = playlist[value.currentSongStream ?? 0];
-                    print("เพลงงง = ${currentSong}");
                     return GestureDetector(
                       onTap: () {
                         GoRouter.of(context).push('/');
@@ -135,7 +111,6 @@ class _ChatOnlinePageState extends State<ChatOnlinePage> {
                             decoration: BoxDecoration(
                               color: Theme.of(context).colorScheme.secondary,
                               borderRadius: BorderRadius.only(
-                                // topLeft: Radius.circular(20),
                                 bottomLeft: Radius.circular(20),
                                 bottomRight: Radius.circular(20),
                               ),
@@ -171,7 +146,6 @@ class _ChatOnlinePageState extends State<ChatOnlinePage> {
                                   ),
                                   IconButton(
                                     onPressed: () {
-                                      // Toggle mute/unmute functionality
                                       playlistProvider.toggleMute();
                                     },
                                     icon: Icon(
@@ -317,7 +291,6 @@ class _ChatOnlinePageState extends State<ChatOnlinePage> {
                           decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.secondary,
                             borderRadius: BorderRadius.only(
-                              // topLeft: Radius.circular(20),
                               bottomLeft: Radius.circular(20),
                               bottomRight: Radius.circular(20),
                             ),

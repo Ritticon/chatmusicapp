@@ -1,11 +1,7 @@
 import 'dart:typed_data';
 import 'dart:io';
-// import 'package:chatmusic/models/add_data.dart';
-// import 'package:chatmusic/models/profile.dart';
-// import 'package:chatmusic/pages/login.dart';
 import 'package:chatmusicapp/models/add_data.dart';
 import 'package:chatmusicapp/models/profile.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -15,8 +11,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -35,15 +29,10 @@ class _RegisterState extends State<Register> {
   }
 
   Uint8List? _image;
-  File? selectedImage;
   String _password = '';
   String _confirmPassword = '';
 
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
-  final FirebaseStorage _storage = FirebaseStorage.instance;
-
-  final CollectionReference _usernameCollection =
-      FirebaseFirestore.instance.collection("userProfile");
 
   @override
   Widget build(BuildContext context) {
@@ -310,8 +299,6 @@ class _RegisterState extends State<Register> {
                                       onPressed: () async {
                                         if (formkey.currentState!.validate()) {
                                           formkey.currentState!.save();
-
-                                          // ตรวจสอบรูปแบบอีเมล
                                           final emailRegExp = RegExp(
                                               r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
                                           if (!emailRegExp
@@ -339,10 +326,33 @@ class _RegisterState extends State<Register> {
                                                 );
                                               },
                                             );
-                                            return; // หยุดการทำงานของฟังก์ชันเมื่อไม่ผ่านการตรวจสอบอีเมล
-                                          }
-
-                                          if (_image == null) {
+                                          } else if (profile.password!.length <
+                                              6) {
+                                            // <-- เพิ่มเงื่อนไขนี้
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  backgroundColor:
+                                                      Theme.of(context)
+                                                          .colorScheme
+                                                          .secondary,
+                                                  title: Text("Warning"),
+                                                  content: Text(
+                                                      "Password must be at least 6 characters long"), // <-- แสดงข้อความเตือนความยาวรหัสผ่าน
+                                                  actions: <Widget>[
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      child: Text('OK'),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          } else if (_image == null) {
                                             showDialog(
                                               context: context,
                                               builder: (BuildContext context) {
@@ -591,7 +601,6 @@ class _RegisterState extends State<Register> {
     final pickedImageFile = File(pickedImage.path);
     final pickedImageBytes = await pickedImageFile.readAsBytes();
     setState(() {
-      selectedImage = pickedImageFile;
       _image = pickedImageBytes;
     });
     Navigator.of(context).pop();

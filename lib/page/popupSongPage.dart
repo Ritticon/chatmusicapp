@@ -1,10 +1,6 @@
-// import 'package:chatmusic/components/neu_box.dart';
-// import 'package:chatmusic/models/playlist_provider.dart';
-// import 'package:flutter/cupertino.dart';
 import 'package:chatmusicapp/models/playlist_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-// import 'package:chatmusic/pages/SearchMusic.dart';
 import 'package:provider/provider.dart';
 
 class PopupSong extends StatelessWidget {
@@ -19,7 +15,6 @@ class PopupSong extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<PlaylistProvider>(builder: ((context, value, child) {
-      //get playlist
       final playlist = value.playlist;
 
       final currentSong = playlist[value.currentSongIndex ?? 0];
@@ -30,7 +25,6 @@ class PopupSong extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(left: 25, right: 25, bottom: 25),
             child: Column(
-              // mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Row(
                   children: [
@@ -71,8 +65,6 @@ class PopupSong extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 30),
-
-                      //ยังไม่ได้เพิ่มกรอบให้รูป
                       Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
@@ -82,8 +74,6 @@ class PopupSong extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                           child: Image.asset(
                             currentSong.albumArtImagePath,
-                            // width: 300,
-                            // height: 200,
                           ),
                         ),
                       ),
@@ -152,7 +142,6 @@ class PopupSong extends StatelessWidget {
                         ],
                       ),
                       SliderTheme(
-                        // ทำให้เส้นที่เล่นเพลงไม่มีวงกลม
                         data: SliderTheme.of(context).copyWith(
                           thumbShape: const RoundSliderThumbShape(
                               enabledThumbRadius: 0),
@@ -162,10 +151,9 @@ class PopupSong extends StatelessWidget {
                           max: value.totalDuration.inSeconds.toDouble(),
                           value: value.currentDuration.inSeconds.toDouble(),
                           activeColor: Color(0xFF733000),
-                          inactiveColor: Color(0xFFFF6B00), //
+                          inactiveColor: Color(0xFFFF6B00),
                           onChanged: (double double) {},
                           onChangeEnd: (double double) {
-                            // slider finfish, go to position in song duration
                             value.seek(Duration(seconds: double.toInt()));
                           },
                         ),

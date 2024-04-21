@@ -1,4 +1,5 @@
 class Profile{
+  
   String email;
   String password;
   String image;

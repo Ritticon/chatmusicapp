@@ -2,22 +2,15 @@ import 'dart:math';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:chatmusicapp/models/song.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
-// import 'package:chatmusic/models/song.dart';
 
 class PlaylistProvider extends ChangeNotifier {
-  //playlist
-  // late final CollectionReference _songsCollection;
-  // late List<Song> _playlist = [];
   int? _currentSongIndex;
   int? _currentSongStream;
-  // audio player
+
   final AudioPlayer _audioPlayer = AudioPlayer();
   final AudioPlayer _audioPlayers = AudioPlayer();
-  // duration
+
   Duration _currentDuration = Duration.zero;
   Duration _totalDuration = Duration.zero;
 
@@ -26,88 +19,69 @@ class PlaylistProvider extends ChangeNotifier {
 
   PlaylistProvider() {
     listenToDuration();
-    // fetchMusic();
   }
 
   final List<Song> _playlist = [
-    // song 1
     Song(
         songName: "เผื่อเธอจะกลับมา",
         artistName: "guncharlie ",
         albumArtImagePath: "assets/image/guncharlie.jpg",
         audioPath: "audio/song1.mp3",
         isFavorite: false),
-    //song2
     Song(
         songName: "กันตรึมสกา",
         artistName: "guncharlie2 ",
         albumArtImagePath: "assets/image/ยิ่งยง.jpg",
         audioPath: "audio/กันตึมสกา.mp3",
         isFavorite: false),
-    //song3
     Song(
         songName: "SHEESH",
         artistName: "babymonster ",
         albumArtImagePath: "assets/image/babymonster.jpg",
         audioPath: "audio/SHEESH.mp3",
         isFavorite: false),
-    //song4
     Song(
         songName: "TwoGhosts",
         artistName: "Harry Styles ",
         albumArtImagePath: "assets/image/twoghosts.jpg",
         audioPath: "audio/TwoGhosts.mp3",
         isFavorite: false),
-    //song5
-    // Song(
-    //     songName: "Run it Up",
-    //     artistName: "LiL Hustle HFML",
-    //     albumArtImagePath: "assets/image/runitup.png",
-    //     audioPath: "audio/runitup",
-    //     isFavorite: false),
-    //song6
     Song(
         songName: "Don't Look Back In Anger",
         artistName: "oasis",
         albumArtImagePath: "assets/image/oasis.jpg",
         audioPath: "audio/Don'tLookBackInAnger.mp3",
         isFavorite: false),
-    //song7
     Song(
         songName: "ถ้าเราเจอกันอีก",
         artistName: "tilly birds",
         albumArtImagePath: "assets/image/tillybirds.jpg",
         audioPath: "audio/UntilThen.mp3",
         isFavorite: false),
-    //song8
     Song(
         songName: "Wish",
         artistName: "Blackbeans",
         albumArtImagePath: "assets/image/blackbeans.jpg",
         audioPath: "audio/Wish.mp3",
         isFavorite: false),
-    //song3
     Song(
         songName: "Dance With Me ",
         artistName: "Blackbeans",
         albumArtImagePath: "assets/image/danceWithme.jpg",
         audioPath: "audio/DanceWithMe.mp3",
         isFavorite: false),
-
     Song(
         songName: "Run it Up",
         artistName: "LiL Hustle HFML",
         albumArtImagePath: "assets/image/runitup.png",
         audioPath: "audio/runitup.mp3",
         isFavorite: false),
-
     Song(
         songName: "StayAroundMe",
         artistName: "mind",
         albumArtImagePath: "assets/image/StayAroundMe.png",
         audioPath: "audio/StayAroundMe.mp3",
         isFavorite: false),
-
     Song(
         songName: "Rain",
         artistName: "PiXXiE",
@@ -115,8 +89,6 @@ class PlaylistProvider extends ChangeNotifier {
         audioPath: "audio/rain.mp3",
         isFavorite: false),
   ];
-
-  // initially not playing
 
   bool _isPlaying = false;
   // play song
@@ -164,10 +136,9 @@ class PlaylistProvider extends ChangeNotifier {
 
   // resume playing
   void resumes() async {
-    
     await _audioPlayers.resume();
     _isPlayings = true;
-   
+
     notifyListeners();
   }
 
@@ -193,7 +164,6 @@ class PlaylistProvider extends ChangeNotifier {
   // seek to specific position in current song
   void seek(Duration position) async {
     await _audioPlayer.seek(position);
-    
   }
 
   // play next song
@@ -211,7 +181,7 @@ class PlaylistProvider extends ChangeNotifier {
     }
   }
 
-    // play next song
+  // play next song
   void playNextSongs() {
     if (_currentSongStream != null) {
       // ถึงเพลงสุดท้ายหรือยัง
@@ -226,6 +196,7 @@ class PlaylistProvider extends ChangeNotifier {
       }
     }
   }
+
   // prevoius song
   void playPreviousSong() async {
     // if more 2 seconds pass , if not restart current song
@@ -244,8 +215,7 @@ class PlaylistProvider extends ChangeNotifier {
   // listen to duration
   void listenToDuration() {
     // listen duration
-    _audioPlayer.onDurationChanged.listen(
-      (newDuration) {
+    _audioPlayer.onDurationChanged.listen((newDuration) {
       _totalDuration = newDuration;
       notifyListeners();
     });
@@ -257,26 +227,20 @@ class PlaylistProvider extends ChangeNotifier {
 
     // listen for song complete
     _audioPlayer.onPlayerComplete.listen((event) {
-    
-      
       playNextSong();
     });
 
-
-  _audioPlayers.onDurationChanged.listen(
-      (Duration) {
+    _audioPlayers.onDurationChanged.listen((Duration) {
       _totalStreamDuration = Duration;
       notifyListeners();
     });
-        // listen for current duration
+    // listen for current duration
     _audioPlayers.onPositionChanged.listen((Position) {
       _streamDuration = Position;
       notifyListeners();
     });
-        // listen for song complete
+    // listen for song complete
     _audioPlayers.onPlayerComplete.listen((event) {
-  
-      
       playNextSongs();
     });
   }
@@ -293,7 +257,6 @@ class PlaylistProvider extends ChangeNotifier {
       Random random = Random();
       int randomIndex = random.nextInt(_playlist.length);
       _currentSongStream = randomIndex;
-      print("SongStream = ${_currentSongStream}");
       plays();
     }
   }
@@ -306,36 +269,27 @@ class PlaylistProvider extends ChangeNotifier {
   }
 
   void toggleMute() {
-    isMuted = !isMuted; // Toggle the value of isMuted
-    if (_audioPlayers != null) {
-      if (isMuted) {
-        _audioPlayers.setVolume(0);
-      } else {
-        _audioPlayers.setVolume(1);
-      }
-    }
+    isMuted = !isMuted;
+    _audioPlayers.setVolume(isMuted ? 0 : 1);
   }
 
-
-  // dispose
   List<Song> get playlist => _playlist;
+
   int? get currentSongIndex => _currentSongIndex;
   int? get currentSongStream => _currentSongStream;
+
   bool get isPlaying => _isPlaying;
   bool get isPlayings => _isPlayings;
+
   Duration get currentDuration => _currentDuration;
   Duration get totalDuration => _totalDuration;
-
   Duration get streamDuration => _streamDuration;
   Duration get totalStreamDuration => _totalStreamDuration;
-  //setting
+
   set currentSongIndex(int? newIndex) {
     _currentSongIndex = newIndex;
     if (newIndex != null) {
-      
       play();
-      // resume();
-      debugPrint('${currentDuration.toString()} mmmm');
     }
     notifyListeners();
   }
@@ -344,9 +298,6 @@ class PlaylistProvider extends ChangeNotifier {
     _currentSongStream = newindex;
     if (newindex != null) {
       plays();
-      // resumes();
-      debugPrint('${streamDuration.toString()} mmmm');
-      print('มาแล้วสูๆๆๆ mmmm');
     }
     notifyListeners();
   }

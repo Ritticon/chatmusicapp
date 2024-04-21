@@ -1,19 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:rolling_bottom_bar/rolling_bottom_bar_item.dart';
 import 'package:chatmusicapp/page/chatOnline.dart';
 import 'package:chatmusicapp/page/favoriteSong.dart';
-import 'package:chatmusicapp/page/login.dart';
-import 'package:chatmusicapp/page/popupSongPage.dart';
 import 'package:chatmusicapp/page/profile.dart';
-import 'package:chatmusicapp/page/register.dart';
 import 'package:chatmusicapp/page/searchMusic.dart';
-import 'package:chatmusicapp/page/setting.dart';
 import 'package:chatmusicapp/page/streaming.dart';
 
 class Home extends StatefulWidget {
   Home({super.key});
-  // Home({Key? key}) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
@@ -69,24 +62,23 @@ class _HomeState extends State<Home> {
     final color = isActive
         ? const Color.fromARGB(255, 255, 60, 0)
         : Color.fromARGB(255, 255, 106, 0);
-    final label = ''; // label
 
     return Container(
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-            color: Color.fromARGB(255, 128, 34, 0).withOpacity(0.3), // Shadow color
-            spreadRadius: 2, // Spread radius
-            blurRadius: 5, // Blur radius
-            offset: Offset(0, 1), // Shadow position
+            color: Color.fromARGB(255, 128, 34, 0).withOpacity(0.3),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: Offset(0, 1),
           ),
         ],
       ),
       child: IconButton(
         icon: Icon(icon),
         color: color,
-        iconSize: 35, // Adjust size icon
+        iconSize: 35,
         onPressed: () {
           setState(() {
             _selectedIndex = index;

@@ -20,9 +20,6 @@ class _FavoriteSongState extends State<FavoriteSong> {
   void initState() {
     super.initState();
     playlistProvider = Provider.of<PlaylistProvider>(context, listen: false);
-    //    if (playlistProvider.isPlaying == true ) {
-    //   playlistProvider.play(); 
-    //  }
     print("isplays = ${playlistProvider.isPlayings}");
     print("isplay = ${playlistProvider.isPlaying}");
   }
@@ -58,11 +55,9 @@ class _FavoriteSongState extends State<FavoriteSong> {
                     children: [
                       if (currentSong != null) ...[
                         GestureDetector(
-                                       onTap: () {
-                    if (currentSong != null) {
-                      goToSong(playlist.indexOf(currentSong));
-                    }
-                  },
+                          onTap: () {
+                            goToSong(playlist.indexOf(currentSong));
+                          },
                           child: Container(
                             height: 80,
                             width: MediaQuery.of(context).size.width,
@@ -74,10 +69,11 @@ class _FavoriteSongState extends State<FavoriteSong> {
                               ),
                             ),
                             child: Padding(
-                              padding:
-                                  EdgeInsets.only(bottom: 8, left: 10, right: 8),
+                              padding: EdgeInsets.only(
+                                  bottom: 8, left: 10, right: 8),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
                                   Container(
                                     height: 50,
@@ -254,7 +250,6 @@ class _FavoriteSongState extends State<FavoriteSong> {
                                   ),
                                 ),
                                 onTap: () {
-                                  
                                   goToSong(
                                       playlistProvider.playlist.indexOf(song));
                                 },

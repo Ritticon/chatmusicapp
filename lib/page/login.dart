@@ -1,17 +1,10 @@
-import 'dart:typed_data';
-import 'dart:io';
 import 'package:chatmusicapp/models/profile.dart';
-import 'package:chatmusicapp/page/chatOnline.dart';
-import 'package:chatmusicapp/page/home_page.dart';
-import 'package:chatmusicapp/page/profile.dart';
 import 'package:chatmusicapp/page/register.dart';
-import 'package:chatmusicapp/page/streaming.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -24,16 +17,14 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  //chech state reset submit
   final formkey = GlobalKey<FormState>();
   late Profile profile;
   void initState() {
     super.initState();
     profile = Profile(email: '', password: '', image: '');
-    // notifyListeners();
   }
 
-  final  firebase = Firebase.initializeApp();
+  final firebase = Firebase.initializeApp();
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<FirebaseApp>(
@@ -73,7 +64,8 @@ class _LoginState extends State<Login> {
                         children: <Widget>[
                           SizedBox(height: 20),
                           CircleAvatar(
-                            backgroundImage: AssetImage("assets/image/logo.png"),
+                            backgroundImage:
+                                AssetImage("assets/image/logo.png"),
                             radius: 80,
                           ),
                           Padding(
@@ -190,8 +182,6 @@ class _LoginState extends State<Login> {
                                       ),
                                     ],
                                   ),
-
-                                  // button
                                   SizedBox(height: 25),
                                   Container(
                                       width: 100,
@@ -220,10 +210,11 @@ class _LoginState extends State<Login> {
                                                           password:
                                                               profile.password)
                                                       .then((value) {
-                                                    formkey.currentState!.reset();
-                                                    GoRouter.of(context).push('/');
+                                                    formkey.currentState!
+                                                        .reset();
+                                                    GoRouter.of(context)
+                                                        .push('/');
                                                   });
-                              
                                                 } on FirebaseAuthException catch (e) {
                                                   showDialog(
                                                       context: context,
@@ -252,7 +243,6 @@ class _LoginState extends State<Login> {
                                                       });
                                                 }
                                               }
-                                             
                                             },
                                             style: ElevatedButton.styleFrom(
                                               backgroundColor: Theme.of(context)
@@ -268,7 +258,6 @@ class _LoginState extends State<Login> {
                                               ),
                                             )),
                                       )),
-                                  // button
                                   SizedBox(height: 15),
                                   Container(
                                       width: 150,
@@ -287,7 +276,11 @@ class _LoginState extends State<Login> {
                                       child: SizedBox(
                                         child: ElevatedButton(
                                             onPressed: () {
-                                               Navigator.push(context, MaterialPageRoute(builder: (context)=> Register()));
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          Register()));
                                             },
                                             style: ElevatedButton.styleFrom(
                                               backgroundColor: Theme.of(context)

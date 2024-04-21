@@ -1,14 +1,8 @@
-// import 'package:chatmusic/pages/home_page.dart';
-// import 'package:chatmusic/pages/profile.dart';
-// import 'package:chatmusic/themes/theme_provider.dart';
 import 'package:chatmusicapp/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
-// import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-
-import '../models/profile.dart';
 
 class settingPage extends StatelessWidget {
   const settingPage({super.key});
@@ -33,8 +27,6 @@ class settingPage extends StatelessWidget {
         ),
       ),
       body: Container(
-        // decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary),
-
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -49,10 +41,10 @@ class settingPage extends StatelessWidget {
             ),
             CupertinoSwitch(
               value: Provider.of<ThemeProvider>(context)
-                  .isDarkMode, // ไม่ต้องใส่ listen: false ที่นี่
+                  .isDarkMode,
               onChanged: (value) => Provider.of<ThemeProvider>(context,
                       listen:
-                          false) // ใส่ listen: false ที่นี่เพื่อป้องกันการวนซ้ำ
+                          false)
                   .toggleTheme(),
             )
           ],

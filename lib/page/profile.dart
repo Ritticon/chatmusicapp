@@ -1,9 +1,6 @@
 import 'package:chatmusicapp/page/login.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:flutter/material.dart';
-// import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:go_router/go_router.dart';
 
@@ -26,9 +23,7 @@ class _MyProfileState extends State<MyProfile> {
           return CircularProgressIndicator();
         }
         if (!snapshot.hasData || snapshot.data == null) {
-          return Center(
-              child:
-                  Text('No data available')); // Handle case when data is null
+          return Center(child: Text('No data available'));
         }
 
         if (auth.currentUser == null) {
@@ -41,7 +36,6 @@ class _MyProfileState extends State<MyProfile> {
           var imageUrl = document['imageProfile'];
           emailImageMap[email] = imageUrl;
         }
-        // var emailImageMap = snapshot.data as Map<String, String>;
         print("emailรูปภาพ ${emailImageMap}");
         var email = auth.currentUser?.email;
         var imageUrl = emailImageMap[email];
@@ -66,11 +60,10 @@ class _MyProfileState extends State<MyProfile> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-         CircleAvatar(
-              backgroundImage: NetworkImage(imageUrl!),
-              radius: 80,
-            ),
-
+                CircleAvatar(
+                  backgroundImage: NetworkImage(imageUrl!),
+                  radius: 80,
+                ),
                 Container(
                   padding: EdgeInsets.symmetric(vertical: 20),
                   child: Text(

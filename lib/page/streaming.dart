@@ -22,31 +22,20 @@ class _StreamingPageState extends State<StreamingPage> {
     super.initState();
     _playlistProvider = Provider.of<PlaylistProvider>(context, listen: false);
     if (_playlistProvider.currentSongStream != null) {
-      print("เข้า");
       _playlistProvider.resumes();
- 
-     
-     // เล่นเพลงต่อจากจุดที่ค้างอยู่
     } else {
-      print("ไม่เข้า");
-      print("สถานะ =${_playlistProvider.isPlayings}");
-      _playlistProvider.shuffleAndPlay(); // เล่นเพลงแบบสุ่มเมื่อเข้าหน้านี้ครั้งแรก
+      _playlistProvider.shuffleAndPlay();
     }
-
-       
-      print("isplays = ${_playlistProvider.isPlayings}");
-;
-    
-
   }
-  
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if(_playlistProvider.isPlaying == true){
-       _playlistProvider.pause();
+    if (_playlistProvider.isPlaying == true) {
+      _playlistProvider.pause();
     }
   }
+
   String formatTime(Duration duration) {
     String twoDigitSecond =
         duration.inSeconds.remainder(60).toString().padLeft(2, '0');
@@ -61,7 +50,6 @@ class _StreamingPageState extends State<StreamingPage> {
           .orderBy('timestamp', descending: true)
           .snapshots(),
       builder: (context, snapshot) {
-        
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
         }
@@ -69,7 +57,6 @@ class _StreamingPageState extends State<StreamingPage> {
         if (!snapshot.hasData) {
           return const Center(child: Text('No documents available'));
         }
-
         return Consumer<PlaylistProvider>(
           builder: (context, value, child) {
             List<Song> playlist = value.playlist;
@@ -79,8 +66,7 @@ class _StreamingPageState extends State<StreamingPage> {
             return Scaffold(
               backgroundColor: Theme.of(context).colorScheme.background,
               body: SingleChildScrollView(
-                physics:
-                    const NeverScrollableScrollPhysics(), // ปิดการเคลื่อนไหว
+                physics: const NeverScrollableScrollPhysics(),
                 child: SafeArea(
                   child: Padding(
                     padding:
@@ -142,25 +128,26 @@ class _StreamingPageState extends State<StreamingPage> {
     );
   }
 
-Widget _buildPlayerControls(PlaylistProvider value) {
-  return Row(
-    children: [
-      Expanded(
-        flex: 2,
-        child: GestureDetector(
-          onTap: value.toggleMute,
-          child: Container(
-            child: Icon(
-              value.isMuted ? Icons.volume_off : Icons.volume_up, // Update to use isMuted
-              color: const Color(0xFFFF6B00),
-              size: 40,
+  Widget _buildPlayerControls(PlaylistProvider value) {
+    return Row(
+      children: [
+        Expanded(
+          flex: 2,
+          child: GestureDetector(
+            onTap: value.toggleMute,
+            child: Container(
+              child: Icon(
+                value.isMuted ? Icons.volume_off : Icons.volume_up,
+                color: const Color(0xFFFF6B00),
+                size: 40,
+              ),
             ),
           ),
         ),
-      ),
-    ],
-  );
-}
+      ],
+    );
+  }
+
   Widget _buildCurrentTimeAndDuration(
       PlaylistProvider value, Song currentSong) {
     return Row(
@@ -198,11 +185,8 @@ Widget _buildPlayerControls(PlaylistProvider value) {
         activeColor: const Color(0xFF733000),
         inactiveColor: const Color(0xFFFF6B00),
         onChanged: (_) {},
-        onChangeEnd: (double position) {
-        },
-        
+        onChangeEnd: (double position) {},
       ),
-      
     );
   }
 
