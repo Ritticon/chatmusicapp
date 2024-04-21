@@ -10,6 +10,11 @@ import 'package:provider/provider.dart';
 class PopupSong extends StatelessWidget {
   const PopupSong({super.key});
 
+    String formatTime(Duration duration) {
+    String twoDigitSecond =
+        duration.inSeconds.remainder(60).toString().padLeft(2, '0');
+    return "${duration.inMinutes}:$twoDigitSecond";
+  }
   @override
   Widget build(BuildContext context) {
     return Consumer<PlaylistProvider>(builder: ((context, value, child) {
@@ -119,7 +124,29 @@ class PopupSong extends StatelessWidget {
                           )
                         ],
                       ),
-                      SliderTheme(
+                      SizedBox(height: 20),
+                      Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          currentSong.songName,
+          style: const TextStyle(
+            fontFamily: 'atma',
+            fontSize: 13,
+            color: Color(0xFFFF6B00),
+          ),
+        ),
+        Text(
+          formatTime(value.streamDuration),
+          style: const TextStyle(
+            fontFamily: 'atma',
+            fontSize: 13,
+            color: Color(0xFFFF6B00),
+          ),
+        ),
+      ],
+                      ),
+                                            SliderTheme(
                         // ทำให้เส้นที่เล่นเพลงไม่มีวงกลม
                         data: SliderTheme.of(context).copyWith(
                           thumbShape: const RoundSliderThumbShape(

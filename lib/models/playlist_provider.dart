@@ -16,9 +16,13 @@ class PlaylistProvider extends ChangeNotifier {
   int? _currentSongStream;
   // audio player
   final AudioPlayer _audioPlayer = AudioPlayer();
+  final AudioPlayer _audioPlayers = AudioPlayer();
   // duration
   Duration _currentDuration = Duration.zero;
   Duration _totalDuration = Duration.zero;
+
+  Duration _streamDuration = Duration.zero;
+  Duration _totalStreamDuration = Duration.zero;
 
   PlaylistProvider() {
     listenToDuration();
@@ -112,23 +116,23 @@ class PlaylistProvider extends ChangeNotifier {
         isFavorite: false),
   ];
 
-  addData() async {
-    for (var element in playlist) {
-      // แปลงอ็อบเจกต์ Song เป็น Map<String, dynamic>
-      Map<String, dynamic> songData = {
-        'songName': element.songName,
-        'artistName': element.artistName,
-        'albumArtImagePath': element.albumArtImagePath,
-        'audioPath': element.audioPath,
-        'isFavorite': element.isFavorite,
-        // เพิ่มข้อมูลอื่น ๆ ตามต้องการ
-      };
+  // addData() async {
+  //   for (var element in playlist) {
+  //     // แปลงอ็อบเจกต์ Song เป็น Map<String, dynamic>
+  //     Map<String, dynamic> songData = {
+  //       'songName': element.songName,
+  //       'artistName': element.artistName,
+  //       'albumArtImagePath': element.albumArtImagePath,
+  //       'audioPath': element.audioPath,
+  //       'isFavorite': element.isFavorite,
+  //       // เพิ่มข้อมูลอื่น ๆ ตามต้องการ
+  //     };
 
-      // เพิ่มข้อมูลลงในคอลเล็กชันของ Firestore
-      FirebaseFirestore.instance.collection('Playlist').add(songData);
-    }
-    print('all data added');
-  }
+  //     // เพิ่มข้อมูลลงในคอลเล็กชันของ Firestore
+  //     FirebaseFirestore.instance.collection('Playlist').add(songData);
+  //   }
+  //   print('all data added');
+  // }
 
 // Future<void> initialize() async {
 //   await fetchMusic();
@@ -176,15 +180,12 @@ class PlaylistProvider extends ChangeNotifier {
   void plays() async {
     final String path = _playlist[_currentSongStream!].audioPath;
     // await _audioPlayer.stop();
-    await _audioPlayer.play(AssetSource(path));
+    await _audioPlayers.play(AssetSource(path));
     _isPlayings = true;
     // เพื่อบอกว่าข้อมูลได้มีการเปลี่ยนแปลงแล้ว
     notifyListeners();
   }
 
-  // void switchs() {
-  //   _isPlaying = !_isPlaying ;
-  // }
   // pause current song
   void pause() async {
     await _audioPlayer.pause();
@@ -194,6 +195,8 @@ class PlaylistProvider extends ChangeNotifier {
 
   // resume playing
   void resume() async {
+    _audioPlayers.pause();
+
     await _audioPlayer.resume();
     _isPlaying = true;
     notifyListeners();
@@ -201,14 +204,15 @@ class PlaylistProvider extends ChangeNotifier {
 
   // pause current song
   void pauses() async {
-    await _audioPlayer.pause();
+    await _audioPlayers.pause();
     _isPlayings = false;
     notifyListeners();
   }
 
   // resume playing
   void resumes() async {
-    await _audioPlayer.resume();
+    
+    await _audioPlayers.resume();
     _isPlayings = true;
    
     notifyListeners();
@@ -236,10 +240,12 @@ class PlaylistProvider extends ChangeNotifier {
   // seek to specific position in current song
   void seek(Duration position) async {
     await _audioPlayer.seek(position);
+    
   }
 
   // play next song
   void playNextSong() {
+    _audioPlayers.pause();
     if (_currentSongIndex != null) {
       // ถึงเพลงสุดท้ายหรือยัง
       if (_currentSongIndex! < _playlist.length - 1) {
@@ -258,8 +264,8 @@ class PlaylistProvider extends ChangeNotifier {
       // ถึงเพลงสุดท้ายหรือยัง
       if (_currentSongStream! < _playlist.length - 1) {
         // go to next song if its not the last song
-        _currentSongStream = _currentSongStream! + 1;
-        plays();
+        shuffleAndPlay();
+        // plays();
       } else {
         // if last song, back to first song
         _currentSongStream = 0;
@@ -285,7 +291,8 @@ class PlaylistProvider extends ChangeNotifier {
   // listen to duration
   void listenToDuration() {
     // listen duration
-    _audioPlayer.onDurationChanged.listen((newDuration) {
+    _audioPlayer.onDurationChanged.listen(
+      (newDuration) {
       _totalDuration = newDuration;
       notifyListeners();
     });
@@ -297,9 +304,25 @@ class PlaylistProvider extends ChangeNotifier {
 
     // listen for song complete
     _audioPlayer.onPlayerComplete.listen((event) {
-      if(_isPlaying == true){
-        playNextSong();
-      }
+    
+      
+      playNextSong();
+    });
+
+
+  _audioPlayers.onDurationChanged.listen(
+      (Duration) {
+      _totalStreamDuration = Duration;
+      notifyListeners();
+    });
+        // listen for current duration
+    _audioPlayers.onPositionChanged.listen((Position) {
+      _streamDuration = Position;
+      notifyListeners();
+    });
+        // listen for song complete
+    _audioPlayers.onPlayerComplete.listen((event) {
+  
       
       playNextSongs();
     });
@@ -335,11 +358,11 @@ class PlaylistProvider extends ChangeNotifier {
 
   void toggleMute() {
     isMuted = !isMuted; // Toggle the value of isMuted
-    if (_audioPlayer != null) {
+    if (_audioPlayers != null) {
       if (isMuted) {
-        _audioPlayer.setVolume(0);
+        _audioPlayers.setVolume(0);
       } else {
-        _audioPlayer.setVolume(1);
+        _audioPlayers.setVolume(1);
       }
     }
   }
@@ -353,11 +376,16 @@ class PlaylistProvider extends ChangeNotifier {
   bool get isPlayings => _isPlayings;
   Duration get currentDuration => _currentDuration;
   Duration get totalDuration => _totalDuration;
+
+  Duration get streamDuration => _streamDuration;
+  Duration get totalStreamDuration => _totalStreamDuration;
   //setting
   set currentSongIndex(int? newIndex) {
     _currentSongIndex = newIndex;
     if (newIndex != null) {
+      
       play();
+      // resume();
       debugPrint('${currentDuration.toString()} mmmm');
     }
     notifyListeners();
@@ -367,6 +395,8 @@ class PlaylistProvider extends ChangeNotifier {
     _currentSongStream = newindex;
     if (newindex != null) {
       plays();
+      // resumes();
+      debugPrint('${streamDuration.toString()} mmmm');
       print('มาแล้วสูๆๆๆ mmmm');
     }
     notifyListeners();

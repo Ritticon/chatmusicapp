@@ -249,9 +249,11 @@ class _FavoriteSongState extends State<FavoriteSong> {
                                     color: song.isFavorite
                                         ? Colors.red
                                         : Color(0xFFFF6B00),
+                                    size: 35,
                                   ),
                                 ),
                                 onTap: () {
+                                  playlistProvider.pauses();
                                   goToSong(
                                       playlistProvider.playlist.indexOf(song));
                                 },

@@ -25,32 +25,32 @@ class _searchMusicState extends State<searchMusic> {
   @override
   void initState() {
     super.initState();
-    playlistProvider = Provider.of<PlaylistProvider>(context, listen: false);
-    // String Song =  FirebaseFirestore.instance.collection('Playlist').get();
-    // playlistProvider.addData();
-    //  if (playlistProvider.isPlaying == true ) {
-    //   playlistProvider.play(); 
-    //  }
-    //  playlistProvider.resumes(); 
+    playlistProvider = Provider.of<PlaylistProvider>(context, listen: false); 
     print("isplays = ${playlistProvider.isPlayings}");
     print("isplay = ${playlistProvider.isPlaying}");
+
+    if(playlistProvider.isPlaying == true){
+      playlistProvider.pauses();
+      
+    }
   }
 
-  //  @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   if (playlistProvider.isPlaying == true) {
-  //         print(playlistProvider.isPlayings);
-  //         print("เข้าสตีรมไม่นัน");
-  //     // playlistProvider.pause();
-  //     playlistProvider.resumes();   // นำกลับมาเล่นต่อเมื่อกลับมาที่หน้านี้
-  //   } else {
-  //     print("ไม่");
-  //     print(playlistProvider.isPlayings);
-  //     print(playlistProvider.isPlaying);
-  //     // playlistProvider.resume(); // หยุดเล่นเมื่อออกจากหน้านี้
-  //   }
-  // }
+   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (playlistProvider.isPlaying == true) {
+          print(playlistProvider.isPlayings);
+          print("เข้าสตีรมไม่นัน");
+      playlistProvider.pauses();
+      playlistProvider.resume();
+      // playlistProvider.resumes();   // นำกลับมาเล่นต่อเมื่อกลับมาที่หน้านี้
+    } else {
+      print("ไม่");
+      print(playlistProvider.isPlayings);
+      print(playlistProvider.isPlaying);
+      // playlistProvider.resume(); // หยุดเล่นเมื่อออกจากหน้านี้
+    }
+  }
 
   void goToSong(int songIndex) {
     playlistProvider.currentSongIndex = songIndex;
@@ -228,11 +228,14 @@ class _searchMusicState extends State<searchMusic> {
                               ? Icons.favorite
                               : Icons.favorite_border,
                           color:
-                              song.isFavorite ? Colors.red : Color(0xFFFF6B00),
+                              song.isFavorite ? Color.fromARGB(255, 255, 60, 0): Color(0xFFFF6B00),
+                          size: 35,
                         ),
                       ),
                       onTap: () {
+                        playlistProvider.pauses();
                         goToSong((index));
+                        
                         playlistProvider.currentSongIndex = index;
                         print("index!! = ${index}");
                         setState(() {

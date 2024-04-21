@@ -23,8 +23,8 @@ class _StreamingPageState extends State<StreamingPage> {
     _playlistProvider = Provider.of<PlaylistProvider>(context, listen: false);
     if (_playlistProvider.currentSongStream != null) {
       print("เข้า");
-      _playlistProvider.plays();
-      // _playlistProvider.resumes();
+      _playlistProvider.resumes();
+ 
      
      // เล่นเพลงต่อจากจุดที่ค้างอยู่
     } else {
@@ -32,10 +32,10 @@ class _StreamingPageState extends State<StreamingPage> {
       print("สถานะ =${_playlistProvider.isPlayings}");
       _playlistProvider.shuffleAndPlay(); // เล่นเพลงแบบสุ่มเมื่อเข้าหน้านี้ครั้งแรก
     }
-    // _playlistProvider.resumes();
+
        
       print("isplays = ${_playlistProvider.isPlayings}");
-      print("isplay = ${_playlistProvider.isPlaying}");
+;
     
 
   }
@@ -43,37 +43,10 @@ class _StreamingPageState extends State<StreamingPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (_playlistProvider.currentSongStream != null ) {
-          print(_playlistProvider.isPlayings);
-          print("เข้า");
-      // _playlistProvider.resumes(); // นำกลับมาเล่นต่อเมื่อกลับมาที่หน้านี้
-      if(_playlistProvider.isPlaying == false){
-        print("มายัง");
-        _playlistProvider.pause();
-          print("isplays = ${_playlistProvider.isPlayings}");
-          print("isplay = ${_playlistProvider.isPlaying}");
-          // _playlistProvider.plays();
-      }
-          print("ยังไม่มา");
-      _playlistProvider.resumes();
-      _playlistProvider.resumes();
-      
-    
+    if(_playlistProvider.isPlaying == true){
+       _playlistProvider.pause();
     }
-    // else {
-    //   print("ไม่");
-    //   print(_playlistProvider.isPlayings);
-    //   _playlistProvider.pause(); // หยุดเล่นเมื่อออกจากหน้านี้
-    // }
-    // if(_playlistProvider.isPlayings == false){
-    //   _playlistProvider.plays();
-    // }
   }
-  //   void dispose() {
-  //       _playlistProvider.release();
-  //       super.dispose();
-  // }
-  // Helper function to format the duration of the current song
   String formatTime(Duration duration) {
     String twoDigitSecond =
         duration.inSeconds.remainder(60).toString().padLeft(2, '0');
@@ -202,7 +175,7 @@ Widget _buildPlayerControls(PlaylistProvider value) {
           ),
         ),
         Text(
-          formatTime(value.currentDuration),
+          formatTime(value.streamDuration),
           style: const TextStyle(
             fontFamily: 'atma',
             fontSize: 13,
@@ -220,8 +193,8 @@ Widget _buildPlayerControls(PlaylistProvider value) {
       ),
       child: Slider(
         min: 0,
-        max: value.totalDuration.inSeconds.toDouble(),
-        value: value.currentDuration.inSeconds.toDouble(),
+        max: value.totalStreamDuration.inSeconds.toDouble(),
+        value: value.streamDuration.inSeconds.toDouble(),
         activeColor: const Color(0xFF733000),
         inactiveColor: const Color(0xFFFF6B00),
         onChanged: (_) {},
