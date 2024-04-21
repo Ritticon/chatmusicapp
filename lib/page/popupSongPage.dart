@@ -10,11 +10,12 @@ import 'package:provider/provider.dart';
 class PopupSong extends StatelessWidget {
   const PopupSong({super.key});
 
-    String formatTime(Duration duration) {
+  String formatTime(Duration duration) {
     String twoDigitSecond =
         duration.inSeconds.remainder(60).toString().padLeft(2, '0');
     return "${duration.inMinutes}:$twoDigitSecond";
   }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<PlaylistProvider>(builder: ((context, value, child) {
@@ -70,22 +71,22 @@ class PopupSong extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 30),
-                       
-                          //ยังไม่ได้เพิ่มกรอบให้รูป
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Color(0xFF773200),
-                              ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Image.asset(
-                                  currentSong.albumArtImagePath,
-                                  // width: 300,
-                                  // height: 200,
-                                ),
-                              ),
-                            ),
+
+                      //ยังไม่ได้เพิ่มกรอบให้รูป
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Color(0xFF773200),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.asset(
+                            currentSong.albumArtImagePath,
+                            // width: 300,
+                            // height: 200,
+                          ),
+                        ),
+                      ),
                       SizedBox(height: 25),
                       Row(
                         children: [
@@ -93,9 +94,10 @@ class PopupSong extends StatelessWidget {
                             child: GestureDetector(
                               onTap: value.playPreviousSong,
                               child: Container(
-                                child: Icon(Icons.skip_previous,
-                                color: Color(0xFFFF6B00),
-                                size: 40,
+                                child: Icon(
+                                  Icons.skip_previous,
+                                  color: Color(0xFFFF6B00),
+                                  size: 40,
                                 ),
                               ),
                             ),
@@ -105,48 +107,51 @@ class PopupSong extends StatelessWidget {
                             child: GestureDetector(
                               onTap: value.pauseOrResume,
                               child: Container(
-                                child: Icon(value.isPlaying ? Icons.pause : Icons.play_arrow ,
+                                  child: Icon(
+                                value.isPlaying
+                                    ? Icons.pause
+                                    : Icons.play_arrow,
                                 color: Color(0xFFFF6B00),
                                 size: 40,
-                                )
-                              ),
+                              )),
                             ),
                           ),
                           Expanded(
                             child: GestureDetector(
                               onTap: value.playNextSong,
-                              child: Container(child: Icon(Icons.skip_next,
+                              child: Container(
+                                  child: Icon(
+                                Icons.skip_next,
                                 color: Color(0xFFFF6B00),
                                 size: 40,
-                                )
-                              ),
+                              )),
                             ),
                           )
                         ],
                       ),
                       SizedBox(height: 20),
                       Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          currentSong.songName,
-          style: const TextStyle(
-            fontFamily: 'atma',
-            fontSize: 13,
-            color: Color(0xFFFF6B00),
-          ),
-        ),
-        Text(
-          formatTime(value.streamDuration),
-          style: const TextStyle(
-            fontFamily: 'atma',
-            fontSize: 13,
-            color: Color(0xFFFF6B00),
-          ),
-        ),
-      ],
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            currentSong.songName,
+                            style: const TextStyle(
+                              fontFamily: 'atma',
+                              fontSize: 13,
+                              color: Color(0xFFFF6B00),
+                            ),
+                          ),
+                          Text(
+                            formatTime(value.currentDuration),
+                            style: const TextStyle(
+                              fontFamily: 'atma',
+                              fontSize: 13,
+                              color: Color(0xFFFF6B00),
+                            ),
+                          ),
+                        ],
                       ),
-                                            SliderTheme(
+                      SliderTheme(
                         // ทำให้เส้นที่เล่นเพลงไม่มีวงกลม
                         data: SliderTheme.of(context).copyWith(
                           thumbShape: const RoundSliderThumbShape(

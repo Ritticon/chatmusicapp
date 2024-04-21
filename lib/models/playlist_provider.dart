@@ -116,53 +116,6 @@ class PlaylistProvider extends ChangeNotifier {
         isFavorite: false),
   ];
 
-  // addData() async {
-  //   for (var element in playlist) {
-  //     // แปลงอ็อบเจกต์ Song เป็น Map<String, dynamic>
-  //     Map<String, dynamic> songData = {
-  //       'songName': element.songName,
-  //       'artistName': element.artistName,
-  //       'albumArtImagePath': element.albumArtImagePath,
-  //       'audioPath': element.audioPath,
-  //       'isFavorite': element.isFavorite,
-  //       // เพิ่มข้อมูลอื่น ๆ ตามต้องการ
-  //     };
-
-  //     // เพิ่มข้อมูลลงในคอลเล็กชันของ Firestore
-  //     FirebaseFirestore.instance.collection('Playlist').add(songData);
-  //   }
-  //   print('all data added');
-  // }
-
-// Future<void> initialize() async {
-//   await fetchMusic();
-// }
-
-// Future<void> fetchMusic() async {
-//   QuerySnapshot querySnapshot = await _firestore.collection('playlistMusic').get();
-
-//   if (querySnapshot.docs.isNotEmpty) {
-//     for (var doc in querySnapshot.docs) {
-//       String songName = doc['songName'];
-//       String artistName = doc['artistName'];
-//       String albumArtImagePath = doc['albumArtImagePath'];
-//       String audioPath = doc['audioPath'];
-
-//       Song song = Song(
-//         songName: songName,
-//         artistName: artistName,
-//         albumArtImagePath: albumArtImagePath,
-//         audioPath: audioPath,
-//       );
-
-//       _playlist.add(song);
-//     }
-//     print("playlistttt = ${_playlist}");
-//   } else {
-//     print('No user profile found for this email');
-//   }
-// }
-
   // initially not playing
 
   bool _isPlaying = false;
@@ -333,10 +286,6 @@ class PlaylistProvider extends ChangeNotifier {
     _playlist[index].isFavorite = isFavorite;
     notifyListeners();
   }
-//   void updatePlaylist(List<Song> newPlaylist) {
-//   _playlist.addAll(newPlaylist);
-//   notifyListeners();
-// }
 
   // random music in playlist
   void shuffleAndPlay() {
